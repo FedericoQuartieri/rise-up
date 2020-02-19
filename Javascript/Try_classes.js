@@ -34,7 +34,7 @@ const options =[
 ]
 
 var World = function(state){
-  this.state = new State(state, World)
+  this.state = new State(state, this)
   this.infects = 1;
   this.infection_rate = 0;
   this.death_rate=0;
@@ -51,6 +51,7 @@ var World = function(state){
   this.infect = function(){
       this.infects += this.infects*(this.infection_rate/100)
       this.infects = Math.round(this.infects)
+      
     }
 
   this.print = function(){
@@ -89,6 +90,8 @@ var World = function(state){
 
 var State = function(state, World){
   this.World = World
+  this.Decisions = new Decisions(this, World)
+  decision = this.Decisions
   this.reanimate_beds = state["reanimate_beds"]
   this.beds = state["beds"]
   this.pil = state["pil"]
@@ -96,22 +99,34 @@ var State = function(state, World){
   this.public_debt = state["public_debt"]
   this.money = state["money"]
   this.army_level = state["army_level"]
-  this.infects = 2
-  this.infection_rate = 50
+  this.infects = 1
+  this.infection_rate = 1
   this.death_rate = 0
   this.dead = 0
   this.feeling = 100
   this.red_zone=0
   this.loans=[]
   this.pil_decrease = 0 //i deficit economici vanno nel decrease
+  this.remainder = 0
 
 
   this.increase =  (n)=>{
     this.infection_rate += n
   }
+
+  this.decrease = (n) => {
+    this.infection_rate -= n
+    console.log(this.infection_rate)
+  }
+
   this.infect = () =>{
-    this.infects += this.infects*(this.infection_rate/100)
-    this.infects = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
+    this.infects += this.infects*(this.infection_rate/10)
+    let a = this.infects
+    let b = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
+    this.infects = b
+    this.remainder += (a - b)
+    this.infects += this.remainder
+    this.infects = Math.round(this.infects)
   }
   this.increase_debt =  (perc) =>{
     this.public_debt += this.public_debt*(perc/100)
@@ -246,14 +261,17 @@ this.council = () => {
   this.pil_decrease+=option_chosen["economy"]
 
   
+  }
+  this.court_validation=()=>{
+    //poi penso ai criteri di scelta della corte sulla option_chosen
+  }
+
+  //end council
+
+  //----------------------------------
 
 
-}
-this.court_validation=()=>{
-  //poi penso ai criteri di scelta della corte sulla option_chosen
-}
-
-//Start summaries
+  //Start summaries
 
   this.summary_economy = () =>{
     pil_rate=0 //è in percentuale
@@ -262,30 +280,54 @@ this.court_validation=()=>{
   }
 
   this.summary_infect =() =>{
-    rate = 0
-    rate -= this.red_zone/100
-    this.infection_rate+=rate
+    var rate = 1
+    rate *= decision.schools_opened_perc / 100
+    rate *= decision.museums_opened_perc / 100
+    rate *= decision.shops_opened_perc / 100
+    rate *= decision.food_opened_perc / 100
+    rate *= decision.museums_opened_perc / 100
+    if (decision.mandatory_masks) {
+      rate -= 1
+    }
+    if (decision.army_using) {
+      rate -= 1
+    }
+    if (rate > 0){
+      this.infection_rate = rate 
+    }
+    else{
+      this.infection_rate = 0.1
+    }
+    
+
+
+
   }
 
-//End summaries
+  //End summaries
+
+  //--------------------------------
 
 }
+
+
+//end state
 
 
 var Decisions = function(state, World){ 
   this.state = state
   this.World = World
-  this.schools = true
-  this.museums = true
-  this.shops = true
-  this.food = true
-  this.ports = true
-  this.airports = true
-  this.new_hospitals = 0
+  this.schools_opened_perc = 130
+  this.museums_opened_perc = 130
+  this.shops_opened_perc = 130
+  this.food_opened_perc = 130
+  this.ports_opened_perc = 130
+  this.airports_opened_perc = 130
+  this.maximum_of_people_together_perc = 130
   this.mandatory_masks = false
-  this.maximum_of_people_together = null
-  this.army = false
-  this.almost_graduates_doc = false
+  this.army_using = false
+  this.almost_graduates_doc = false   //influiscono sui decessi
+  this.new_hospitals = 0              //influiscono sui decessi
 }
 
 
@@ -328,7 +370,8 @@ function sleep(miliseconds) {
 state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
-stato = world.state
+let stato = world.state
+var c = 0
 
 
 
@@ -387,9 +430,12 @@ stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
 
 while (true) {
+  c += 1
   sleep(100)
   world.date = clock()
   console.log(world.date)
-  stato.pay_loans_review()
-  
+  stato.decrease(0.1)
+  stato.summary_infect()
+  stato.infect()
+  stato.print()
 }
