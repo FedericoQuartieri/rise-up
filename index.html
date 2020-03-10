@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Test Page</title>
 </head>
 <body>
-  <h1>My test page</h1>
+  <img src="download.jpg" usemap="#MiaMappa" border="0">
+  <map name="MiaMappa" id="MiaMappa">
+    <area href="1.html" onclick = "state_choose("italia")" shape="rect" coords="0, 0, 10000, 1000000">
+    <area href="2.html" shape="rect" coords="500, 600, 700, 800">
+  </map>
+  <script data-main="app" src="lib/require.js"></script>
 </body>
 </html>
