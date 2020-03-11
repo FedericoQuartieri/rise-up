@@ -50,6 +50,7 @@ var State = function(state, World){
   this.feeling = 100;
   this.red_zone=0;
   this.loans=[]
+  this.payed=true
 
   this.increase = function (n){
     this.infection_rate += n;
@@ -79,8 +80,22 @@ var State = function(state, World){
   this.loan_reader = function(item) {
     if (item.date1 === w1.date) {
       increase_debt(item.amount / this.money)
+      console.log("Il debito di euro ",item.amount," non è stato pagato")
+      this.payed=false
     }
-    else {}
+    else {
+
+    }
+
+   this.review_loans= function(){
+   	
+   	stato.loans.forEach(stato.loan_reader())
+   	
+   	if(this.payed) {
+   		console.log("nessun prestito scaduto")
+   	}
+
+   }
 
   }
 
@@ -191,7 +206,9 @@ while (true) {
   sleep(1000)
   w1.date = clock()
   console.log(w1.date)
-  stato.loans.forEach(stato.loan_reader())
+  stato.review_loans()
+  
+  
 
 
 }
