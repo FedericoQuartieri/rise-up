@@ -1,9 +1,0 @@
-{
-    "italia" : 
-                {
-                    "posti_letto" : 150000,
-                    "posti_letto_rianimazione" : 5000,
-                    "PIL" : 1935000000000,
-                    "percentuale_pil_sanita": 6.5
-                }
-}
