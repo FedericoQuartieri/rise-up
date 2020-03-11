@@ -1,3 +1,14 @@
+const states = {
+    "italia" : 
+                {
+                    "posti_letto" : 150000,
+                    "posti_letto_rianimazione" : 5000,
+                    "PIL" : 1935000000000,
+                    "percentuale_pil_sanita": 6.5
+                }
+}
+
+
 var World = function(countries_n,popolation){
     this.countries_n=countries_n;
     this.popolation=popolation;
