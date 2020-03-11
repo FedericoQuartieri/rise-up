@@ -75,6 +75,15 @@ var State = function(state, World){
       console.log("rate : " ,this.infection_rate)
   }
 
+
+  this.loan_reader = function(item) {
+    if (item.date1 === w1.date) {
+      increase_debt(item.amount / this.money)
+    }
+    else {}
+
+  }
+
   /* this.loan_reader = function(){
     var func = function(element){
       if(element.date1===this.World.date){
@@ -94,7 +103,11 @@ var State = function(state, World){
       return true
     }
   }*/
-  this.summary=function(){
+  this.summary_economy = function() {
+
+  }
+  
+  this.summary_infect = function(){
     rate=0
     rate -= this.red_zone/100
     this.infection_rate+=rate
@@ -178,6 +191,7 @@ while (true) {
   sleep(1000)
   w1.date = clock()
   console.log(w1.date)
+  stato.loans.forEach(stato.loan_reader())
 
 
 }
