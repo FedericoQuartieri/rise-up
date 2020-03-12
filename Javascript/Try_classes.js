@@ -51,6 +51,8 @@ var State = function(state, World){
   this.red_zone=0;
   this.loans=[]
   this.payed=true
+  this.pil_decrease=0 //i deficit economici vanno nel decrease
+
 
   this.increase = function (n){
     this.infection_rate += n;
@@ -119,6 +121,12 @@ var State = function(state, World){
     }
   }*/
   this.summary_economy = function() {
+    pil_rate=0 //è in percentuale
+    pil_rate-=this.pil_decrease //anche il decrease è in percentuale
+
+
+    this.pil+=(pil_rate/100) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
+
 
   }
   
@@ -135,6 +143,11 @@ var Loan = function(date0,date1,amount){
   this.date0=date0
   this.date1=date1
   this.amount=amount
+}
+
+var Arrangement=function(description,state){
+
+
 }
 
 var date = new Date();
