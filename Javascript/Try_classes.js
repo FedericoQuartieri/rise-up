@@ -88,18 +88,19 @@ var State = function(state, World){
     else {
 
     }
+  }
 
    this.review_loans= function(){
-   	
+
    	stato.loans.forEach(stato.loan_reader())
-   	
+
    	if(this.payed) {
    		console.log("nessun prestito scaduto")
    	}
 
    }
 
-  }
+
 
   /* this.loan_reader = function(){
     var func = function(element){
@@ -129,7 +130,7 @@ var State = function(state, World){
 
 
   }
-  
+
   this.summary_infect = function(){
     rate=0
     rate -= this.red_zone/100
@@ -220,8 +221,8 @@ while (true) {
   w1.date = clock()
   console.log(w1.date)
   stato.review_loans()
-  
-  
+
+
 
 
 }
