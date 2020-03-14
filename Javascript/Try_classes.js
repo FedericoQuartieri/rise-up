@@ -52,7 +52,8 @@ var State = function(state, World){
   this.loans=[]
   this.payed=true
   this.pil_decrease=0 //i deficit economici vanno nel decrease
-
+  this.month = 0
+  this.day = 0
 
   this.increase = function (n){
     this.infection_rate += n;
@@ -66,7 +67,7 @@ var State = function(state, World){
     this.public_debt = Math.round(this.public_debt)
 
   }
-  this.make_loan=function(Name,amount,date0,date1){
+  this.make_loan=function(Name,date0,date1,amount){
     this.loans.push(new Loan(date0,date1,amount))
   }
   this.increase_zone= function(n){
@@ -79,54 +80,42 @@ var State = function(state, World){
   }
 
 
-  this.loan_reader = function(item) {
-    if (item.date1 === w1.date) {
-      increase_debt(item.amount / this.money)
-      console.log("Il debito di euro ",item.amount," non è stato pagato")
-      this.payed=false
-    }
-    else {
+  this.from_date_to_day = function(){
+  
 
-    }
   }
 
-   this.review_loans= function(){
 
-   	stato.loans.forEach(stato.loan_reader())
+  this.loan_reader_expire = function(element) {
+    if (element.date1 === w1.date) {
+      this.increase_debt(element.amount / this.money)                             //chiamata da review
+      console.log("Il debito di euro ",element.amount," non è stato pagato")
+      this.payed=false
+    }
+    else {}
+  }
 
+  this.review_loans = function(){
+    this.loans.forEach(this.loan_reader_expire)
    	if(this.payed) {
    		console.log("nessun prestito scaduto")
    	}
+  }
 
-   }
+  this.loan_reader_to_pay = function(){
+                                                 //chiamata da pay
+  }
 
+  this.pay_loans = function() {
+    this.loans.forEach(this.loan_reader_to_pay())
+  }
 
-
-  /* this.loan_reader = function(){
-    var func = function(element){
-      if(element.date1===this.World.date){
-        increase_debt_perc = element.amount / this.money
-        return increase_debt_perc
-      }
-      else{
-
-      }
-    }
-    if (world.date ==      ) {
-                                            // pass
-    }
-      increase_debt_perc = amount / this.money
-      return increase_debt_perc
-    else () {
-      return true
-    }
-  }*/
   this.summary_economy = function() {
     pil_rate=0 //è in percentuale
     pil_rate-=this.pil_decrease //anche il decrease è in percentuale
-
-
     this.pil+=(pil_rate/100) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
+    this.payed = true
+
 
 
   }
@@ -136,6 +125,7 @@ var State = function(state, World){
     rate -= this.red_zone/100
     this.infection_rate+=rate
   }
+
 }
 
 
@@ -146,10 +136,13 @@ var Loan = function(date0,date1,amount){
   this.amount=amount
 }
 
+
 var Arrangement=function(description,state){
 
 
 }
+
+
 
 var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -220,9 +213,6 @@ while (true) {
   sleep(1000)
   w1.date = clock()
   console.log(w1.date)
+  stato.make_loan("saas","11March2020", "15March2020",343)
   stato.review_loans()
-
-
-
-
 }
