@@ -16,6 +16,22 @@ const states = {
                 }
 }
 
+const options =[
+  {
+    "description":"",
+    "death":0,
+    "economy":0,
+    "health":0,
+    "feeling":0,
+    "print": ()=> console.log( "After a long discussion, the Governement has decided that the best option in order to improve the actual situation is: \n ", this["description"]),
+
+
+    
+  },
+  {
+
+  },
+]
 
 var World = function(state){
   this.infects = 1;
@@ -59,6 +75,7 @@ var State = function(state, World){
   this.month = 0
   this.curDay = 0
   this.month_numb = 0
+  this.month_letter="" //penso sia una stringa
 
   this.increase =  (n)=>{
     this.infection_rate += n
@@ -72,9 +89,7 @@ var State = function(state, World){
     this.public_debt = Math.round(this.public_debt)
     
   }
-  this.make_loan=(name,date0,date1,amount, stato) => {  //tolto il name che non si usava
-    this.loans.push(new Loan(name,date0,date1,amount, stato))
-  }
+  
   
   this.increase_zone= (n) =>{
     this.increase_zone+=n
@@ -84,6 +99,12 @@ var State = function(state, World){
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
   }
+
+
+
+
+
+// Start conversion dates
 
 
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay 
@@ -107,6 +128,17 @@ var State = function(state, World){
     return day
   }
 
+  // End conversion dates
+
+  //-------------------------------------
+
+  //Start loans section
+
+  this.make_loan=(name,date0,date1,amount, stato) => {  //
+    this.loans.push(new Loan(name,date0,date1,amount, stato))
+  }
+
+
   this.loan_reader_expire = (element) =>{                         //chiamata da loan_reader_to_pay
     if (element.date1 === w1.date) {                          //va con stato. e non con this.
       this.increase_debt(element.amount / this.money)                   //va con stato. e non con this.           
@@ -117,7 +149,6 @@ var State = function(state, World){
     }
     else {}
   }
-
 
 
   this.pay_loans_review = ()=> {
@@ -131,6 +162,7 @@ var State = function(state, World){
     }
   }
 
+
   this.pay_loan = (element) => {
     const to_pay = true 
     if (to_pay === true){
@@ -141,7 +173,6 @@ var State = function(state, World){
       this.loans=this.loans.filter(Boolean)
     }
   }
-
 
 
   this.loan_reader_to_pay = (element) =>{     //chiamata da pay_loans_review
@@ -174,15 +205,31 @@ var State = function(state, World){
     }                                   
   }
   
+// End loans section
 
+//-------------------------------------
+
+//Start council
+
+this.council=()=>{
+  console.log("Day ",this.curDay,", month of ",this.month_letter)
+  console.log()
+  console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
+  first_option=options[0]
+  first_option=options[1]
+  first_option=options[2]
+  //adesso li metto random intanto pusho così vedi però conta che saranno presi random da options
+  
+
+
+}
+
+//Start summaries
 
   this.summary_economy = () =>{
     pil_rate=0 //è in percentuale
     pil_rate-=this.pil_decrease //anche il decrease è in percentuale
     this.pil+=(this.pil*(pil_rate/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
-
-
-
   }
 
   this.summary_infect =() =>{
@@ -190,6 +237,8 @@ var State = function(state, World){
     rate -= this.red_zone/100
     this.infection_rate+=rate
   }
+
+//End summaries
 
 }
 
@@ -236,10 +285,6 @@ var Loan = function(name,date0,date1,amount,state){
 
 
 
-var Arrangement=function(description,state){
-
-
-}
 
 
 
@@ -300,6 +345,7 @@ function clock () {
         else {stato.curDay += 1}
     }
     date = stato.curDay + curMonth + curYear
+    stato.month_letter=curMonth //guarda se ha senso
     stato.month_numb = months.indexOf(curMonth) + 1
     return date
 }
