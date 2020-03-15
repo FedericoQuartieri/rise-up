@@ -1,13 +1,17 @@
+
+
 const states = {
     "italia" :
                 {
-                    "beds" : 150000,
-                    "reanimate_beds" : 5000,
-                    "pil" : 1935000000000,
-                    "percentuale_pil_sanita": 6.5,
-                    "popolation" : 60000000,
-                    "public_debt" : 384738,
-                    "money" : 48374837483
+                  "beds" : 150000,
+                  "reanimate_beds" : 5000,
+                  "pil" : 1935000000000,
+                  "percentuale_pil_sanita": 6.5,
+                  "popolation" : 60000000,
+                  "public_debt" : 384738,
+                  "money" : 48374837483,
+                  "army_level" : 55344
+
 
                 }
 }
@@ -43,6 +47,7 @@ var State = function(state, World){
   this.popolation = state["popolation"]
   this.public_debt = state["public_debt"]
   this.money = state["money"]
+  this.army_level = state["army_level"]
   this.infects = 2
   this.infection_rate = 50
   this.death_rate = 0
@@ -81,7 +86,7 @@ var State = function(state, World){
   }
 
 
-  this.from_date_to_month =  (date)=> {    //chiamata da loan_reader_to_pay 
+  this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay 
     if (isNaN(parseInt(date[1]))){
       month = date.substring(1, date.length - 4)
     }
@@ -92,7 +97,7 @@ var State = function(state, World){
     return month_numb
   }
 
-  this.from_date_to_day = (date) =>{
+  this.from_date_to_day = (date) => {
     if (isNaN(parseInt(date[1]))){
       day = date[0]                             //chiamata da loan_reader_to_pay 
     }
@@ -108,7 +113,7 @@ var State = function(state, World){
       console.log("Il debito di euro ",element.amount," non è stato pagato")
       console.log("nuovo debito pubblico", this.public_debt)
       this.loans.splice(this.loans.indexOf(element),1)
-      this.loans=this.loans.filter(Boolean);
+      this.loans=this.loans.filter(Boolean)
     }
     else {}
   }
@@ -126,34 +131,40 @@ var State = function(state, World){
     }
   }
 
-  this.pay_loan = () => {
-
+  this.pay_loan = (element) => {
+    const to_pay = true 
+    if (to_pay === true){
+      this.money -= element.amount
+      console.log("hai pagato il debito di ",element.amount , "con la nazione ", element.state)
+      console.log("nuovo capitale ", this.money)
+      this.loans.splice(this.loans.indexOf(element),1)
+      this.loans=this.loans.filter(Boolean)
+    }
   }
 
 
+
   this.loan_reader_to_pay = (element) =>{     //chiamata da pay_loans_review
-    "use strict";           
     const month  = this.from_date_to_month(element.date1)
     const day = parseInt(this.from_date_to_day(element.date1))
     if (day - this.curDay === 1 && month === this.month_numb){
-      console.log("il prestito", element.name, "con la nazione", element.stato, "scade domani")
-      this.pay_loan()
+      console.log("il prestito", element.name, "con la nazione", element.state, "scade domani")
+      this.pay_loan(element)
     }
     if (day - this.curDay === 15 && month === this.month_numb) {
-      console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 15 giorni")
-      this.pay_loan()
+      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 15 giorni")
+      this.pay_loan(element)
     }
     else if (month - this.month_numb === 1 && day === this.curDay) {
-      console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 1 mese")
-      this.pay_loan()    
+      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 1 mese")
+      this.pay_loan(element)    
     }
     else if (month - this.month_numb === 2 && day === this.curDay){
-      console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 2 mesi")
-      this.pay_loan()
+      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 2 mesi")
+      this.pay_loan(element)
     }     
     else if (month - this.month_numb > 2){
       console.log("non scadono prestiti entro 2 mesi")
-      this.pay_loan()
     }  
     else if (element.date1 === w1.date){
       this.loan_reader_expire(element)
@@ -183,23 +194,45 @@ var State = function(state, World){
 }
 
 
+var Decisions = function(state, World){ 
+  this.state = state
+  this.World = World
+  this.schools = true
+  this.museums = true
+  this.shops = true
+  this.food = true
+  this.ports = true
+  this.airports = true
+  this.new_hospitals = 0
+  this.mandatory_masks = false
+  this.maximum_of_people_together = null
+  this.army = false
+  this.almost_graduates_doc = false
+}
 
 
-
-
-
-
-
-var Loan = function(name,date0,date1,amount,stato){
-  this.name=name
-  this.date0 = date0
-  this.date1 = date1
-  this.amount = amount
-  this.stato = stato
+var Specializations = function(state, World){
+  this.state = state
+  this.World = World
+  this.cardiology
+  this.neurology
+  this.resuscitation
+  this.gynecology
+  this.urology
+  this.pulmonology
+  this.pediatrics
+  this.psychiatry
 }
 
 
 
+var Loan = function(name,date0,date1,amount,state){
+  this.name=name
+  this.date0 = date0
+  this.date1 = date1
+  this.amount = amount
+  this.state = state
+}
 
 
 
@@ -218,11 +251,18 @@ function sleep(miliseconds) {
     }
 }
 
+state1 = "italia"
+dicto_state = states[state1]
+w1 = new World(dicto_state)
+stato = w1.state
+
+
+
 var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var curWeekDay = days[date.getDay()];
-var curDay = date.getDate();                        //non funziona, non parte dal giorno corrente
+stato.curDay = date.getDate();                        //non funziona, non parte dal giorno corrente
 var curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
 
@@ -265,19 +305,34 @@ function clock () {
 }
 
 
-state1 = "italia"
-dicto_state = states[state1]
-w1 = new World(dicto_state)
-stato = w1.state
-
-
-
 
 
 stato.make_loan("saas","11March2020", "20March2020",343000000, "Francia")
 
+
+
+
+
+const readline = require("readline");
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.question("What is your name ? ", function(name) {
+    rl.question("Where do you live ? ", function(country) {        //dovrebbe essere l'input() ma non va
+        console.log(`${name}, is a citizen of ${country}`);
+        rl.close();
+    });
+});
+
+rl.on("close", function() {
+    console.log("\nBYE BYE !!!");
+    process.exit(0);
+});
+
 while (true) {
-  sleep(300)
+  sleep(1000)
   w1.date = clock()
   console.log(w1.date)
   stato.pay_loans_review()
