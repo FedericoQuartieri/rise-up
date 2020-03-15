@@ -55,32 +55,33 @@ var State = function(state, World){
   this.curDay = 0
   this.month_numb = 0
 
-  this.increase = function (n){
+  this.increase =  (n)=>{
     this.infection_rate += n
   }
-  this.infect = function(){
+  this.infect = () =>{
     this.infects += this.infects*(this.infection_rate/100)
     this.infects = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
   }
-  this.increase_debt = function (perc) {
+  this.increase_debt =  (perc) =>{
     this.public_debt += this.public_debt*(perc/100)
     this.public_debt = Math.round(this.public_debt)
     
   }
-  this.make_loan=function(Name,date0,date1,amount, stato){
-    this.loans.push(new Loan(date0,date1,amount, stato))
+  this.make_loan=(name,date0,date1,amount, stato) => {  //tolto il name che non si usava
+    this.loans.push(new Loan(name,date0,date1,amount, stato))
   }
-  this.increase_zone= function(n){
+  
+  this.increase_zone= (n) =>{
     this.increase_zone+=n
     this.feeling-=(n/50)
   }
-  this.print = function(){
+  this.print = () =>{
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
   }
 
 
-  this.from_date_to_month = function (date) {    //chiamata da loan_reader_to_pay 
+  this.from_date_to_month =  (date)=> {    //chiamata da loan_reader_to_pay 
     if (isNaN(parseInt(date[1]))){
       month = date.substring(1, date.length - 4)
     }
@@ -91,7 +92,7 @@ var State = function(state, World){
     return month_numb
   }
 
-  this.from_date_to_day = function(date) {
+  this.from_date_to_day = (date) =>{
     if (isNaN(parseInt(date[1]))){
       day = date[0]                             //chiamata da loan_reader_to_pay 
     }
@@ -101,20 +102,23 @@ var State = function(state, World){
     return day
   }
 
-  this.loan_reader_expire = function(element) {                         //chiamata da loan_reader_to_pay
+  this.loan_reader_expire = (element) =>{                         //chiamata da loan_reader_to_pay
     if (element.date1 === w1.date) {                          //va con stato. e non con this.
-      stato.increase_debt(element.amount / stato.money)                   //va con stato. e non con this.           
+      this.increase_debt(element.amount / this.money)                   //va con stato. e non con this.           
       console.log("Il debito di euro ",element.amount," non è stato pagato")
       console.log("nuovo debito pubblico", this.public_debt)
-      stato.loans.splice(stato.loans.indexOf(element),1)
+      this.loans.splice(this.loans.indexOf(element),1)
+      this.loans=this.loans.filter(Boolean);
     }
     else {}
   }
 
 
 
-  this.pay_loans_review = function() {
-    if (this.loans.length =! 0){
+  this.pay_loans_review = ()=> {
+    
+    if (this.loans.length !== 0){
+
     this.loans.forEach(this.loan_reader_to_pay)               //chiamata in summary
     }
     else{
@@ -122,37 +126,37 @@ var State = function(state, World){
     }
   }
 
-  this.pay_loan = function() {
+  this.pay_loan = () => {
 
   }
 
 
-  this.loan_reader_to_pay = function(element){     //chiamata da pay review
+  this.loan_reader_to_pay = (element) =>{     //chiamata da pay_loans_review
     "use strict";           
-    const month  = stato.from_date_to_month(element.date1)
-    const day = parseInt(stato.from_date_to_day(element.date1))
-    if (day - stato.curDay === 1 && month === stato.month_numb){
+    const month  = this.from_date_to_month(element.date1)
+    const day = parseInt(this.from_date_to_day(element.date1))
+    if (day - this.curDay === 1 && month === this.month_numb){
       console.log("il prestito", element.name, "con la nazione", element.stato, "scade domani")
-      stato.pay_loan()
+      this.pay_loan()
     }
-    if (day - stato.curDay === 15 && month === stato.month_numb) {
+    if (day - this.curDay === 15 && month === this.month_numb) {
       console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 15 giorni")
-      stato.pay_loan()
+      this.pay_loan()
     }
-    else if (month - stato.month_numb === 1 && day === stato.curDay) {
+    else if (month - this.month_numb === 1 && day === this.curDay) {
       console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 1 mese")
-      stato.pay_loan()    
+      this.pay_loan()    
     }
-    else if (month - stato.month_numb === 2 && day === stato.curDay){
+    else if (month - this.month_numb === 2 && day === this.curDay){
       console.log("il prestito", element.name, "con la nazione", element.stato, "scade tra 2 mesi")
-      stato.pay_loan()
+      this.pay_loan()
     }     
-    else if (month - stato.month_numb > 2){
+    else if (month - this.month_numb > 2){
       console.log("non scadono prestiti entro 2 mesi")
-      stato.pay_loan()
+      this.pay_loan()
     }  
     else if (element.date1 === w1.date){
-      stato.loan_reader_expire(element)
+      this.loan_reader_expire(element)
     }   
     else{
       console.log("ci sono prestiti da pagare, non ci sono prestiti scaduti")  //poi qui metteremo un tasto paga manuale
@@ -161,16 +165,16 @@ var State = function(state, World){
   
 
 
-  this.summary_economy = function() {
+  this.summary_economy = () =>{
     pil_rate=0 //è in percentuale
     pil_rate-=this.pil_decrease //anche il decrease è in percentuale
-    this.pil+=(pil_rate/100) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
+    this.pil+=(this.pil*(pil_rate/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
 
 
 
   }
 
-  this.summary_infect = function(){
+  this.summary_infect =() =>{
     rate=0
     rate -= this.red_zone/100
     this.infection_rate+=rate
@@ -186,7 +190,8 @@ var State = function(state, World){
 
 
 
-var Loan = function(date0,date1,amount,stato){
+var Loan = function(name,date0,date1,amount,stato){
+  this.name=name
   this.date0 = date0
   this.date1 = date1
   this.amount = amount
