@@ -212,16 +212,43 @@ var State = function(state, World){
 //Start council
 
 this.council=()=>{
+ 
   console.log("Day ",this.curDay,", month of ",this.month_letter)
   console.log()
   console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
-  first_option=options[0]
-  first_option=options[1]
-  first_option=options[2]
-  //adesso li metto random intanto pusho così vedi però conta che saranno presi random da options
+  //random
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
+  }
+  
+  first_option=options[getRandomInt(0,options.length)]
+  second_option=options[getRandomInt(0,options.length)]
+  third_option=options[getRandomInt(0,options.length)]
+
+  console.log("After a long discussion in collaboration with all the members of the Council three main options have been taken into serious consideration: ,")
+  console.log("1. ", console.log(first_option))
+  console.log("2. ", console.log(second_option))
+  console.log("3. ", console.log(third_option))
+  console.log("-----------------")
+  console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
+  //da mettere input con html
+
+  option_chosen= 
+
+  //effects
+  this.death_rate+=option_chosen["death"]
+  this.feeling+=option_chosen["feeling"]
+  this.infection_rate+=option_chosen["health"]
+  this.pil_decrease+=option_chosen["economy"]
+
   
 
 
+}
+this.court_validation=()=>{
+  //poi penso ai criteri di scelta della corte sulla option_chosen
 }
 
 //Start summaries
