@@ -34,11 +34,15 @@ const options =[
 ]
 
 var World = function(state){
+  this.state = new State(state, World)
   this.infects = 1;
   this.infection_rate = 0;
   this.death_rate=0;
   this.date = null;
-  this.state = new State(state, World)
+  this.curMonth = 0
+  this.month_numb
+  this.curDay = 0
+  
 
   this.increase = function (n){
       this.infection_rate+=n;
@@ -53,6 +57,34 @@ var World = function(state){
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
   }
+
+
+  // Start conversion dates
+
+
+  this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay 
+
+    if (isNaN(parseInt(date[1]))){
+      var month = date.substring(1, date.length - 4)
+    }
+    else {
+      var month = date.substring(2, date.length - 4)
+    }
+    const month_numb = months.indexOf(month) + 1
+    return month_numb
+  }
+
+  this.from_date_to_day = (date) => {
+    if (isNaN(parseInt(date[1]))){
+      var day = date[0]                             //chiamata da loan_reader_to_pay 
+    }
+    else {
+      var day = date[0] + date[1]
+    }
+    return day
+  }
+
+  // End conversion dates
 }
 
 var State = function(state, World){
@@ -72,10 +104,7 @@ var State = function(state, World){
   this.red_zone=0
   this.loans=[]
   this.pil_decrease = 0 //i deficit economici vanno nel decrease
-  this.month = 0
-  this.curDay = 0
-  this.month_numb = 0
-  this.month_letter="" //penso sia una stringa
+
 
   this.increase =  (n)=>{
     this.infection_rate += n
@@ -104,31 +133,7 @@ var State = function(state, World){
 
 
 
-// Start conversion dates
 
-
-  this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay 
-    if (isNaN(parseInt(date[1]))){
-      month = date.substring(1, date.length - 4)
-    }
-    else {
-      month = date.substring(2, date.length - 4)
-    }
-    month_numb = months.indexOf(month) + 1
-    return month_numb
-  }
-
-  this.from_date_to_day = (date) => {
-    if (isNaN(parseInt(date[1]))){
-      day = date[0]                             //chiamata da loan_reader_to_pay 
-    }
-    else {
-      day = date[0] + date[1]
-    }
-    return day
-  }
-
-  // End conversion dates
 
   //-------------------------------------
 
@@ -140,7 +145,7 @@ var State = function(state, World){
 
 
   this.loan_reader_expire = (element) =>{                         //chiamata da loan_reader_to_pay
-    if (element.date1 === w1.date) {                          //va con stato. e non con this.
+    if (element.date1 === world.date) {                          //va con stato. e non con this.
       this.increase_debt(element.amount / this.money)                   //va con stato. e non con this.           
       console.log("Il debito di euro ",element.amount," non è stato pagato")
       console.log("nuovo debito pubblico", this.public_debt)
@@ -152,19 +157,17 @@ var State = function(state, World){
 
 
   this.pay_loans_review = ()=> {
-    
     if (this.loans.length !== 0){
-
     this.loans.forEach(this.loan_reader_to_pay)               //chiamata in summary
     }
     else{
-      console.log("non ci sono prestiti da pagare")      // non entra in questo else poi ci guardo
+      console.log("non ci sono prestiti da pagare")
     }
   }
 
 
   this.pay_loan = (element) => {
-    const to_pay = true 
+    const to_pay = false 
     if (to_pay === true){
       this.money -= element.amount
       console.log("hai pagato il debito di ",element.amount , "con la nazione ", element.state)
@@ -176,28 +179,28 @@ var State = function(state, World){
 
 
   this.loan_reader_to_pay = (element) =>{     //chiamata da pay_loans_review
-    const month  = this.from_date_to_month(element.date1)
-    const day = parseInt(this.from_date_to_day(element.date1))
-    if (day - this.curDay === 1 && month === this.month_numb){
+    const month = world.from_date_to_month(element.date1)
+    const day = parseInt(world.from_date_to_day(element.date1))
+    if (day - world.curDay === 1 && month === world.month_numb){
       console.log("il prestito", element.name, "con la nazione", element.state, "scade domani")
       this.pay_loan(element)
     }
-    if (day - this.curDay === 15 && month === this.month_numb) {
+    if (day - world.curDay === 15 && month === world.month_numb) {
       console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 15 giorni")
       this.pay_loan(element)
     }
-    else if (month - this.month_numb === 1 && day === this.curDay) {
+    else if (month - world.month_numb === 1 && day === world.curDay) {
       console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 1 mese")
       this.pay_loan(element)    
     }
-    else if (month - this.month_numb === 2 && day === this.curDay){
+    else if (month - world.month_numb === 2 && day === world.curDay){
       console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 2 mesi")
       this.pay_loan(element)
     }     
-    else if (month - this.month_numb > 2){
+    else if (month - world.month_numb > 2){
       console.log("non scadono prestiti entro 2 mesi")
     }  
-    else if (element.date1 === w1.date){
+    else if (element.date1 === world.date){
       this.loan_reader_expire(element)
     }   
     else{
@@ -212,7 +215,7 @@ var State = function(state, World){
 //Start council
 
 this.council=()=>{
-  console.log("Day ",this.curDay,", month of ",this.month_letter)
+  console.log("Day ",world.curDay,", month of ",world.month_letter)
   console.log()
   console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
   first_option=options[0]
@@ -233,7 +236,7 @@ this.council=()=>{
   }
 
   this.summary_infect =() =>{
-    rate=0
+    rate = 0
     rate -= this.red_zone/100
     this.infection_rate+=rate
   }
@@ -298,8 +301,8 @@ function sleep(miliseconds) {
 
 state1 = "italia"
 dicto_state = states[state1]
-w1 = new World(dicto_state)
-stato = w1.state
+world = new World(dicto_state)
+stato = world.state
 
 
 
@@ -307,8 +310,8 @@ var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var curWeekDay = days[date.getDay()];
-stato.curDay = date.getDate();                        //non funziona, non parte dal giorno corrente
-var curMonth = months[date.getMonth()];
+world.curDay = date.getDate();                       
+world.curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
 
 function following_month (curMonth) {
@@ -320,67 +323,47 @@ function following_month (curMonth) {
 function clock () {
     const _30_month = ['April', 'June', 'September', 'November'];
     const _31_month = ['January', 'March',  'May',  'July', 'August', 'October', 'December'];
-    if (curMonth === "December" && stato.curDay === 31) {
+    if (world.curMonth === "December" && world.curDay === 31) {
         curYear += 1
-        curMonth = "January"
-        stato.curDay = 1
+        world.curMonth = "January"
+        world.curDay = 1
     }
     else {
-        if (stato.curDay >= 29) {
-            if (curMonth === "February" && stato.curDay === 29 ) {
-                curMonth = following_month(curMonth)
-                stato.curDay = 1
+        if (world.curDay >= 29) {
+            if (world.curMonth === "February" && world.curDay === 29 ) {
+                world.curMonth = following_month(world.curMonth)
+                world.curDay = 1
             }
-            else if (stato.curDay === 30 && _30_month.includes(curMonth)) {
-                curMonth = following_month(curMonth)
-                stato.curDay = 1
+            else if (world.curDay === 30 && _30_month.includes(world.curMonth)) {
+                world.curMonth = following_month(world.curMonth)
+                world.curDay = 1
             }
-            else if (stato.curDay === 31 && _31_month.includes(curMonth)) {
-                curMonth = following_month(curMonth)
-                stato.curDay = 1
+            else if (world.curDay === 31 && _31_month.includes(world.curMonth)) {
+                world.curMonth = following_month(world.curMonth)
+                world.curDay = 1
 
             }
-            else {stato.curDay += 1}
+            else {world.curDay += 1}
         }
-        else {stato.curDay += 1}
+        else {world.curDay += 1}
     }
-    date = stato.curDay + curMonth + curYear
-    stato.month_letter=curMonth //guarda se ha senso
-    stato.month_numb = months.indexOf(curMonth) + 1
+    date = world.curDay + world.curMonth + curYear
+    world.month_numb = months.indexOf(world.curMonth) + 1
     return date
 }
 
 
 
 
-stato.make_loan("saas","11March2020", "20March2020",343000000, "Francia")
+stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
 
 
-
-
-const readline = require("readline");
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-rl.question("What is your name ? ", function(name) {
-    rl.question("Where do you live ? ", function(country) {        //dovrebbe essere l'input() ma non va
-        console.log(`${name}, is a citizen of ${country}`);
-        rl.close();
-    });
-});
-
-rl.on("close", function() {
-    console.log("\nBYE BYE !!!");
-    process.exit(0);
-});
 
 while (true) {
-  sleep(1000)
-  w1.date = clock()
-  console.log(w1.date)
+  sleep(100)
+  world.date = clock()
+  console.log(world.date)
   stato.pay_loans_review()
   
 }
