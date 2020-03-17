@@ -280,17 +280,18 @@ this.council = () => {
   }
 
   this.summary_infect =() =>{
-    var rate = 1
-    rate *= decision.schools_opened_perc / 100
-    rate *= decision.museums_opened_perc / 100
-    rate *= decision.shops_opened_perc / 100
-    rate *= decision.food_opened_perc / 100
-    rate *= decision.museums_opened_perc / 100
+    var rate = -1
+    rate += (decision.schools_opened_perc / 100)
+    rate += (decision.museums_opened_perc / 100)
+    rate += (decision.shops_opened_perc / 100)
+    rate += (decision.food_opened_perc / 100)
+    rate += (decision.museums_opened_perc / 100)
+    //rate += (decision.ports_opened_perc/100)
     if (decision.mandatory_masks) {
-      rate -= 1
+      rate -= 0.5
     }
     if (decision.army_using) {
-      rate -= 1
+      rate -= 0.5
     }
     if (rate > 0){
       this.infection_rate = rate 
@@ -298,10 +299,6 @@ this.council = () => {
     else{
       this.infection_rate = 0.1
     }
-    
-
-
-
   }
 
   //End summaries
@@ -431,11 +428,30 @@ stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
 while (true) {
   c += 1
-  sleep(100)
+  sleep(1000)
   world.date = clock()
   console.log(world.date)
   stato.decrease(0.1)
   stato.summary_infect()
   stato.infect()
   stato.print()
+  if (c === 5){
+    decision.schools_opened_perc = 20
+  }
+  if (c === 10){
+    decision.museums_opened_perc = 20
+  }
+  if (c === 15){
+    decision.shops_opened_perc = 20
+  }
+  if (c === 20){
+    decision.food_opened_perc = 20
+  }
+  if (c === 25){
+    decision.museums_opened_perc = 20
+  }
+  if (c === 30){
+    decision.ports_opened_perc = 20
+  }
+  
 }
