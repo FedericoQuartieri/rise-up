@@ -99,13 +99,12 @@ var State = function(state, World){
   this.public_debt = state["public_debt"]
   this.money = state["money"]
   this.army_level = state["army_level"]
-  this.rate_0=1
+  this.rate_0 = 1
   this.infects = 10
   this.infection_rate = 1
   this.death_rate = 0
   this.dead = 0
   this.feeling = 100
-  this.red_zone=0
   this.loans=[]
   this.pil_decrease = 0 //i deficit economici vanno nel decrease
   this.remainder = 0
@@ -116,30 +115,32 @@ var State = function(state, World){
   //tolto decrease e anche increase che erano inutili
 
   this.infect = () =>{
-    this.infects += this.infects*(this.infection_rate/100)
-    this.infects=Math.round(this.infects)
-    //con il round gli infetti iniziali non possono essere 1 se no rimane 1 all'infinito
-    /*
-    let a = this.infects
-    let b = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
-    this.infects = b
-    this.reminder += (a - b)
-    this.infects += this.reminder
-    this.infects = Math.round(this.infects)
-    */
-   //non mi dà gli infetti con questo non so perchè prova a vedere
+    if (this.infects += this.infects*(this.infection_rate/100) < this.popolation){
+      this.infects += this.infects*(this.infection_rate/100)
+      this.infects=Math.round(this.infects)
+      //con il round gli infetti iniziali non possono essere 1 se no rimane 1 all'infinito
+      /*
+      let a = this.infects
+      let b = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
+      this.infects = b
+      this.reminder += (a - b)
+      this.infects += this.reminder
+      this.infects = Math.round(this.infects)
+      */
+      //non mi dà gli infetti con questo non so perchè prova a vedere
+    }
+    else {
+      this.infects = this.popolation
+    }
+
+    
   }
   this.increase_debt =  (perc) =>{
     this.public_debt += this.public_debt*(perc/100)
     this.public_debt = Math.round(this.public_debt)
     
   }
-  
-  
-  this.increase_zone= (n) =>{
-    this.increase_zone+=n
-    this.feeling-=(n/50)
-  }
+
   this.print = () =>{
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
@@ -280,50 +281,29 @@ this.council = () => {
     this.pil+=(this.pil*(pil_rate/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
 
-  this.summary_infect =() =>{
-    
+  this.summary_infect =() =>{  
     var rate = this.rate_0
     rate += ((decision.schools_opened_perc / 100)*2)
-
     rate += (decision.museums_opened_perc / 100)
-    rate += (decision.shops_opened_perc / 100)
-    rate += (decision.food_opened_perc / 100)
+    rate += (decision.shops_opened_perc / 100*2)
     rate += (decision.ports_opened_perc/100)
+    rate += (decision.airports_opened_perc/100)
     rate += ((decision.sports_allowed_perc/100)*2)
-    rate += ((decision.remote_working_companies_perc/100)*2)
+    rate += (decision.airports_opened_perc/100)
+    rate += (decision.remote_working_companies_perc/100)
+    rate += (decision.maximum_of_people_together_perc/100)    
+    rate += (decision.remote_working_companies_perc/100)
+    rate += ((100-decision.red_zone)/5) 
 
-    //ai più importanti ho messo *2
-
-    //se sono tutti aperti al massimo aumenta di 10 il rate che ci sta
-    //tutte le decisions influiscono per un max del 10% di tutto il rate
-    rate+= ((100-this.red_zone)/5)
-
-    //se la red zone è 0 aumenta del 20 % l'infection rate
-    
+    //tutte le decisions influiscono per un max del 12% di tutto il rate più 20% della zona rossa e 2% true/false
+       
     if (decision.mandatory_masks) {
-      if(rate > 0.5){
       rate -= 0.5
-      }
-      else{
-        rate=0.0001
-      }
     }
-    if (decision.army_using) {
-      if(rate >0.5){
-      rate -= 0.3
-      }
-      else{
-        rate=0.0001
-      }
+
+    if (rate < this.rate_0){
+      rate = this.rate_0
     }
-    if (rate< this.rate_0){
-      this.rate_0=rate
-    }
-    //se nella somma diminuisce rispetto al valore iniziale il valore iniziale si setta a quello più basso per i summary successivi, così possiamo mettere un rate_0 in base alle difficoltà da cui partire ma si può andare anche sotto quello durante il gioco e per fare il summary parte da quel rate e non da zero
-
-
-
-
 
     //questo va fatto alla fine di tutto
     this.infection_rate = rate 
@@ -343,17 +323,17 @@ this.council = () => {
 var Decisions = function(state, World){ 
   this.state = state
   this.World = World
-  this.schools_opened_perc = 100
-  this.museums_opened_perc = 100
-  this.shops_opened_perc = 100
-  this.food_opened_perc = 100
-  this.ports_opened_perc = 100
-  this.airports_opened_perc = 100
-  this.sports_allowed_perc=100
-  this.remote_working_companies_perc=100
-  this.maximum_of_people_together_perc = 100
-  this.mandatory_masks = false
-  this.army_using = false
+  this.schools_opened_perc = 1 
+  this.museums_opened_perc = 1 
+  this.shops_opened_perc = 1 
+  this.ports_opened_perc = 1
+  this.airports_opened_perc = 1
+  this.sports_allowed_perc=1
+  this.remote_working_companies_perc = 1
+  this.maximum_of_people_together_perc = 1
+  this.red_zone = 0
+  this.mandatory_masks = true
+  this.army_using = true
   this.almost_graduates_doc = false   //influiscono sui decessi
   this.new_hospitals = 0              //influiscono sui decessi
 }
@@ -455,8 +435,6 @@ function clock () {
 stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
 
-
-stato.rate_0=5
 while (true) {
   c += 1
   sleep(1000)
@@ -470,9 +448,8 @@ while (true) {
   stato.infect()
   console.log(" ")
   stato.print()
-  
   if (c === 5){
-    stato.red_zone = 50
+    decision.red_zone = 100
     console.log("rossa mod")
   }
   /*
