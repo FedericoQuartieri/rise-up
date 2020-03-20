@@ -32,7 +32,11 @@ const options =[
 
   },
 ]
-
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
+}
 var World = function(state){
   this.state = new State(state, this)
   this.infects = 1;
@@ -95,6 +99,7 @@ var State = function(state, World){
   this.reanimate_beds = state["reanimate_beds"]
   this.beds = state["beds"]
   this.pil = state["pil"]
+  this.pil_0=this.pil
   this.popolation = state["popolation"]
   this.public_debt = state["public_debt"]
   this.money = state["money"]
@@ -107,8 +112,14 @@ var State = function(state, World){
   this.feeling = 100
   this.red_zone=0
   this.loans=[]
-  this.pil_decrease = 0 //i deficit economici vanno nel decrease
+  this.pil_rate = 0 //sia positivo che negativo
   this.remainder = 0
+  this.council_effects={
+    death:0,
+    economy:0,
+    health:0,
+    feeling:0
+  }
 
 
   
@@ -235,11 +246,7 @@ this.council = () => {
   console.log()
   console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
   //random
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
-  }
+  
   
   first_option=options[getRandomInt(0,options.length)]
   second_option=options[getRandomInt(0,options.length)]
@@ -253,18 +260,38 @@ this.council = () => {
   console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
   //da mettere input con html
 
-  option_chosen= 
 
   //effects
   this.death_rate+=option_chosen["death"]
-  this.feeling+=option_chosen["feeling"]
-  this.infection_rate+=option_chosen["health"]
-  this.pil_decrease+=option_chosen["economy"]
+  this.feeling+=option_chosen["feeling"]//
+  this.infection_rate-=(option_chosen["health"]/50)//
+  this.pil_rate+=option_chosen["economy"]
 
   
   }
-  this.court_validation=()=>{
-    //poi penso ai criteri di scelta della corte sulla option_chosen
+  this.court_validation=(option)=>{
+    accept=true
+    if(option.feeling>30 && this.red_zone>50)
+    {
+      if(getRandomInt(1,6)!==1){
+        accept=false
+      } 
+    }
+
+    if(option.health < -50 && (this.infects>(this.popolation/10)))
+    {
+      if(getRandomInt(1,6)!==1){
+        accept=false
+      }
+    }
+    if(option.economy < -50 && (this.infects>(this.popolation/10)))
+    {
+      if(getRandomInt(1,6)!==1){
+        accept=false
+      }
+    }
+
+    return accept
   }
 
   //end council
@@ -275,9 +302,9 @@ this.council = () => {
   //Start summaries
 
   this.summary_economy = () =>{
-    pil_rate=0 //è in percentuale
-    pil_rate-=this.pil_decrease //anche il decrease è in percentuale
-    this.pil+=(this.pil*(pil_rate/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
+    pil_var=0 //è in percentuale
+    pil_var+=this.pil_rate
+    this.pil+=(this.pil*(pil_var/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
 
   this.summary_infect =() =>{
