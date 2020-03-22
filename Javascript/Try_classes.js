@@ -113,12 +113,7 @@ var State = function(state, World){
   this.loans=[]
   this.pil_rate = 0 //sia positivo che negativo
   this.remainder = 0
-  this.council_effects={
-    death:0,
-    economy:0,
-    health:0,
-    feeling:0
-  }
+  
 
 
   
@@ -265,7 +260,7 @@ this.council = () => {
   console.log("-----------------")
   console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
   //da mettere input con html
-  option_chosen= pass
+  option_chosen= first_option
 
   if(this.court_validation(option_chosen)===true){
     //effects
