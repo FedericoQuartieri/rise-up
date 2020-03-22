@@ -108,12 +108,6 @@ var State = function(state, World){
   this.pil_rate = 0 //sia positivo che negativo
   this.remainder = 0
   
-
-
-  
-
-  //tolto decrease e anche increase che erano inutili
-
   this.infect = () =>{
     dead_day = this.infects*(this.death_rate/1000)  //death rate è già una perc, fatto così non muore troppa gente (al massimo del death rate muore il 10% degli infetti al giorno)
     this.infects -= dead_day
@@ -132,9 +126,19 @@ var State = function(state, World){
     else {
       this.infects = this.popolation
     }
-
-    
   }
+
+  this.money_decrease = (money) => {
+    if (money > this.money){
+      console.log("non hai abbastanza capitale")
+      //input = date_expire ; stato
+      this.make_loan("saas",world.date, date, money, stato)
+    }
+    else{
+      this.money -= money
+    }
+  }
+
 
   this.increase_debt =  (perc) =>{
     this.public_debt += this.public_debt*(perc/100)
@@ -231,106 +235,107 @@ var State = function(state, World){
 
 //Start council
 
-this.council = () => {
-  console.log("Day ",world.curDay,", month of ",world.month_letter)
-  console.log()
-  console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
-  //random
-  
-  
-  first_option=options[getRandomInt(0,options.length)]
-  second_option=options[getRandomInt(0,options.length)]
-  third_option=options[getRandomInt(0,options.length)]
+  this.council = () => {
+    console.log("Day ",world.curDay,", month of ",world.month_letter)
+    console.log()
+    console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
+    //random
+    
+    
+    first_option=options[getRandomInt(0,options.length)]
+    second_option=options[getRandomInt(0,options.length)]
+    third_option=options[getRandomInt(0,options.length)]
 
-  console.log("After a long discussion in collaboration with all the members of the Council three main options have been taken into serious consideration: ,")
-  console.log("1. ", console.log(first_option))
-  console.log("2. ", console.log(second_option))
-  console.log("3. ", console.log(third_option))
-  console.log("-----------------")
-  console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
-  //da mettere input con html
-  option_chosen= first_option
+    console.log("After a long discussion in collaboration with all the members of the Council three main options have been taken into serious consideration: ,")
+    console.log("1. ", console.log(first_option))
+    console.log("2. ", console.log(second_option))
+    console.log("3. ", console.log(third_option))
+    console.log("-----------------")
+    console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
+    //da mettere input con html
+    option_chosen= first_option
 
-  if(this.court_validation(option_chosen)===true){
-    //effects
-    this.death_rate+=option_chosen["death"]/100
-    this.feeling+=option_chosen["feeling"]//
-    this.infection_rate-=(option_chosen["health"]/50)//
-    this.pil_rate+=option_chosen["economy"]
+    if(this.court_validation(option_chosen)===true){
+      //effects
+      this.death_rate+=option_chosen["death"]/100
+      this.feeling+=option_chosen["feeling"]//
+      this.infection_rate-=(option_chosen["health"]/50)//
+      this.pil_rate+=option_chosen["economy"]
 
-  }
-  else{
-    console.log(this.court_validation(option_chosen))
-  }
-  //end council
-
-  this.court_validation=(option)=>{
-    const acceptance = true
-    const h=false
-    const f=false
-    const d=false
-    const e=false
-    if(option.feeling>30 && this.red_zone>50)
-    {
-      if(getRandomInt(1,6)!==1){
-        acceptance=false
-        f=true
-      } 
-    }
-
-    if(option.health < -50 && this.infects > this.popolation/10){
-      if(getRandomInt(1,6)!==1){
-        acceptance = false
-        h=true
-      }
-    }
-    if(option.economy < -50 && (this.pil<=this.pil_0*0.75)){
-      if(getRandomInt(1,6)!==1){
-        acceptance=false
-        e=false
-      }
-    }
-    if(option.death > 25 && this.death_rate >50 ){
-      if(getRandomInt(1,6)!==1){
-        acceptance=false
-        d=false
-      }
-    }
-    if(acceptance){
-      return true
     }
     else{
-      const response=""
-      const tot=[]
-      if(d){
-        const r="issues concerning the mortality of the plague"
-        tot.push(r)
-      }
-      if(e){
-        const p=" issues concerning economical aspects"
-        tot.push(p)
-      }
-      if(f){
-        const z=" issues concerning the effect on the population"
-        tot.push(z)
-      }
-      if(h){
-        const q=" issues concerning the priority to avoid infections"
-        tot.push(q)
-      }
-      response+="The court has reunited and decided that the President's choice was hazardous according to the actual situation especially because of "
-      response+=tot[0]
+      console.log(this.court_validation(option_chosen))
+    }
+    //end council
 
-      for(let i=1;i<tot.length;i++){
-        if(i===tot.length-1){
-          response+=" and "
-        }
-        else{
-          response+=" , "
-        }    
-        response+=tot[i]    
+    this.court_validation=(option)=>{
+      const acceptance = true
+      const h=false
+      const f=false
+      const d=false
+      const e=false
+      if(option.feeling>30 && this.red_zone>50)
+      {
+        if(getRandomInt(1,6)!==1){
+          acceptance=false
+          f=true
+        } 
       }
-      return response
+
+      if(option.health < -50 && this.infects > this.popolation/10){
+        if(getRandomInt(1,6)!==1){
+          acceptance = false
+          h=true
+        }
+      }
+      if(option.economy < -50 && (this.pil<=this.pil_0*0.75)){
+        if(getRandomInt(1,6)!==1){
+          acceptance=false
+          e=false
+        }
+      }
+      if(option.death > 25 && this.death_rate >50 ){
+        if(getRandomInt(1,6)!==1){
+          acceptance=false
+          d=false
+        }
+      }
+      if(acceptance){
+        return true
+      }
+      else{
+        const response=""
+        const tot=[]
+        if(d){
+          const r="issues concerning the mortality of the plague"
+          tot.push(r)
+        }
+        if(e){
+          const p=" issues concerning economical aspects"
+          tot.push(p)
+        }
+        if(f){
+          const z=" issues concerning the effect on the population"
+          tot.push(z)
+        }
+        if(h){
+          const q=" issues concerning the priority to avoid infections"
+          tot.push(q)
+        }
+        response+="The court has reunited and decided that the President's choice was hazardous according to the actual situation especially because of "
+        response+=tot[0]
+
+        for(let i=1;i<tot.length;i++){
+          if(i===tot.length-1){
+            response+=" and "
+          }
+          else{
+            response+=" , "
+          }    
+          response+=tot[i]    
+        }
+        return response
+      }
     }
   }
 
@@ -402,7 +407,7 @@ var Decisions = function(state, World){
   this.shops_opened_perc = 100 
   this.ports_opened_perc = 100
   this.airports_opened_perc = 100
-  this.sports_allowed_perc=100
+  this.sports_allowed_perc = 100
   this.remote_working_companies_perc = 100
   this.companies_opened_perc = 100
   this.red_zone = 0
@@ -410,6 +415,72 @@ var Decisions = function(state, World){
   this.army_using = false
   this.almost_graduates_doc = false   //influiscono sui decessi
   this.new_hospitals = 0              //influiscono sui decessi
+
+
+  this.make_decision_school = () => {
+    //input = grado
+    const grado = 1
+    this.schools_opened_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_museum = () => {
+    //input = grado
+    const grado = 1
+    this.museums_opened_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_shop = () => {
+    //input = grado
+    const grado = 1
+    this.shops_opened_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_airport = () => {
+    //input = grado
+    const grado = 1
+    this.airports_opened_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_sport = () => {
+    //input = grado
+    const grado = 1
+    this.sports_allowed_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_remote_working = () => {
+    //input = grado
+    const grado = 1
+    this.remote_working_companies_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_company = () => {
+    //input = grado
+    const grado = 1
+    this.companies_opened_perc = (100/4)*(4-grado)
+  }
+  this.make_decision_company = () => {
+    //input = grado
+    const grado = 1
+    this.red_zone = (100/4)*(4-grado)
+  }
+  this.make_decision_mandatory_masks = () =>{
+    this.mandatory_masks = true
+  }
+  this.make_decision_army_using = () =>{
+    this.army_using = true
+  }
+  this.make_decision_almost_graduates_doc = () =>{
+    this.almost_graduates_doc = true
+  }
+  this.make_decision_new_hospitals = (beds, reanimate_beds) =>{
+    //input = hospitals
+    money = (beds + reanimate_beds)/10
+    stato.money_decrease(money)
+    this.new_hospitals += hospitals
+    stato.beds += beds
+    stato.reanimate_beds += reanimate_beds
+  }
+  
+
+
+
+  
+  
+  
 }
 
 
