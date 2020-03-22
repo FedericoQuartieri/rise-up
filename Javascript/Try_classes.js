@@ -361,18 +361,18 @@ var State = function(state, World){
   }
 
   this.summary_infect =() =>{  
-    var rate = this.rate_0
-    rate += ((decision.schools_opened_perc / 100)*2)
-    rate += (decision.museums_opened_perc / 100)
-    rate += (decision.shops_opened_perc / 100*2)
-    rate += (decision.ports_opened_perc/100)
-    rate += (decision.airports_opened_perc/100)
-    rate += ((decision.sports_allowed_perc/100)*2)
-    rate += (decision.airports_opened_perc/100)
-    rate += (decision.remote_working_companies_perc/100)
-    rate += (decision.companies_opened_perc/100)    
-    rate += (decision.remote_working_companies_perc/100)
-    rate += ((100-decision.red_zone)/5) 
+    var rate = this.rate_0  //il feeling va da 0% a 100% se è 100 il rate non cambia perche tutti rispettano, se è 75% il rate viene moltiplicato per (1/0.75)
+    rate += ((decision.schools_opened_perc / 100)*2) / (decision.schools_opened_feel/100)  
+    rate += (decision.museums_opened_perc / 100) / (decision.museums_opened_feel / 100)
+    rate += (decision.shops_opened_perc / 100*2) / (decision.shops_opened_feel / 100)
+    rate += (decision.ports_opened_perc / 100) / (decision.ports_opened_feel / 100)
+    rate += (decision.airports_opened_perc / 100) / (decision.airports_opened_feel / 100)
+    rate += ((decision.sports_allowed_perc / 100)*2) / (decision.sports_allowed_feel / 100)
+    rate += (decision.airports_opened_perc / 100) / (decision.airports_opened_feel / 100)
+    rate += (decision.remote_working_companies_perc / 100) / (decision.remote_working_companies_feel / 100)
+    rate += (decision.companies_opened_perc / 100) / (decision.companies_opened_feel / 100)
+    rate += (decision.remote_working_companies_perc / 100) / (decision.remote_working_companies_feel / 100)
+    rate += ((100 - decision.red_zone) / 5) / (decision.red_zone_feel / 100)
 
     //tutte le decisions influiscono per un max del 12% di tutto il rate più 20% della zona rossa e 2% true/false
        
@@ -403,59 +403,70 @@ var Decisions = function(state, World){
   this.state = state
   this.World = World
   this.schools_opened_perc = 100 
+  this.schools_opened_feel = 100 
   this.museums_opened_perc = 100
+  this.museums_opened_feel = 100
   this.shops_opened_perc = 100 
+  this.shops_opened_feel = 100
   this.ports_opened_perc = 100
+  this.ports_opened_feel = 100
   this.airports_opened_perc = 100
+  this.airports_opened_feel = 100
   this.sports_allowed_perc = 100
+  this.sports_allowed_feel = 100
   this.remote_working_companies_perc = 100
+  this.remote_working_companies_feel = 100
   this.companies_opened_perc = 100
+  this.companies_opened_feel = 100
   this.red_zone = 0
+  this.red_zone_feel = 100
   this.mandatory_masks = false
+  this.mandatory_masks_feel = 100
   this.army_using = false
+  this.army_using_feel = 100
   this.almost_graduates_doc = false   //influiscono sui decessi
   this.new_hospitals = 0              //influiscono sui decessi
 
 
   this.make_decision_school = () => {
-    //input = grado
-    const grado = 1
-    this.schools_opened_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.schools_opened_perc = (100/4)*(4-level)
   }
   this.make_decision_museum = () => {
-    //input = grado
-    const grado = 1
-    this.museums_opened_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.museums_opened_perc = (100/4)*(4-level)
   }
   this.make_decision_shop = () => {
-    //input = grado
-    const grado = 1
-    this.shops_opened_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.shops_opened_perc = (100/4)*(4-level)
   }
   this.make_decision_airport = () => {
-    //input = grado
-    const grado = 1
-    this.airports_opened_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.airports_opened_perc = (100/4)*(4-level)
   }
   this.make_decision_sport = () => {
-    //input = grado
-    const grado = 1
-    this.sports_allowed_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.sports_allowed_perc = (100/4)*(4-level)
   }
   this.make_decision_remote_working = () => {
-    //input = grado
-    const grado = 1
-    this.remote_working_companies_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.remote_working_companies_perc = (100/4)*(4-level)
   }
   this.make_decision_company = () => {
-    //input = grado
-    const grado = 1
-    this.companies_opened_perc = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.companies_opened_perc = (100/4)*(4-level)
   }
   this.make_decision_company = () => {
-    //input = grado
-    const grado = 1
-    this.red_zone = (100/4)*(4-grado)
+    //input = level
+    const level = 1
+    this.red_zone = (100/4)*(4-level)
   }
   this.make_decision_mandatory_masks = () =>{
     this.mandatory_masks = true
@@ -473,14 +484,19 @@ var Decisions = function(state, World){
     this.new_hospitals += hospitals
     stato.beds += beds
     stato.reanimate_beds += reanimate_beds
+  }  
+
+  this.right_way_to_say = (decision_feel, level) => {     // è il modo in cui esponi le leggi al popolo che influenza il feeling
+    console.log("...") // input right                     
+    console.log("...") //input wrong
+    const input = "right"                   //se viene detto in modo corretto il feeling aumenta e quindi diminuisce la percentuale
+    if (input === "wrong"){                 //se viene detto in modo sbagliato il feekung diminuisce quindi aumenta la percentuale
+      decision_feel = ((100/4)*level)/2     //aumento in modo direttamente proporzionale al livello di restriizioni massimo 50% minimo 12.5%
+    }
+    else if (input === "right"){
+      decision_feel /= 2
+    }
   }
-  
-
-
-
-  
-  
-  
 }
 
 
@@ -506,9 +522,6 @@ var Loan = function(name,date0,date1,amount,state){
   this.amount = amount
   this.state = state
 }
-
-
-
 
 
 
@@ -573,8 +586,6 @@ function clock () {
     world.month_numb = months.indexOf(world.curMonth) + 1
     return date
 }
-
-
 
 
 stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
