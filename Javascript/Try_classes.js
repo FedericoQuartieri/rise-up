@@ -33,7 +33,7 @@ function getRandomInt(min, max) {
 }
 var World = function(state){
   this.state = new State(state, this)
-  this.infects = 1;
+  this.infects = 0;
   this.infection_rate = 0;
   this.death_rate=0;
   this.date = null;
@@ -120,23 +120,19 @@ var State = function(state, World){
   //tolto decrease e anche increase che erano inutili
 
   this.infect = () =>{
-    dead_day=this.infects*(this.death_rate/1000)  //death rate è già una perc, fatto così non muore troppa gente (al massimo del death rate muore il 10% degli infetti al giorno)
-    this.infects-=dead_day
-    this.dead+=dead_day 
+    dead_day = this.infects*(this.death_rate/1000)  //death rate è già una perc, fatto così non muore troppa gente (al massimo del death rate muore il 10% degli infetti al giorno)
+    this.infects -= dead_day
+    this.dead += dead_day 
     
-    if (this.infects += this.infects*(this.infection_rate/100) < this.popolation){
+    if (this.infects + this.infects*(this.infection_rate/100) < this.popolation){
       this.infects += this.infects*(this.infection_rate/100)
-      this.infects=Math.round(this.infects)
-      //con il round gli infetti iniziali non possono essere 1 se no rimane 1 all'infinito
-      /*
-      let a = this.infects
-      let b = Math.round(this.infects)  //bisogna come arrotondare, così è al meglio però boh
-      this.infects = b
-      this.reminder += (a - b)
-      this.infects += this.reminder
-      this.infects = Math.round(this.infects)
-      */
-      //non mi dà gli infetti con questo non so perchè prova a vedere
+      if (this.remainder >= 1){
+        this.infects = this.infects + this.remainder
+        this.remainder = this.remainder-Math.trunc(this.remainder)
+      }
+      const remainder = this.infects - Math.trunc(this.infects)
+      this.remainder += remainder 
+      this.infects=Math.trunc(this.infects)       
     }
     else {
       this.infects = this.popolation
@@ -152,6 +148,7 @@ var State = function(state, World){
   }
 
   this.print = () =>{
+      console.log("\n", "day : ", world.date)
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
   }
@@ -376,7 +373,7 @@ var State = function(state, World){
     rate += ((decision.sports_allowed_perc/100)*2)
     rate += (decision.airports_opened_perc/100)
     rate += (decision.remote_working_companies_perc/100)
-    rate += (decision.maximum_of_people_together_perc/100)    
+    rate += (decision.companies_opened_perc/100)    
     rate += (decision.remote_working_companies_perc/100)
     rate += ((100-decision.red_zone)/5) 
 
@@ -408,17 +405,17 @@ var State = function(state, World){
 var Decisions = function(state, World){ 
   this.state = state
   this.World = World
-  this.schools_opened_perc = 1 
-  this.museums_opened_perc = 1 
-  this.shops_opened_perc = 1 
-  this.ports_opened_perc = 1
-  this.airports_opened_perc = 1
-  this.sports_allowed_perc=1
-  this.remote_working_companies_perc = 1
-  this.maximum_of_people_together_perc = 1
+  this.schools_opened_perc = 100 
+  this.museums_opened_perc = 100
+  this.shops_opened_perc = 100 
+  this.ports_opened_perc = 100
+  this.airports_opened_perc = 100
+  this.sports_allowed_perc=100
+  this.remote_working_companies_perc = 100
+  this.companies_opened_perc = 100
   this.red_zone = 0
-  this.mandatory_masks = true
-  this.army_using = true
+  this.mandatory_masks = false
+  this.army_using = false
   this.almost_graduates_doc = false   //influiscono sui decessi
   this.new_hospitals = 0              //influiscono sui decessi
 }
@@ -524,20 +521,16 @@ while (true) {
   c += 1
   sleep(1000)
   world.date = clock()
-  console.log(world.date)
-  console.log("rate prima : ",stato.infection_rate)
   stato.summary_infect()
-  console.log(" ")
-  console.log("rate dopo : ",stato.infection_rate)
-  console.log()
-  stato.infect()
-  console.log(" ")
   stato.print()
+  stato.infect()
+  stato.print()
+  /*
   if (c === 5){
     decision.red_zone = 100
     console.log("rossa mod")
   }
-  /*
+  
   if (c === 10){
     decision.museums_opened_perc = 20
   }
