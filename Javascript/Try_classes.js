@@ -24,12 +24,6 @@ const options =[
     "health":0,
     "feeling":0,
     "print": ()=> console.log( "After a long discussion, the Governement has decided that the best option in order to improve the actual situation is: \n ", this["description"]),
-
-
-    
-  },
-  {
-
   },
 ]
 function getRandomInt(min, max) {
@@ -241,53 +235,48 @@ var State = function(state, World){
     }                                   
   }
   
-// End loans section
+  // End loans section
 
-//-------------------------------------
+  //-------------------------------------
 
-//Start council
+  //Start council
 
-this.council = () => {
-  console.log("Day ",world.curDay,", month of ",world.month_letter)
-  console.log()
-  console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
-  //random
-  
-  
-  first_option=options[getRandomInt(0,options.length)]
-  second_option=options[getRandomInt(0,options.length)]
-  third_option=options[getRandomInt(0,options.length)]
+  this.council = () => {
+    console.log("Day ",world.curDay,", month of ",world.month_letter)
+    console.log()
+    console.log("The Council has been convocated, forced by actual situations, and needs to take an important decision for the future")
+    //random
+    
+    
+    first_option=options[getRandomInt(0,options.length)]
+    second_option=options[getRandomInt(0,options.length)]
+    third_option=options[getRandomInt(0,options.length)]
 
-  console.log("After a long discussion in collaboration with all the members of the Council three main options have been taken into serious consideration: ,")
-  console.log("1. ", console.log(first_option))
-  console.log("2. ", console.log(second_option))
-  console.log("3. ", console.log(third_option))
-  console.log("-----------------")
-  console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
-  //da mettere input con html
-  option_chosen= pass
+    console.log("After a long discussion in collaboration with all the members of the Council three main options have been taken into serious consideration: ,")
+    console.log("1. ", console.log(first_option))
+    console.log("2. ", console.log(second_option))
+    console.log("3. ", console.log(third_option))
+    console.log("-----------------")
+    console.log("Now it's up to the president to choose the principal strategy, then the choice will have also to pass the final verification of the Court in order to be executed properly and with immediate effect")
+    //da mettere input con html
+    
+    option_chosen = pass
 
-  if(this.court_validation(option_chosen)===true){
-    //effects
-    this.death_rate+=option_chosen["death"]/100
-    this.feeling+=option_chosen["feeling"]//
-    this.infection_rate-=(option_chosen["health"]/50)//
-    this.pil_rate+=option_chosen["economy"]
-
+    if(this.court_validation(option_chosen)===true){
+      //effects
+      this.death_rate+=option_chosen["death"]/100
+      this.feeling+=option_chosen["feeling"]//
+      this.infection_rate-=(option_chosen["health"]/50)//
+      this.pil_rate+=option_chosen["economy"]
+    }
+    else{
+      console.log(this.court_validation(option_chosen))
+    }
   }
-  else{
-    console.log(this.court_validation(option_chosen))
-  }
-
-  
-
-  
-  }
-
-    //end council
+  //end council
 
   this.court_validation=(option)=>{
-    const acceptance=true
+    const acceptance = true
     const h=false
     const f=false
     const d=false
@@ -300,32 +289,27 @@ this.council = () => {
       } 
     }
 
-    if(option.health < -50 && (this.infects>(this.popolation/10)))
-    {
+    if(option.health < -50 && this.infects > this.popolation/10){
       if(getRandomInt(1,6)!==1){
-        acceptance=false
+        acceptance = false
         h=true
       }
     }
-    if(option.economy < -50 && (this.pil<=this.pil_0*0.75))
-    {
+    if(option.economy < -50 && (this.pil<=this.pil_0*0.75)){
       if(getRandomInt(1,6)!==1){
         acceptance=false
         e=false
       }
     }
-    if(option.death > 25 && this.death_rate >50 )
-    {
+    if(option.death > 25 && this.death_rate >50 ){
       if(getRandomInt(1,6)!==1){
         acceptance=false
         d=false
       }
-
     }
     if(acceptance){
       return true
     }
-
     else{
       const response=""
       const tot=[]
@@ -354,19 +338,11 @@ this.council = () => {
         }
         else{
           response+=" , "
-        }
-        
-        response+=tot[i]
-        
+        }    
+        response+=tot[i]    
       }
       return response
-
     }
-
-
-
-    
-
   }
 
 
