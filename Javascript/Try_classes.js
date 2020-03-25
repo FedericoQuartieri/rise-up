@@ -107,7 +107,10 @@ var State = function(state, World){
   this.pil_rate = 0 //sia positivo che negativo
   this.remainder = 0
   this.need_medical = 0
-  this.beds_feeling = 
+  this.beds_feeling = 0
+  this.non_virus_dead = 0
+  this.non_virus_dead_real = 0
+  this.non_virus_dead_rate = 0
 
 
   //start decision 
@@ -174,11 +177,12 @@ var State = function(state, World){
   }  
 
   this.changings_bed_problems = () =>{
+    const level = 0
     Object.keys(this.specializations_level).forEach(key =>{
-      this.beds_feeling += specializations_level[key]
+      level += this.specializations_level[key]
     })
-
-    
+    this.beds_feeling = level
+    this.non_virus_dead_rate  = level / 10
   }
 
   this.specialization_level = {
@@ -211,10 +215,10 @@ var State = function(state, World){
   this.popolate_spec = () => {
     Object.keys(this.specializations).forEach(key =>{
       if (key.includes("min")){
-        specializations[key] = (this.other_beds / 7) * 0.05 // 5% del totale
+        this.specializations[key] = (this.other_beds / 7) * 0.05 // 5% del totale
       }
       else{
-        specializations[key] = this.other_beds / 7
+        this.specializations[key] = this.other_beds / 7
       }
     })
   }
@@ -511,6 +515,12 @@ var State = function(state, World){
 
   //Start summaries
 
+
+  this.non_virus_death = () =>{
+    this.non_virus_dead += this.non_virus_dead_rate
+    this.non_virus_dead_real = Math.trunc(this.non_virus_dead)
+  }
+
   this.summary_death=()=>{
     death = this.infects * 0.03
     this.need_medical = this.infect * 0.2
@@ -547,6 +557,8 @@ var State = function(state, World){
       rate+= 1
     }
 
+    //non so cosa stracazzo tu abbia fatto qui, comunque va aggiunti il beds_feeling che massimo 70 vediamo come gestirla, a 70 è molto difficile che ci arrivi comunque
+
 
     //il rate massimo giornaliero toglie 5 punti al feeling
   }
@@ -566,7 +578,7 @@ var State = function(state, World){
     
     Object.keys(filt).forEach(key =>{
       if(key !== "mandatory_masks" && key != "army_using" && key != "new_hospitals"){ 
-      rate+=(((this.decisions[key][0]/100)*2)/(this.decision[key][1]/100))
+      rate+=(((this.decision[key][0]/100)*2)/(this.decision[key][1]/100))
       }
       
 
@@ -576,6 +588,8 @@ var State = function(state, World){
     if (this.decision["mandatory_masks"]) {
       rate -= 0.5
     }
+
+
 
     rate+=this.decision["block_trades_e"][0]/100
 
@@ -594,18 +608,18 @@ var State = function(state, World){
     this.summary_infect()
     this.summary_economy()
 
-    if(pil_rate>rate_economy_daily){
+    if(this.pil_rate>this.rate_economy_daily){
       console.log("peggiorata economia")
-      this.pil-=(this.pil*((pil_rate-rate_economy_daily)/1000))
+      this.pil-=(this.pil*((this.pil_rate-rate_economy_daily)/1000))
 
 
     }
-    else if(pil_rate===rate_economy_daily){
+    else if(this.pil_rate===this.rate_economy_daily){
       console.log("uguale economia")
     }
     else{
       console.log("migliorata economia")
-      const nr=(rate_economy_daily-pil_rate)
+      const nr=(this.rate_economy_daily-this.pil_rate)
       this.pil+=(this.pil*(nr/1000))
     }
     this.rate_economy_daily=this.pil_rate
