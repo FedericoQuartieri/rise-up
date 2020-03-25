@@ -115,19 +115,19 @@ var State = function(state, World){
   }
 
   this.decision = {
-    schools_opened : [100, 100], 
-    museums_opened : [100, 100],
-    shops_opened : [100, 100] ,
-    ports_opened : [100, 100],
-    airports_opened : [100, 100],
-    sports_allowed : [100, 100],
-    remote_working_companies : [100, 100],
-    companies_opened : [100, 100],
-    red_zone : [0, 100],
-    mandatory_masks : [false, 100],
-    army_using : [false, 100],
-    almost_graduates_doc : [false, null],
-    new_hospitals : [0, null],
+    schools_opened : [100, 100,0], 
+    museums_opened : [100, 100,0],
+    shops_opened : [100, 100,0] ,
+    ports_opened : [100, 100,0],
+    airports_opened : [100, 100,0],
+    sports_allowed : [100, 100,0],
+    remote_working_companies : [100, 100,0],
+    companies_opened : [100, 100,0],
+    red_zone : [0, 100,0],
+    mandatory_masks : [false, 100,null],
+    army_using : [false, 100,0],
+    almost_graduates_doc : [false, null,null],
+    new_hospitals : [0, null,0],
   }
 
   
@@ -378,15 +378,38 @@ var State = function(state, World){
     }
   }
 
+
+
+
+
   this.summary_economy = () =>{
-    pil_var=0 //è in percentuale
-    pil_var+=this.pil_rate
-    this.pil+=(this.pil*(pil_var/1000)) //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
+    rate=0 
+    Object.keys(this.decision).forEach(key =>{
+      if(key !== "mandatory_masks" && key != "almost_graduated_doc" && key != "army_using" && key != "new_hospitals"){
+        if(key==="red zone"){
+          rate+=(this.decision[key][2]/10)*2
+        }
+        else{
+
+          rate+=(this.decision[key][2]/10)
+        }
+      }
+    })
+
+    
+
+    this.pil_rate+=rate
+
+     //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
+
+  
+
 
 
   this.summary_infect =() =>{ 
     var rate = this.rate_0  
+    /*
     rate += ((stato.decision["schools_opened"][0] / 100)*2) / (stato.decision["schools_opened"][1] /100)  
     rate += ((stato.decision["museums_opened"][0] / 100)*2) / (stato.decision["museums_opened"][1] /100)
     rate += ((stato.decision["shops_opened"][0] / 100)*2) / (stato.decision["shops_opened"][1] /100)
@@ -396,7 +419,12 @@ var State = function(state, World){
     rate += ((stato.decision["remote_working_companies"][0] / 100)*2) / (stato.decision["remote_working_companies"][1] /100)
     rate += ((stato.decision["companies_opened"][0] / 100)*2) / (stato.decision["companies_opened"][1] /100)
     rate += ((stato.decision["red_zone"][0] / 100)*2) / (stato.decision["red_zone"][1] /100)
+    */
 
+    Object.keys(this.decision).forEach(key =>{
+      if(key !== "mandatory_masks" && key != "almost_graduated_doc" && key != "army_using" && key != "new_hospitals") 
+      rate+=(((this.decisions[key][0]/100)*2)/(this.decision[key][1]/100))
+    })
     //tutte le decisions influiscono per un max del 12% di tutto il rate più 20% della zona rossa e 2% true/false
        
     if (stato.decision["mandatory_masks"]) {
@@ -411,7 +439,21 @@ var State = function(state, World){
     this.infection_rate = rate 
     
   }
+  
 
+
+  this.summaries=()=>{
+    this.summary_infect()
+    this.summary_economy()
+    this.summary_death()
+    //this.summary_feeling()
+
+
+
+    this.infect()
+    this.pil-=(this.pil*(pil_rate/1000))
+    
+  }
   //End summaries
 
   //--------------------------------
