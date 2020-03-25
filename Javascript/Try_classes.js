@@ -102,18 +102,45 @@ var State = function(state, World){
   this.dead = 0
   this.feeling = 100
   this.loans=[]
+  this.rate_economy_daily=0
+  this.rate_feeling_daily=0
   this.pil_rate = 0 //sia positivo che negativo
   this.remainder = 0
   this.need_medical = 0
+  this.beds_feeling = 
 
 
   //start decision 
 
   this.make_decision = (decision) => {
     //input level
-    level = 1
-    news = (100/5)*(5-level)
-    this.decision[decision][0] = news
+    const level = 1
+    const dec = this.decision[decision]
+    news = (100/5)*level
+    new_e=news
+    new_f=news
+
+    if(decision==="block_trades_e"){
+      this.block_trades()
+    }
+
+    else
+    {
+      if(decision==="shops_opened"||decision==="companies_opened"){
+        if(level!==5){
+          new_e+=10
+        }
+      }
+      if(decision==="schools_opened"||decision==="airports_opened"){
+      news_e-=10
+      }
+    }
+
+    //se shops o companies influisce di più , se scuole o aeroporti di meno
+    
+    dec[0] = news
+    this.decision[decision]=new_f
+    this.decision[decision]=new_e
   }
 
   this.decision = {
@@ -128,7 +155,9 @@ var State = function(state, World){
     red_zone : [0, 100,0],
     mandatory_masks : [false, 100, null],
     army_using : [false, 100,0],
-    new_hospitals : [0, null,0]
+    new_hospitals : [0, null,0],
+    close_stock_e: [false],
+    block_trades_e: [0,0,0]
   }
 
 
@@ -140,15 +169,31 @@ var State = function(state, World){
     level = 1
     news = (100/10)*(10-level)
     specializations[specialization] *= news
+    this.specialization_feel[specialization] = level
     this.changings_bed_problems()
   }  
 
-  this.changings_bed_problems()
+  this.changings_bed_problems = () =>{
+    Object.keys(this.specializations_level).forEach(key =>{
+      this.beds_feeling += specializations_level[key]
+    })
+
+    
+  }
+
+  this.specialization_level = {
+    cardiology : 0,
+    neurology : 0,
+    gynecology : 0,
+    urology : 0,
+    pulmonology: 0,
+    pediatrics : 0,
+    psychiatry : 0,
+  }
 
   this.specializations = {
     cardiology_beds : 0,
     neurology_beds : 0,
-    resuscitation_beds : 0,
     gynecology_beds : 0,
     urology_beds : 0,
     pulmonology_beds : 0,
@@ -156,7 +201,6 @@ var State = function(state, World){
     psychiatry_beds : 0,
     cardiology_beds_min : 0,
     neurology_beds_min : 0,
-    resuscitation_beds_min : 0,
     gynecology_beds_min : 0,
     urology_beds_min : 0,
     pulmonology_beds_min : 0,
@@ -167,17 +211,19 @@ var State = function(state, World){
   this.popolate_spec = () => {
     Object.keys(this.specializations).forEach(key =>{
       if (key.includes("min")){
-        specializations[key] = (this.other_beds / 8) * 0.05 // 5% del totale
+        specializations[key] = (this.other_beds / 7) * 0.05 // 5% del totale
       }
       else{
-        specializations[key] = this.other_beds / 8
+        specializations[key] = this.other_beds / 7
       }
     })
   }
 
+    
+    //economy
 
 
-  
+  this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.pil===this.pil_0*0.3)
   
   this.infect = () =>{
   //death rate è già una perc, fatto così non muore troppa gente (al massimo del death rate muore il 10% degli infetti al giorno)    
@@ -217,7 +263,64 @@ var State = function(state, World){
   }
 
 
+  //-------------------------------------
+  // block
 
+  this.block_trades=()=>{
+    console.log(" What level of trading block do you want to set?")
+    console.log() //correggerò l'inglese poi
+    console.log("1.Limit to essential every trade from  adjoinig countries")
+    console.log("2. Limit every trade ")
+    console.log("3. Block trades from  adjoinig countries")
+    console.log("4. Block trades from  and to adjoinig countries")
+    console.log("5. Block every economic import")
+    console.log("6. Shut down international commerce (imports and exports)")
+    //input
+    const choice=getRandomInt(1,7)
+    const outcome=[] //[health,feeling,economy]
+    switch(choice){
+
+      case 1:
+        outcome.push(-10)
+        outcome.push(.1)
+        outcome.push()
+        break
+
+      case 2:
+        outcome.push(-20)
+        outcome.push(.3)
+        outcome.push()
+        break
+
+      case 3:
+        outcome.push(-30)
+        outcome.push(.4)
+        outcome.push()
+        break
+        
+      case 4:
+        outcome.push(-40)
+        outcome.push(.5)
+        outcome.push()
+        break
+
+      case 5:
+        outcome.push(-50)
+        outcome.push(2)
+        outcome.push()
+          break
+
+      case 6:
+        outcome.push(-60)
+        outcome.push(5)
+        outcome.push()
+        break
+
+      
+      this.decision.block_trades_e[outcome]
+    }
+
+  }
 
   //-------------------------------------
 
@@ -426,33 +529,55 @@ var State = function(state, World){
         else{
 
           rate+=(this.decision[key][2]/10)
-        }
-      }
-    })
+        }}})
+
+    this.pil_rate=rate
+
 
     
-    this.pil_rate+=rate
+
+    
 
      //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
 
-  
+  this.summary_feeling=() =>{
+    rate=0
+    if(this.decision["close_stock"]){
+      rate+= 1
+    }
+
+
+    //il rate massimo giornaliero toglie 5 punti al feeling
+  }
 
 
 
   this.summary_infect =() =>{ 
     var rate = this.rate_0  
-    Object.keys(this.decision).forEach(key =>{
-      if(key !== "mandatory_masks" && key !== "army_using" && key !== "new_hospitals"){
-        rate+=(((this.decision[key][0]/100)*2)/(this.decision[key][1]/100))
-        console.log(this.decision[key])
+    const pattern=/_e/
+    const filt={}
+
+    Object.keys(this.decision).forEach(str=>{
+      if(!pattern.test(str)){
+        filt[str]=this.decision[str]
       }
+    })
+    
+    Object.keys(filt).forEach(key =>{
+      if(key !== "mandatory_masks" && key != "army_using" && key != "new_hospitals"){ 
+      rate+=(((this.decisions[key][0]/100)*2)/(this.decision[key][1]/100))
+      }
+      
+
     })
     //tutte le decisions influiscono per un max del 12% di tutto il rate più 20% della zona rossa e 2% true/false
        
-    if (stato.decision["mandatory_masks"]) {
+    if (this.decision["mandatory_masks"]) {
       rate -= 0.5
     }
+
+    rate+=this.decision["block_trades_e"][0]/100
 
     if (rate < this.rate_0){
       rate = this.rate_0
@@ -468,10 +593,28 @@ var State = function(state, World){
   this.summaries=()=>{
     this.summary_infect()
     this.summary_economy()
+
+    if(pil_rate>rate_economy_daily){
+      console.log("peggiorata economia")
+      this.pil-=(this.pil*((pil_rate-rate_economy_daily)/1000))
+
+
+    }
+    else if(pil_rate===rate_economy_daily){
+      console.log("uguale economia")
+    }
+    else{
+      console.log("migliorata economia")
+      const nr=(rate_economy_daily-pil_rate)
+      this.pil+=(this.pil*(nr/1000))
+    }
+    this.rate_economy_daily=this.pil_rate
+
+
     this.summary_death()
     //this.summary_feeling()
     this.infect()
-    this.pil-=(this.pil*(this.pil_rate/1000))
+    
     
   }
   //End summaries
@@ -578,7 +721,7 @@ stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 stato.popolate_spec()
 
 
-while (true) {
+while (stato.continue()) {
   c += 1
   sleep(1000)
   world.date = clock()
