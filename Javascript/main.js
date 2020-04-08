@@ -15,6 +15,7 @@ const states = {
               }
 }
 
+
 const options =[
 {
   "description":"",
@@ -110,6 +111,7 @@ var State = function(state, World){
   this.beds_feeling = 0
   this.non_virus_dead_rate = 0
   this.death_daily = 0
+  this.non_virus_death_daily = 0
   this.economy_judgment = ""
 
 
@@ -200,26 +202,6 @@ var State = function(state, World){
 
 
   //end specialization
-
-
-
-  this.infect = () =>{
-  //death rate è già una perc, fatto così non muore troppa gente (al massimo del death rate muore il 10% degli infetti al giorno)
-    if (this.infects + this.infects*(this.infection_rate/100) < this.popolation){
-      this.infects += this.infects*(this.infection_rate/100)
-      if (this.remainder >= 1){
-        this.infects = this.infects + this.remainder
-        this.remainder = this.remainder-Math.trunc(this.remainder)
-      }
-      const rem = this.infects - Math.trunc(this.infects)
-      this.remainder += rem
-      this.infects=Math.trunc(this.infects)
-    }
-    else {
-      this.infects = this.popolation
-    }
-  }
-
 
 
   this.money_decrease = (money) => {
@@ -489,23 +471,67 @@ var State = function(state, World){
     }
   }
 
-  //End council section
-
-  //-------------------------------------
+  //------------End council section-------
 
 
-  //----------------------------------
 
 
-  //Start summaries
 
+
+  //--------Start Updaters------------
+
+
+  
   this.non_virus_death = () =>{
     this.non_virus_dead_rate
     
   }
 
+  this.infect = () =>{
+    if (this.infects + this.infects*(this.infection_rate/100) < this.popolation){
+      this.infects += this.infects*(this.infection_rate/100)
+      if (this.remainder >= 1){
+        this.infects = this.infects + this.remainder
+        this.remainder = this.remainder-Math.trunc(this.remainder)
+      }
+      const rem = this.infects - Math.trunc(this.infects)
+      this.remainder += rem
+      this.infects=Math.trunc(this.infects)
+    }
+    else {
+      this.infects = this.popolation
+    }
+  }
 
-  this.summary_death=()=>{
+
+  this.economy_update  = () => {
+    if(this.pil_rate>this.rate_economy_daily){
+      this.economy_judgment = "peggiorata economia"
+      const nr=this.pil_rate-this.rate_economy_daily
+      this.pil-=(this.pil*((nr)/1000))
+
+
+    }
+    else if(this.pil_rate===this.rate_economy_daily){
+      this.economy_judgment = "uguale economia"
+    }
+
+    else{
+      this.economy_judgment = "migliorata economia"
+      const nr=(this.rate_economy_daily-this.pil_rate)
+      this.pil+=(this.pil*(nr/1000))
+    }
+    this.rate_economy_daily=this.pil_rate
+  }
+
+  //--------end updaters------------
+
+
+
+
+  //-----------Start summaries-------------
+
+  this.summary_death = () => {
   let death = this.infects * 0.03
   this.need_medical = this.infect * 0.2
   actually_med = (this.need_medical - this.reanimate_beds)
@@ -513,7 +539,8 @@ var State = function(state, World){
     death += actually_med
   }
   this.dead += death
-  this.death_daily = death+this.non_virus_death
+  this.death_daily = death + this.non_virus_death_daily
+  this.dead = Math.round(this.dead)
   }
 
 
@@ -525,11 +552,20 @@ var State = function(state, World){
           rate+=(this.decision[key][2]/100)*2
         }
         else{
-
-          rate+=(this.decision[key][2]/100)
-        }}})
-
-    this.pil_rate=rate
+          rate+=(this.decision[key][2]/100) 
+        }
+      }
+      else if (key === "mandatory_masks" && key === "army_using" && key === "close_stock"){
+        if (this.decision[key] === true){
+          rate -= 0.5
+        }
+        else if(this.decision[key] === false){
+          rate += 0.5
+        }
+      }
+    })
+    this.pil_rate = rate
+    this.economy_update()
     //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
 
@@ -540,28 +576,25 @@ var State = function(state, World){
       if(key !== "mandatory_masks" && key != "army_using" && key != "new_hospitals" && key != "close_stock"){
         sum += this.decision[key][1]
         c += 1
-      }})
-
+      }
+      else if (key === "mandatory_masks" && key === "army_using" && key === "close_stock"){
+        if (this.decision[key] === true){
+          rate -= 0.5
+        }
+        else if(this.decision[key] === false){
+          rate += 0.5
+        }
+      }
+    })
     sum += this.beds_feeling*2
     c+=2
-
     this.feeling = sum / c
-    const perc = this.death_daily/this.dead
-    this.feeling -= this.feeling*perc
-
-
-    if(this.decision["close_stock"]){
-      if(this.feeling>5){
-          this.feeling-=5
-      }
-      else{
-        this.feeling=0
-      }
-
+    this.feeling -= this.feeling * (this.death_daily / this.dead)
+    if (this.feeling <0){
+      this.feeling = 0
     }
 
   }
-
 
 
   this.summary_infect =() =>{
@@ -587,57 +620,17 @@ var State = function(state, World){
   }
 
 
-
   this.summaries=()=>{
     this.summary_infect()
     this.summary_economy()
     this.summary_feeling()
-
-
-    if(this.pil_rate>this.rate_economy_daily){
-      this.economy_judgment = "peggiorata economia"
-      const nr=this.pil_rate-this.rate_economy_daily
-      this.pil-=(this.pil*((nr)/1000))
-
-
-    }
-    else if(this.pil_rate===this.rate_economy_daily){
-      this.economy_judgment = "uguale economia"
-    }
-
-    else{
-      this.economy_judgment = "migliorata economia"
-      const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil*(nr/1000))
-    }
-
-    this.rate_economy_daily=this.pil_rate
-
-
     this.summary_death()
-    this.dead=Math.round(this.dead) //viene decimale lo arrotondiamo
   }
 }
 
 
 //end state
 
-
-
-
-
-/*
-this.right_way_to_say = (decision_feel, level) => {     // è il modo in cui esponi le leggi al popolo che influenza il feeling
-  console.log("...") // input right
-  console.log("...") //input wrong
-  const input = "right"                   //se viene detto in modo corretto il feeling aumenta e quindi diminuisce la percentuale
-  if (input === "wrong"){                 //se viene detto in modo sbagliato il feekung diminuisce quindi aumenta la percentuale
-    decision_feel = ((100/4)*level)/2     //aumento in modo direttamente proporzionale al livello di restriizioni massimo 50% minimo 12.5%
-  }
-  else if (input === "right"){
-    decision_feel /= 2
-  }
-}*/
 
 var Loan = function(name,date0,date1,amount,state){
 this.name=name
@@ -646,8 +639,6 @@ this.date1 = date1
 this.amount = amount
 this.state = state
 }
-
-
 
 
 function sleep(miliseconds) {
@@ -664,7 +655,6 @@ let stato = world.state
 var c = 0
 
 
-
 var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -672,6 +662,7 @@ var curWeekDay = days[date.getDay()];
 world.curDay = date.getDate();
 world.curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
+
 
 function following_month (curMonth) {
   a = months.indexOf(curMonth)
@@ -722,3 +713,23 @@ world.date = clock()
 stato.summaries()
 stato.print()
 }
+
+
+
+
+
+
+
+
+/*
+this.right_way_to_say = (decision_feel, level) => {     // è il modo in cui esponi le leggi al popolo che influenza il feeling
+  console.log("...") // input right
+  console.log("...") //input wrong
+  const input = "right"                   //se viene detto in modo corretto il feeling aumenta e quindi diminuisce la percentuale
+  if (input === "wrong"){                 //se viene detto in modo sbagliato il feekung diminuisce quindi aumenta la percentuale
+    decision_feel = ((100/4)*level)/2     //aumento in modo direttamente proporzionale al livello di restriizioni massimo 50% minimo 12.5%
+  }
+  else if (input === "right"){
+    decision_feel /= 2
+  }
+}*/
