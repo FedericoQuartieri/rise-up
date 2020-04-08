@@ -17,74 +17,117 @@ const states = {
 
 
 const options =[
-{
-  "description":"",
-  "death":0,
-  "economy":0,
-  "health":0,
-  "feeling":0,
-  "print": ()=> console.log( "After a long discussion, the Governement has decided that the best option in order to improve the actual situation is: \n ", this["description"]),
-},
+  {
+    "description":"",
+    "death":0,
+    "economy":0,
+    "health":0,
+    "feeling":0,
+    "print": ()=> console.log( "After a long discussion, the Governement has decided that the best option in order to improve the actual situation is: \n ", this["description"]),
+  },
 ]
+
 function getRandomInt(min, max) {
-min = Math.ceil(min);
-max = Math.floor(max);
-return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
 }
+
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+
+  while (currentTime + miliseconds >= new Date().getTime()) {
+  }
+}
+
+var Loan = function(name,date0,date1,amount,state){
+  this.name=name
+  this.date0 = date0
+  this.date1 = date1
+  this.amount = amount
+  this.state = state
+}
+
 var World = function(state){
-this.state = new State(state, this)
-this.infects = 0;
-this.infection_rate = 0;
-this.death_rate=0;
-this.date = null;
-this.curMonth = 0
-this.month_numb
-this.curDay = 0
+  this.state = new State(state, this)
+  this.infects = 0;
+  this.infection_rate = 0;
+  this.death_rate=0;
+  this.date = null;
+  this.curMonth = 0
+  this.month_numb
+  this.curDay = 0
 
 
-this.increase = function (n){
-    this.infection_rate+=n;
-}
+  //-----------Starts Dates-----------
 
-this.infect = function(){
-    this.infects += this.infects*(this.infection_rate/100)
-    this.infects = Math.round(this.infects)
 
+  this.clock = () => {
+    const _30_month = ['April', 'June', 'September', 'November'];
+    const _31_month = ['January', 'March',  'May',  'July', 'August', 'October', 'December'];
+    if (world.curMonth === "December" && world.curDay === 31) {
+        curYear += 1
+        world.curMonth = "January"
+        world.curDay = 1
+    }
+    else {
+        if (world.curDay >= 29) {
+            if (world.curMonth === "February" && world.curDay === 29 ) {
+                world.curMonth = world.following_month(world.curMonth)
+                world.curDay = 1
+            }
+            else if (world.curDay === 30 && _30_month.includes(world.curMonth)) {
+                world.curMonth = world.following_month(world.curMonth)
+                world.curDay = 1
+            }
+            else if (world.curDay === 31 && _31_month.includes(world.curMonth)) {
+                world.curMonth = world.following_month(world.curMonth)
+                world.curDay = 1
+  
+            }
+            else {world.curDay += 1}
+        }
+        else {world.curDay += 1}
+    }
+    date = world.curDay + world.curMonth + curYear
+    world.month_numb = months.indexOf(world.curMonth) + 1
+    return date
   }
 
-this.print = function(){
-    console.log("infected : " ,this.infects)
-    console.log("rate : " ,this.infection_rate)
+  this.following_month = (curMonth) => {
+    a = months.indexOf(curMonth)
+    curMonth = months[a + 1]
+    return curMonth
+  }
+  
+  
+
+
+  this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
+    if (isNaN(parseInt(date[1]))){
+      var month = date.substring(1, date.length - 4)
+    }
+    else {
+      var month = date.substring(2, date.length - 4)
+    }
+    const month_numb = months.indexOf(month) + 1
+    return month_numb
+  }
+
+  this.from_date_to_day = (date) => {
+    if (isNaN(parseInt(date[1]))){
+      var day = date[0]                             //chiamata da loan_reader_to_pay
+    }
+    else {
+      var day = date[0] + date[1]
+    }
+    return day
+  }
 }
 
 
-// Start conversion dates
+//-----Start State------
 
-
-this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
-
-  if (isNaN(parseInt(date[1]))){
-    var month = date.substring(1, date.length - 4)
-  }
-  else {
-    var month = date.substring(2, date.length - 4)
-  }
-  const month_numb = months.indexOf(month) + 1
-  return month_numb
-}
-
-this.from_date_to_day = (date) => {
-  if (isNaN(parseInt(date[1]))){
-    var day = date[0]                             //chiamata da loan_reader_to_pay
-  }
-  else {
-    var day = date[0] + date[1]
-  }
-  return day
-}
-
-// End conversion dates
-}
 
 var State = function(state, World){
   this.World = World
@@ -99,14 +142,16 @@ var State = function(state, World){
   this.rate_0 = 1
   this.infects = 1
   this.infection_rate = 1
-  this.dead = 0
+  this.dead = 1
   this.feeling = 100
   this.loans=[]
   this.council_effects=[] //[health,feeling,economy,death]
   this.rate_economy_daily=0
   this.rate_feeling_daily=0
   this.pil_rate = 0 //sia positivo che negativo
-  this.remainder = 0
+  this.reminder_infect = 0
+  this.reminder_non_virus_dead = 0
+  this.reminder_dead = 0
   this.need_medical = 0
   this.beds_feeling = 0
   this.non_virus_dead_rate = 0
@@ -221,6 +266,7 @@ var State = function(state, World){
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
       console.log("feeling :", this.feeling)
+      console.log("dead :" ,this.dead)
       console.log("economy :", this.pil)
       console.log(this.economy_judgment)
   }
@@ -284,9 +330,8 @@ var State = function(state, World){
     this.decision.block_trades_e=[outcome]
   }
 
-  //-------------------------------------
+  //-------------Start loans section------------------
 
-  //Start loans section
 
   this.make_loan=(name,date0,date1,amount, stato) => {
     this.loans.push(new Loan(name,date0,date1,amount, stato))
@@ -483,19 +528,27 @@ var State = function(state, World){
 
   
   this.non_virus_death = () =>{
-    this.non_virus_dead_rate
-    
+    if (this.reminder_non_virus_dead >= 1){
+      this.non_virus_death_daily = Math.trunc(this.reminder_non_virus_dead)
+      rem = this.reminder_non_virus_dead - Math.trunc(this.reminder_non_virus_dead)
+      this.reminder_non_virus_dead = rem
+    }
+    else {
+      non_virus_death_daily = 0
+    }
+    this.reminder_non_virus_dead += this.non_virus_dead_rate
+    this.non_virus_death += this.non_virus_death_daily
   }
 
   this.infect = () =>{
     if (this.infects + this.infects*(this.infection_rate/100) < this.popolation){
       this.infects += this.infects*(this.infection_rate/100)
-      if (this.remainder >= 1){
-        this.infects = this.infects + this.remainder
-        this.remainder = this.remainder-Math.trunc(this.remainder)
+      if (this.reminder_infect >= 1){
+        this.infects = this.infects + this.reminder_infect
+        this.reminder_infect = this.reminder_infect-Math.trunc(this.reminder_infect)
       }
       const rem = this.infects - Math.trunc(this.infects)
-      this.remainder += rem
+      this.reminder_infect += rem
       this.infects=Math.trunc(this.infects)
     }
     else {
@@ -532,15 +585,22 @@ var State = function(state, World){
   //-----------Start summaries-------------
 
   this.summary_death = () => {
-  let death = this.infects * 0.03
-  this.need_medical = this.infect * 0.2
-  actually_med = (this.need_medical - this.reanimate_beds)
-  if (actually_med > 0){
-    death += actually_med
-  }
-  this.dead += death
-  this.death_daily = death + this.non_virus_death_daily
-  this.dead = Math.round(this.dead)
+    let death = this.infects * 0.03
+    this.need_medical = this.infects * 0.2
+    actually_med = (this.need_medical - this.reanimate_beds)
+    if (actually_med > 0){
+      death += actually_med
+    }
+    if (this.reminder_dead >= 1){
+      death += Math.trunc(this.reminder_dead)
+      rem = this.reminder_dead - Math.trunc(this.reminder_dead)
+      this.reminder_dead = rem
+    }
+    this.reminder_dead += death - Math.trunc(death)
+    death = Math.trunc(death)
+    this.death_daily = death + this.non_virus_death_daily
+    this.dead += this.death_daily
+    this.infects -= this.death_daily
   }
 
 
@@ -573,6 +633,7 @@ var State = function(state, World){
     let sum=0
     c=0
     Object.keys(this.decision).forEach(key => {
+      //console.log(key, this.decision[key])
       if(key !== "mandatory_masks" && key != "army_using" && key != "new_hospitals" && key != "close_stock"){
         sum += this.decision[key][1]
         c += 1
@@ -589,6 +650,7 @@ var State = function(state, World){
     sum += this.beds_feeling*2
     c+=2
     this.feeling = sum / c
+    console.log(this.feeling)
     this.feeling -= this.feeling * (this.death_daily / this.dead)
     if (this.feeling <0){
       this.feeling = 0
@@ -632,21 +694,6 @@ var State = function(state, World){
 //end state
 
 
-var Loan = function(name,date0,date1,amount,state){
-this.name=name
-this.date0 = date0
-this.date1 = date1
-this.amount = amount
-this.state = state
-}
-
-
-function sleep(miliseconds) {
-  var currentTime = new Date().getTime();
-
-  while (currentTime + miliseconds >= new Date().getTime()) {
-  }
-}
 
 state1 = "italia"
 dicto_state = states[state1]
@@ -664,52 +711,12 @@ world.curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
 
 
-function following_month (curMonth) {
-  a = months.indexOf(curMonth)
-  curMonth = months[a + 1]
-  return curMonth
-}
-
-function clock () {
-  const _30_month = ['April', 'June', 'September', 'November'];
-  const _31_month = ['January', 'March',  'May',  'July', 'August', 'October', 'December'];
-  if (world.curMonth === "December" && world.curDay === 31) {
-      curYear += 1
-      world.curMonth = "January"
-      world.curDay = 1
-  }
-  else {
-      if (world.curDay >= 29) {
-          if (world.curMonth === "February" && world.curDay === 29 ) {
-              world.curMonth = following_month(world.curMonth)
-              world.curDay = 1
-          }
-          else if (world.curDay === 30 && _30_month.includes(world.curMonth)) {
-              world.curMonth = following_month(world.curMonth)
-              world.curDay = 1
-          }
-          else if (world.curDay === 31 && _31_month.includes(world.curMonth)) {
-              world.curMonth = following_month(world.curMonth)
-              world.curDay = 1
-
-          }
-          else {world.curDay += 1}
-      }
-      else {world.curDay += 1}
-  }
-  date = world.curDay + world.curMonth + curYear
-  world.month_numb = months.indexOf(world.curMonth) + 1
-  return date
-}
-
-
 stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
-
 
 while (stato.continue()) {
 c += 1
-sleep(1000)
-world.date = clock()
+sleep(100)
+world.date = world.clock()
 stato.summaries()
 stato.print()
 }
