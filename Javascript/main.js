@@ -211,6 +211,11 @@ var State = function(state, World){
   //start specializations
 
 
+  make_new_hospital = (beds) => {
+    this.decision["new_hospitals"] += 1
+    this.reanimate_beds += beds
+  }
+
 
   this.make_change_bed_random = () => {
     spec = []
@@ -651,11 +656,15 @@ var State = function(state, World){
       }
       else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
         if (this.decision[key] === true){
-          rate -= 0.5
+          rate -= 1
         }
         else if(this.decision[key] === false){
-          rate += 0.5
+          rate += 1
         }
+      }
+      else if (key === "new_hospitals"){
+        rate += this.decision[key]
+
       }
     })
     this.pil_rate = rate
