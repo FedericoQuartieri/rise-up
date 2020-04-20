@@ -3,7 +3,7 @@ const states = {
   "italia" :
               {
                 "other_beds" : 150000,
-                "reanimate_beds" : 10,
+                "reanimate_beds" : 5000,
                 "pil" : 1935000000000,
                 "percentuale_pil_sanita": 6.5,
                 "popolation" : 60000000,
@@ -134,6 +134,7 @@ var State = function(state, World){
   this.reanimate_beds = state["reanimate_beds"]
   this.other_beds = state["other_beds"]
   this.pil = state["pil"]
+  this.health_funds_rate = state["percentuale_pil_sanita"]
   this.pil_0=this.pil
   this.popolation = state["popolation"]     
   this.public_debt = state["public_debt"]
@@ -159,6 +160,7 @@ var State = function(state, World){
   this.non_virus_death_daily = 0
   this.non_virus_dead = 0
   this.economy_judgment = ""
+  this.health_funds_used = 0
 
 
   this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.pil===this.pil_0*0.3)
@@ -301,18 +303,16 @@ var State = function(state, World){
       console.log("rate : " ,this.infection_rate)
       console.log("feeling :", this.feeling)
       console.log("dead :" ,this.dead)
-      console.log("economy :", this.pil)
+      console.log("economy perc:","-",100-(this.pil/this.pil_0 *100),"%")
       console.log(this.economy_judgment)
-      console.log("rem non virus dead: ", this.reminder_non_virus_dead)
-      console.log("non virus dead: ", this.non_virus_dead)      
-      console.log("non virus death daily", this.non_virus_death_daily)
-      console.log("non virus death rate", this.non_virus_dead_rate)
-      console.log("specialization: ", this.specializations)
-      console.log("beds feeling: ", this.beds_feeling)
-      console.log("reanimate_beds: ", this.reanimate_beds)
       console.log("pil rate: ", this.pil_rate)
   }
 
+
+  this.health_funds_calcolate = () => {
+    health_funds = this.pil * this.health_funds_rate
+    this.health_funds = health_funds - this.health_funds_used
+  }
 
   //-------------------------------------
   // Start block section
@@ -603,19 +603,22 @@ var State = function(state, World){
     if(this.pil_rate>this.rate_economy_daily){
       this.economy_judgment = "peggiorata economia"
       //const nr=this.pil_rate-this.rate_economy_daily
-      this.pil-=(this.pil*((this.pil_rate)/500))
+      this.pil-=(this.pil_0*((this.pil_rate)/500))
+      console.log(this.pil_0*((this.pil_rate)/500))
 
 
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
-      this.pil-=(this.pil*(this.pil_rate/1000))
+      this.pil-=(this.pil_0*(this.pil_rate/1000))
+      console.log(this.pil_0*(this.pil_rate/1000))
     }
 
     else{
       this.economy_judgment = "migliorata economia"
       const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil*(nr/100))
+      this.pil+=(this.pil_0*(nr/100))
+      console.log(this.pil_0*(nr/100))
     }
     this.rate_economy_daily=this.pil_rate
   }
@@ -663,12 +666,7 @@ var State = function(state, World){
       }
       else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
         if (this.decision[key] === true){
-          rate += 0.5
-        }
-        else if(this.decision[key] === false){
-          if(rate>0.5){
-            rate -= 0.5
-          }
+          rate += 1
         }
       }
       else if (key === "new_hospitals"){
@@ -777,43 +775,43 @@ debug_make_decision = (c) => {
   if (c === 1){
     stato.make_decision("schools_opened", 5)
   }
-  else if (c === 2){
+  else if (c === 3){
     stato.make_decision("shops_opened", 5)
   }
-  else if (c === 3){
+  else if (c === 5){
     stato.make_decision("museums_opened", 5)
   }
-  else if (c === 4){
+  else if (c === 7){
     stato.make_decision("ports_opened", 5)
   }
-  else if (c === 5){
+  else if (c === 9){
     stato.make_decision("airports_opened", 5)
   }
-  else if (c === 6){
+  else if (c === 11){
     stato.make_decision("companies_opened", 5)
   }
-  else if (c === 7){
+  else if (c === 13){
     stato.make_decision("remote_working_companies", 5)
   }
-  else if (c === 9){
+  else if (c === 15){
     stato.decision["army_using"] = true 
   }
-  else if (c === 8){
+  else if (c === 17){
     stato.make_decision("sports_allowed", 5)
   }
-  else if (c === 10){
+  else if (c === 19){
     stato.decision["close_stock"] = true 
   }
-  else if (c === 11){
+  else if (c === 21){
     stato.decision["mandatory_masks"] = true 
   }
-  else if (c === 12){
+  else if (c === 23){
     stato.make_decision_red(100)
   }
-  else if (c === 13){
+  else if (c === 25){
     stato.block_trades(6)
   }
-  else if (c === 14){
+  else if (c === 27){
   }
   /*
   else if (c === 15){
