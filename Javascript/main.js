@@ -3,7 +3,7 @@ const states = {
   "italia" :
               {
                 "other_beds" : 150000,
-                "reanimate_beds" : 5000,
+                "reanimate_beds" : 10,
                 "pil" : 1935000000000,
                 "percentuale_pil_sanita": 6.5,
                 "popolation" : 60000000,
@@ -140,7 +140,7 @@ var State = function(state, World){
   this.money = state["money"]
   this.army_level = state["army_level"]
   this.rate_0 = 1
-  this.infects = 1
+  this.infects = 50
   this.infection_rate = 1
   this.dead = 1
   this.feeling = 100
@@ -153,7 +153,7 @@ var State = function(state, World){
   this.reminder_non_virus_dead = 0
   this.reminder_dead = 0
   this.need_medical = 0
-  this.beds_feeling = 0
+  this.beds_feeling = 100
   this.non_virus_dead_rate = 0
   this.death_daily = 0
   this.non_virus_death_daily = 0
@@ -245,6 +245,7 @@ var State = function(state, World){
         new_spec = this.specializations["min"]
       }
       this.specializations[specialization] = new_spec
+      this.reanimate_beds += level * this.specializations["level"]
       this.changings_bed_problems()
     }
     else if (c === 7){
@@ -258,6 +259,7 @@ var State = function(state, World){
     Object.keys(this.specializations).forEach(key =>{
       if(key !== "beds_possible" && key !== "min" && key !== "level"){
         total_beds += this.specializations[key]
+        console
       }
     })
     this.beds_feeling = (total_beds / this.other_beds)*100   //min 5 max 100
@@ -307,6 +309,7 @@ var State = function(state, World){
       console.log("non virus death rate", this.non_virus_dead_rate)
       console.log("specialization: ", this.specializations)
       console.log("beds feeling: ", this.beds_feeling)
+      console.log("reanimate_beds: ", this.reanimate_beds)
   }
 
 
@@ -624,11 +627,13 @@ var State = function(state, World){
 
   this.summary_death = () => {
     this.non_virus_death_update()
-    let death = this.infects * 0.03
+    let total_death = this.infects * 0.03
+    let death = total_death - this.dead
     this.need_medical = this.infects * 0.2
     actually_med = (this.need_medical - this.reanimate_beds)
     if (actually_med > 0){
       death += actually_med
+      console.log("non ci sono abbastanza letti")
     }
     if (this.reminder_dead >= 1){
       death += Math.trunc(this.reminder_dead)
@@ -764,7 +769,7 @@ schools_opened : [100, 100,0],
 debug_make_decision = (c) => {
   console.log("counter",c)
   if (c === 1){
-    stato.make_change_bed(10)
+
   }
   else if (c === 2){
 
@@ -809,22 +814,22 @@ debug_make_decision = (c) => {
   else if (c === 15){
     stato.make_change_bed(10)
   }
-  else if (c === 16){
-    stato.make_change_bed(10)
-  }
-  else if (c === 17){
-    stato.make_change_bed(10)
-  }
-  else if (c === 18){
-    stato.make_change_bed(10)
-  }
-  else if (c === 19){
-    stato.make_change_bed(10)
-  }
   else if (c === 20){
     stato.make_change_bed(10)
   }
   else if (c === 21){
+    stato.make_change_bed(10)
+  }
+  else if (c === 22){
+    stato.make_change_bed(10)
+  }
+  else if (c === 23){
+    stato.make_change_bed(10)
+  }
+  else if (c === 24){
+    stato.make_change_bed(10)
+  }
+  else if (c === 25){
     stato.make_change_bed(10)
   }
 }
@@ -854,7 +859,7 @@ while (stato.continue()) {
   world.date = world.clock()
   stato.summaries()
   stato.print()
-  debug_make_decision(count)
+  //debug_make_decision(count)
 }
 
 

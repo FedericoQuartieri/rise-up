@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <div id = "container_out"></div>
+    </body>
+    <script>
+        dictionary = {
+            cardiology_beds : 21428,
+            neurology_beds : 21428,
+            gynecology_beds : 21428,
+            urology_beds : 21428,
+            pulmonology_beds : 21428,
+            pediatrics_beds : 21428,
+            psychiatry_beds : 21428,
+            reanimate_beds : 5000,
+            level : 2035
+        
+        }
+        const container_out = document.getElementById("container_out")
+        const container=document.createElement("div")
+        container.setAttribute("class","div-menu")
+        const list=document.createElement("ul")
+        list.setAttribute("class","decision-menu")
+
+    
+        Object.keys(dictionary).forEach((key)=>{
+            if (key !== "reanimate_beds" && key !== "level"){
+                let curDec=document.createElement("li")
+                curDec.setAttribute("class","decision-toUpdate")
+                //curDec.innerHTML=key.replace(/_/g," ")+ ": " + (dec[key][0])
+                let displayer=document.createElement("span")
+                displayer.setAttribute("id",key+" toUpdate")
+                displayer.setAttribute("class","text-inner")
+                displayer.innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key]
+                curDec.appendChild(displayer)
+                list.appendChild(curDec)
+            }
+        })
+        //container.appendChild(list)
+        
+        const out = document.createElement("div")
+        out.setAttribute("class", "container")
+        const row = document.createElement("div")
+        row.setAttribute("class", "row")
+        const col1 = document.createElement("div")
+        col1.setAttribute("class", "col-sm-3")
+        const col2 = document.createElement("div")
+        col2.setAttribute("class", "col-sm-1")
+        row.appendChild(col1)
+        row.appendChild(col2)
+        out.appendChild(list)
+        out.appendChild(row)
+        col1.innerHTML = "reanimate beds: "+dictionary["reanimate_beds"]
+        const dropdown = document.createElement("div")
+        dropdown.setAttribute("class", "dropdown")
+        const button = document.createElement("button")
+        button.setAttribute("class","btn btn-secondary dropdown-toggle")
+        button.setAttribute("type", "button")
+        button.setAttribute("id", "dropdownMenuButton")
+        button.setAttribute("data-toggle", "dropdown")
+        button.setAttribute("aria-haspopup", "true")
+        button.setAttribute("aria-expanded", "false")
+        button.innerHTML = "Require beds"
+        dropdown.appendChild(button)
+        const dropdown_menu = document.createElement("div")
+        dropdown_menu.setAttribute("class", "dropdown-menu")
+        dropdown_menu.setAttribute("aria-labelledby", "aria-labelledby-menu")
+        dropdown.appendChild(dropdown_menu)
+        for (i = 0;i<10;i++){
+            const dropdown_item = document.createElement("a")
+            dropdown_item.setAttribute("class", "dropdown-item")
+            dropdown_item.setAttribute("href", "#")
+            dropdown_item.innerHTML = dictionary["level"] * i
+            dropdown_item.addEventListener("click", function(){make_decision(this.textContent)})
+            dropdown_menu.appendChild(dropdown_item)
+        }
+        
+        col2.appendChild(dropdown)
+        container.appendChild(out)
+        container_out.appendChild(container)
+        function make_decision(beds){
+            console.log(dictionary["reanimate_beds"]+3)
+            console.log(dictionary)
+            console.log("reanimate beds:"+(dictionary["reanimate_beds"]+3))
+            spec = []
+            Object.keys(dictionary).forEach(key => {
+                if (key !== "level" && key !== "reanimate_beds"){
+                    spec.push(key)
+                }
+            })
+            special =  spec[Math.floor(Math.random() * spec.length)]
+            dictionary[special] -= beds
+            dictionary["reanimate_beds"] += beds
+            update()
+        }
+
+        update =() => {
+            Object.keys(dictionary).forEach(key =>{
+                if (key !== "level"){
+                    if (key !== "reanimate_beds"){
+                        document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key]
+                    }
+                    else if (key === "reanimate_beds"){
+                        col1.innerHTML = key.replace(/_/g," ")+ ": "+dictionary[key]
+                    }
+                }
+            })
+        }
+
+
+        /*$(button).attr({
+                    "class":"btn btn-secondary dropdown-toggle", "type" : "button", "id" : "dropdownMenuButton", "data-toggle" : "dropdown", "aria-haspopup" : "true", "aria-expanded" : "false"  
+                })*/
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>
+
+
+
+
