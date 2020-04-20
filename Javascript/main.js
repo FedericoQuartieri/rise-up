@@ -602,19 +602,20 @@ var State = function(state, World){
   this.economy_update  = () => {
     if(this.pil_rate>this.rate_economy_daily){
       this.economy_judgment = "peggiorata economia"
-      const nr=this.pil_rate-this.rate_economy_daily
-      this.pil-=(this.pil*((nr)/1000))
+      //const nr=this.pil_rate-this.rate_economy_daily
+      this.pil-=(this.pil*((this.pil_rate)/500))
 
 
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
+      this.pil-=(this.pil*(this.pil_rate/1000))
     }
 
     else{
       this.economy_judgment = "migliorata economia"
       const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil*(nr/1000))
+      this.pil+=(this.pil*(nr/100))
     }
     this.rate_economy_daily=this.pil_rate
   }
@@ -665,7 +666,9 @@ var State = function(state, World){
           rate += 0.5
         }
         else if(this.decision[key] === false){
-          rate -= 0.5
+          if(rate>0.5){
+            rate -= 0.5
+          }
         }
       }
       else if (key === "new_hospitals"){
@@ -744,6 +747,8 @@ var State = function(state, World){
     this.summary_feeling()
     this.summary_death()
   }
+  
+
 }
 
 
@@ -853,13 +858,15 @@ var curYear = date.getFullYear();
 
 stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
-while (stato.continue()) {
+while (count <20) {
   sleep(1000)
   count += 1
   world.date = world.clock()
   stato.summaries()
   stato.print()
   debug_make_decision(count)
+  console.log("differenza economia",stato.pil-(stato.pil_0*.6))
+
 }
 
 
