@@ -310,6 +310,7 @@ var State = function(state, World){
       console.log("specialization: ", this.specializations)
       console.log("beds feeling: ", this.beds_feeling)
       console.log("reanimate_beds: ", this.reanimate_beds)
+      console.log("pil rate: ", this.pil_rate)
   }
 
 
@@ -661,10 +662,10 @@ var State = function(state, World){
       }
       else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
         if (this.decision[key] === true){
-          rate -= 1
+          rate += 0.5
         }
         else if(this.decision[key] === false){
-          rate += 1
+          rate -= 0.5
         }
       }
       else if (key === "new_hospitals"){
@@ -769,10 +770,9 @@ schools_opened : [100, 100,0],
 debug_make_decision = (c) => {
   console.log("counter",c)
   if (c === 1){
-
+    stato.make_decision("schools_opened", 5)
   }
   else if (c === 2){
-
     stato.make_decision("shops_opened", 5)
   }
   else if (c === 3){
@@ -809,8 +809,8 @@ debug_make_decision = (c) => {
     stato.block_trades(6)
   }
   else if (c === 14){
-    stato.make_decision("schools_opened", 5)
   }
+  /*
   else if (c === 15){
     stato.make_change_bed(10)
   }
@@ -831,7 +831,7 @@ debug_make_decision = (c) => {
   }
   else if (c === 25){
     stato.make_change_bed(10)
-  }
+  }*/
 }
 
 
@@ -859,7 +859,7 @@ while (stato.continue()) {
   world.date = world.clock()
   stato.summaries()
   stato.print()
-  //debug_make_decision(count)
+  debug_make_decision(count)
 }
 
 
