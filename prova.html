@@ -79,14 +79,15 @@
             dropdown_item.addEventListener("click", function(){make_decision(this.textContent)})
             dropdown_menu.appendChild(dropdown_item)
         }
-        
         col2.appendChild(dropdown)
         container.appendChild(out)
         container_out.appendChild(container)
         function make_decision(beds){
-            console.log(dictionary["reanimate_beds"]+3)
-            console.log(dictionary)
-            console.log("reanimate beds:"+(dictionary["reanimate_beds"]+3))
+            a = dictionary
+            b = dictionary["reanimate_beds"]
+            console.log(a["reanimate_beds"])
+            console.log(a)
+            console.log(b)
             spec = []
             Object.keys(dictionary).forEach(key => {
                 if (key !== "level" && key !== "reanimate_beds"){
@@ -95,7 +96,8 @@
             })
             special =  spec[Math.floor(Math.random() * spec.length)]
             dictionary[special] -= beds
-            dictionary["reanimate_beds"] += beds
+            a = "reanimate_beds"
+            dictionary[a] += beds
             update()
         }
 

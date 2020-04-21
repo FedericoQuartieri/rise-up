@@ -5,7 +5,6 @@ const states = {
                 "other_beds" : 150000,
                 "reanimate_beds" : 5000,
                 "pil" : 1935000000000,
-                "percentuale_pil_sanita": 6.5,
                 "popolation" : 60000000,
                 "public_debt" : 384738,
                 "money" : 48374837483,
@@ -14,6 +13,8 @@ const states = {
 
               }
 }
+
+
 
 
 const options =[
@@ -40,12 +41,10 @@ function sleep(miliseconds) {
   }
 }
 
-var Loan = function(name,date0,date1,amount,state){
-  this.name=name
+var Loan = function(date0,date1,amount){
   this.date0 = date0
   this.date1 = date1
   this.amount = amount
-  this.state = state
 }
 
 var World = function(state){
@@ -134,7 +133,7 @@ var State = function(state, World){
   this.reanimate_beds = state["reanimate_beds"]
   this.other_beds = state["other_beds"]
   this.pil = state["pil"]
-  this.health_funds_rate = state["percentuale_pil_sanita"]
+  this.health_funds_rate = 5000000000 / this.pil 
   this.pil_0=this.pil
   this.popolation = state["popolation"]     
   this.public_debt = state["public_debt"]
@@ -161,9 +160,10 @@ var State = function(state, World){
   this.non_virus_dead = 0
   this.economy_judgment = ""
   this.health_funds_used = 0
+  this.economy_rate = (100-(this.pil/this.pil_0 *100))
 
 
-  this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.pil===this.pil_0*0.3)
+  this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.economy_rate > 30)
 
 
   //start decision
@@ -213,9 +213,11 @@ var State = function(state, World){
   //start specializations
 
 
-  make_new_hospital = (beds) => {
+  this.make_new_hospital = () => {
     this.decision["new_hospitals"] += 1
-    this.reanimate_beds += beds
+    this.health_funds -= 1000000000
+    this.health_funds_used += 1000000000
+    this.reanimate_beds += 2000
   }
 
 
@@ -241,7 +243,7 @@ var State = function(state, World){
       while (this.specializations[specialization] - (this.specializations["level"]*level)  < this.specializations["min"])
         specialization = this.make_change_bed_random()
       //const level //input level da 1 a 10
-      news = this.specializations["beds_possible"]*((level*10)/100)
+      news = this.specializations["beds_possible"]*((level*20)/100)
       new_spec = this.specializations["beds_possible"] - news
       if (new_spec < this.specializations["min"]){
         new_spec = this.specializations["min"]
@@ -278,7 +280,7 @@ var State = function(state, World){
     psychiatry_beds : Math.trunc(this.other_beds/7),
     beds_possible : Math.trunc((this.other_beds/7) - (this.other_beds/7 *0.05)),
     min : Math.trunc((this.other_beds/7) * 0.05),
-    level : Math.trunc((((this.other_beds/7) - (this.other_beds/7 *0.05))) * 0.1)
+    level : Math.trunc((((this.other_beds/7) - (this.other_beds/7 *0.05))) * 0.2)
   }
 
 
@@ -303,15 +305,12 @@ var State = function(state, World){
       console.log("rate : " ,this.infection_rate)
       console.log("feeling :", this.feeling)
       console.log("dead :" ,this.dead)
-      console.log("economy perc:","-",100-(this.pil/this.pil_0 *100),"%")
+      console.log("economy perc:","-", this.economy_rate,"%")
       console.log(this.economy_judgment)
       console.log("pil rate: ", this.pil_rate)
-  }
-
-
-  this.health_funds_calcolate = () => {
-    health_funds = this.pil * this.health_funds_rate
-    this.health_funds = health_funds - this.health_funds_used
+      console.log("health funds :", this.health_funds)
+      console.log("healh funds used: ", this.health_funds_used)
+      console.log("pil :", this.pil)
   }
 
   //-------------------------------------
@@ -372,11 +371,16 @@ var State = function(state, World){
     this.decision["block_trades_e"]=outcome
   }
 
+
+  this.health_funds_calcolate = () => {
+    health_funds = this.pil * this.health_funds_rate
+    this.health_funds = health_funds - this.health_funds_used
+  }
+
   //-------------Start loans section------------------
 
-
-  this.make_loan=(name,date0,date1,amount, stato) => {
-    this.loans.push(new Loan(name,date0,date1,amount, stato))
+  this.make_loan=(date0,date1,amount) => {
+    this.loans.push(new Loan(date0,date1,amount))
   }
 
 
@@ -621,6 +625,7 @@ var State = function(state, World){
       console.log(this.pil_0*(nr/100))
     }
     this.rate_economy_daily=this.pil_rate
+    this.economy_rate = 100-(this.pil/this.pil_0 *100)
   }
 
   //--------end updaters------------
@@ -744,6 +749,7 @@ var State = function(state, World){
     this.summary_economy()
     this.summary_feeling()
     this.summary_death()
+    this.health_funds_calcolate()
   }
   
 
@@ -772,11 +778,29 @@ schools_opened : [100, 100,0],
 
 debug_make_decision = (c) => {
   console.log("counter",c)
-  if (c === 1){
+  if (c === 23){
+    stato.make_new_hospital()
+  }
+  else if (c === 3333){
+    stato.make_new_hospital()
+  }
+  else if (c === 100 ){
+    stato.make_new_hospital()
+  }
+  else if (c === 500){
+    stato.make_new_hospital()
+  }
+  else if (c === 300){
+    stato.make_new_hospital()
+  }
+  else if (c === 1){
     stato.make_decision("schools_opened", 5)
   }
   else if (c === 3){
     stato.make_decision("shops_opened", 5)
+  }
+  else if (c === 6){
+    stato.make_decision("schools_opened", 0)
   }
   else if (c === 5){
     stato.make_decision("museums_opened", 5)
@@ -815,25 +839,25 @@ debug_make_decision = (c) => {
   }
   /*
   else if (c === 15){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 20){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 21){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 22){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 23){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 24){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }
   else if (c === 25){
-    stato.make_change_bed(10)
+    stato.make_change_bed(5)
   }*/
 }
 
@@ -856,15 +880,13 @@ var curYear = date.getFullYear();
 
 stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
 
-while (count <20) {
+while (stato.continue()) {
   sleep(1000)
   count += 1
   world.date = world.clock()
   stato.summaries()
   stato.print()
   debug_make_decision(count)
-  console.log("differenza economia",stato.pil-(stato.pil_0*.6))
-
 }
 
 
