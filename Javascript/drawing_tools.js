@@ -1,4 +1,4 @@
-/*const dec={
+const dec={
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
     shops_opened : [100, 100,0],
@@ -14,11 +14,11 @@
     close_stock: [false],
     block_trades_e: [0,0,0]
   }
-*/
+
 const drawing_tools={
     "display_decisions": 
      {
-        draw:(dictionary,container_out)=>{
+        draw:(dictionary,container_out,state)=>{
             const container=document.createElement("div")
             container.setAttribute("class","div-menu")
             const list=document.createElement("ul")
@@ -47,7 +47,7 @@ const drawing_tools={
                     })
                     let level=i+1
                     curSelector.innerHTML=level
-                    curSelector.addEventListener("click",()=>dictionary[key][0]=level*100)
+                    curSelector.addEventListener("click",()=>state.make_decision(key,level))
                     showUpmenu.appendChild(curSelector)
                 }
         

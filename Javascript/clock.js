@@ -21,7 +21,7 @@ function following_month (curMonth) {
     return curMonth
   }
   
-function clock () {
+function clock (state) {
     const _30_month = ['April', 'June', 'September', 'November'];
     const _31_month = ['January', 'March',  'May',  'July', 'August', 'October', 'December'];
     if (curMonth === "December" && curDay === 31) {
@@ -50,6 +50,7 @@ function clock () {
     }
     const datte = curDay +curMonth + curYear
     
+    state.World.date=datte
     console.log(datte)
   }
 //------------------------------

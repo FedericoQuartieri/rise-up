@@ -866,9 +866,9 @@ state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
-let count = 0
+//let count = 0
 
-
+/*
 var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -888,7 +888,7 @@ while (stato.continue()) {
   stato.print()
   debug_make_decision(count)
 }
-
+*/
 
 
 
