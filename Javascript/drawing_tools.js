@@ -64,6 +64,38 @@ const drawing_tools={
             })
         }
     },
+    "display_boolean":
+    {
+        draw:(decisionString,dictionary,container_out)=>{
+    
+            const div=document.createElement("div")
+            const display=document.createElement("p")
+            display.setAttribute("class","switch-display")
+            display.innerHTML=decisionString.replace(/_/g," ")
+            div.setAttribute("class","c")
+            div.appendChild(display)
+            const label=document.createElement("label")
+            const input=document.createElement("input")
+            const s=document.createElement("span")
+            input.setAttribute("type","checkbox")
+            label.appendChild(input)
+            label.appendChild(s)
+            s.setAttribute("class","check")
+            div.appendChild(label)
+            container_out.appendChild(div)
+            label.addEventListener("change",(e)=>{
+            if(input.checked){
+                div.setAttribute("class","ca")
+                dictionary[decisionString]=true
+            }
+            else{
+                div.setAttribute("class","c")
+                dictionary[decisionString]=false
+            }
+        
+            })
+        }
+    }
     
 }
 
