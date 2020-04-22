@@ -6,8 +6,8 @@
 const fps=30
 const daytime=1
 drawing_tools.display_decisions.draw(stato.decision,document.body,stato)
-var timerClock = setInterval(()=>clock(stato),1000/daytime)
-var gameLoop = setInterval(function(){ drawing_tools.display_decisions.update(stato.decision);stato.summaries();stato.print()},1000/fps)
+var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
+var gameLoop = setInterval(function(){ drawing_tools.display_decisions.update(stato.decision)},1000/fps)
 /*
 var timerUpdate =setInterval(() => {
     Object.keys(drawing_tools).forEach((key)=>{

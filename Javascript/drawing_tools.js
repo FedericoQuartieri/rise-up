@@ -34,18 +34,23 @@ const drawing_tools={
                 let displayer=document.createElement("span")
                 displayer.setAttribute("id",key+" toUpdate")
                 displayer.setAttribute("class","text-inner")
-                displayer.innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]
+                if (key === "remote_working_companies"){
+                    displayer.innerHTML=key.replace(/_/g," ")+ ": "+(100-dictionary[key][0])+"%"
+                }
+                else {
+                    displayer.innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]+"%"
+                }
                 curDec.appendChild(displayer)
         
                 const showUpmenu=document.createElement("ul")
                 showUpmenu.setAttribute("class","showUpmenu")
-                for(let i=0;i<5;i++){
+                for(let i=0;i<6;i++){
                     let curSelector=document.createElement("li")
                     $(curSelector).attr({
                         "class":"level-selector",
                     
                     })
-                    let level=i+1
+                    let level=i
                     curSelector.innerHTML=level
                     curSelector.addEventListener("click",()=>state.make_decision(key,level))
                     showUpmenu.appendChild(curSelector)
@@ -59,8 +64,13 @@ const drawing_tools={
         },
         update:(dictionary) =>{
             Object.keys(dictionary).forEach(key =>{
-              document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]
-              
+              document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]+"%"
+            if (key === "remote_working_companies"){
+                document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+(100-dictionary[key][0])+"%"
+            }
+            else {
+                document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]+"%"
+            } 
             })
         }
     },

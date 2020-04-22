@@ -140,7 +140,7 @@ var State = function(state, World){
   this.money = state["money"]
   this.army_level = state["army_level"]
   this.rate_0 = 1
-  this.infects = 50
+  this.infects = 1
   this.infection_rate = 1
   this.dead = 1
   this.feeling = 100
@@ -199,7 +199,6 @@ var State = function(state, World){
     ports_opened : [100, 100,0],
     airports_opened : [100, 100,0],
     sports_allowed : [100, 100,0],
-    remote_working_companies : [100, 100,0],
     companies_opened : [100, 100,0],
     red_zone : [0, 100,0],
     block_trades_e : [100,100,0],       //different function
