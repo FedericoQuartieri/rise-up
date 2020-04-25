@@ -198,7 +198,7 @@ input[type="checkbox"]:checked ~ .check::after{
 
 
 .reanimate-beds {
-    margin-top: 5px;
+    margin-top: 13px;
 }
 
 .flex-container{
@@ -249,17 +249,17 @@ input[type="checkbox"]:checked ~ .check::after{
     font-size: 22px;
     text-align: center;
     margin-left: 100px;
-    height: 35px;
-    width: 35px;
+    height: 45px;
+    width: 45px;
     background-color: aqua;
     border-radius: 50%;
     z-index: 2;
 }
 
 .require-menu-items {
-    transform: translateX(-35px);
-    height: 35px;
-    width: 35px;
+    transform: translateX(-45px);
+    height: 45px;
+    width: 45px;
     background-color: aqua;
     border-radius: 50%;
 }
@@ -267,8 +267,8 @@ input[type="checkbox"]:checked ~ .check::after{
 .require-menu-items>div{
     text-align:center;
     background-color: aqua;
-    height: 35px;
-    width: 35px;
+    height: 45px;
+    width: 45px;
     border-radius: 50%;
     font-size: 10px;
     position: relative;
@@ -278,7 +278,7 @@ input[type="checkbox"]:checked ~ .check::after{
   
 .fa {
     position: relative;
-    top:11px;
+    top:15px;
 }
 
 .spec-item2{
@@ -306,26 +306,30 @@ input[type="checkbox"]:checked ~ .check::after{
 
 
 .item2 {
-    bottom:35px;
+    bottom:45px;
 }
 
 .item3 {
-    bottom:70px;
+    bottom:90px;
 }
 
 .item4 {
-    bottom:105px;
+    bottom:135px;
 }
 .item5 {
-    bottom:140px;
+    bottom:180px;
 }
 #reanimate-beds{
     text-transform: uppercase;
      font-weight: 500;
      letter-spacing: 1.5px;
      font-size: 75%;
-
 }
 
+.spec-button{
+    position: relative;
+    top:4px;
+    color:black
+}
 
 

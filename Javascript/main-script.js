@@ -13,7 +13,7 @@ drawing_tools.display_decisions.draw(stato.decision,document.body,stato)
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.body)
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.body)
 drawing_tools.display_specializations.draw(stato.specializations, document.body, stato)
-var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
 var gameLoop = setInterval(function(){ updates()},1000/fps)
 
 /*
