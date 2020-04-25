@@ -1,4 +1,4 @@
-/* lista delle decision */
+/*lista delle decision */
 .div-menu ul{  
     list-style: none;
     margin: 0;
@@ -9,7 +9,7 @@
 .div-menu .decision-menu .decision-toUpdate{
      position: relative;
      padding: 16px;
-     width: 21%;
+     width: 20%;
      height: 90%;
      background-color: rgb(255, 255, 255);
      
@@ -88,108 +88,13 @@
    
 }
 .level-selector{
-
     display: inline;  
     background-color: white;
     border: 1px solid black;
     margin-right: 5px;
-
-}
-input[type="checkbox"]{
-    -webkit-appearance: none;
-    visibility: hidden;  
-    display: none;
-}
-.check{
-    position: relative;
-    display: inline-flex;
-    width: 40px;
-    height: 20px;
-    background: aqua;
-    cursor: pointer;
-    border-radius: 20px;
-    overflow: hidden;
-    transition: ease-in 0.5s;
-    text-align: end;
-    margin-right: 5px;
-}
-.check::before{
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    background: #fff;   
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    transition: 0.5s;
-}
-input[type="checkbox"]:checked ~ .check{
-    background: white;
-    
-}
-input[type="checkbox"]:checked ~ .check::before{
-    transform: translateX(-50px);
-
-}
-.check::after{
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    background: aqua;   
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    transition: 0.5s;
-    transform: translateX(50px);
-}
-input[type="checkbox"]:checked ~ .check::after{
-    transform: translateX(0px);
-
 }
 
-.c{
-    padding-top: 18px;
-    padding-left: 13px;
-    
-    height: 50px;
-    width: 230px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: white;
-    transition: ease-in 1s;
-}
 
-.ca{
-    
-    height: 50px;
-    width: 230px;
-    padding-top: 18px;
-    padding-left: 13px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: aqua;
-    transition: 0.5s step-end;
-
-}
-.ca p{
-    font-weight: 700;
-    letter-spacing: 2px;
-    align-self: center;
-}
-.switch-display{
-    padding-top: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    font-size: 75%;
-    align-self: center;
-    align-content: center;
-
-}
 
 
 
@@ -320,5 +225,11 @@ input[type="checkbox"]:checked ~ .check::after{
     bottom:140px;
 }
 
-
-
+/*
+.spec-button{
+    position: relative;
+    top:17px;
+    left:19px;
+    color:white
+}
+*/

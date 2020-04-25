@@ -3,13 +3,18 @@
 //bisogna dargli coscienza poi del main e passare lo stato per gli effetti
 
 //drawing_tools.display_decisions.draw(dizionario da dare,div esterno dove aggiunge la lista fatta bene)
-const fps=30
+updates = () =>{
+    drawing_tools.display_decisions.update(stato.decision)
+    drawing_tools.display_specializations.update(stato.specializations)
+}
+const fps=10
 const daytime=.5
 drawing_tools.display_decisions.draw(stato.decision,document.body,stato)
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.body)
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.body)
-var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
-var gameLoop = setInterval(function(){ drawing_tools.display_decisions.update(stato.decision)},1000/fps)
+drawing_tools.display_specializations.draw(stato.specializations, document.body, stato)
+var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+var gameLoop = setInterval(function(){ updates()},1000/fps)
 
 /*
 var timerUpdate =setInterval(() => {

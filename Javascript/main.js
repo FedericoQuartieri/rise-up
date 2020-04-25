@@ -216,43 +216,69 @@ var State = function(state, World){
     this.decision["new_hospitals"] += 1
     this.health_funds -= 1000000000
     this.health_funds_used += 1000000000
-    this.reanimate_beds += 2000
+    this.specializations["reanimate_beds"] += 2000
   }
 
 
   this.make_change_bed_random = () => {
     spec = []
     Object.keys(this.specializations).forEach(key => {
-      spec.push(key)
+      if (key !== "beds_possible" && key !== "reanimate_beds" && key !== "min" && key !== "level"){
+        spec.push(key)
+      }
     })
     return spec[Math.floor(Math.random() * spec.length)]
   }
 
-  this.make_change_bed = (level) =>{
+  this.make_change_bed = (beds) =>{
+    console.log(this.specializations)
+    beds = parseInt(beds)
     let c = 0
     Object.keys(this.specializations).forEach(key => {
-      if(key !== "beds_possible" && key !== "min" && key !== "level"){
+      if(key !== "min" && key !== "level" && key !== "reanimate_beds"){
         if (this.specializations[key] === this.specializations["min"]){
           c += 1
         }
       }
     })
+    console.log("c: ", c)
     if (c !== 7){
       let specialization = this.make_change_bed_random()
-      while (this.specializations[specialization] - (this.specializations["level"]*level)  < this.specializations["min"])
-        specialization = this.make_change_bed_random()
-      //const level //input level da 1 a 10
-      news = this.specializations["beds_possible"]*((level*20)/100)
-      new_spec = this.specializations["beds_possible"] - news
-      if (new_spec < this.specializations["min"]){
-        new_spec = this.specializations["min"]
+      max = 0
+      Object.keys(this.specializations).forEach(key => {
+        if(key !== "min" && key !== "level" && key !== "reanimate_beds"){
+          if (this.specializations[key] > max){
+            max = this.specializations[key]
+          }
+        }
+      });
+      console.log(max,beds) 
+      while(this.specializations[specialization] - beds < this.specializations["min"]){ 
+           
+        if (max - beds > this.specializations["min"]){
+          specialization = this.make_change_bed_random()
+          console.log(specialization)
+        }
+        else{
+          console.log("diminuisci il numero di letti")
+          beds = 0
+          break
+        }
       }
-      this.specializations[specialization] = new_spec
-      this.reanimate_beds += level * this.specializations["level"]
-      this.changings_bed_problems()
+      var new_beds = 0
+      if (this.specializations[specialization] - beds - this.specializations["min"] < 50){
+        new_beds = this.specializations["min"]
+        console.log(beds)
+      }
+      else{
+        new_beds = this.specializations[specialization] -= beds
+      }
+      this.specializations[specialization] = new_beds
+      this.reanimate_beds += beds 
+      this.specializations["reanimate_beds"] = this.reanimate_beds
     }
-    else if (c === 7){
-      console.log("non ci sono letti disponibili, costruisci nuovi ospedali")
+    else{
+      console.log("hai portato tutti i letti in reanimazione")
     }
   }
 
@@ -262,7 +288,6 @@ var State = function(state, World){
     Object.keys(this.specializations).forEach(key =>{
       if(key !== "beds_possible" && key !== "min" && key !== "level"){
         total_beds += this.specializations[key]
-        console
       }
     })
     this.beds_feeling = (total_beds / this.other_beds)*100   //min 5 max 100
@@ -277,7 +302,7 @@ var State = function(state, World){
     pulmonology_beds : Math.trunc(this.other_beds/7),
     pediatrics_beds : Math.trunc(this.other_beds/7),
     psychiatry_beds : Math.trunc(this.other_beds/7),
-    beds_possible : Math.trunc((this.other_beds/7) - (this.other_beds/7 *0.05)),
+    reanimate_beds :this.reanimate_beds,
     min : Math.trunc((this.other_beds/7) * 0.05),
     level : Math.trunc((((this.other_beds/7) - (this.other_beds/7 *0.05))) * 0.2)
   }

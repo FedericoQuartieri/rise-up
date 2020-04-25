@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
         
     </head>
     <body>
@@ -18,44 +19,121 @@
             pediatrics_beds : 21428,
             psychiatry_beds : 21428,
             reanimate_beds : 5000,
-            level : 2035
+            level : 4070
         
         }
         const container_out = document.getElementById("container_out")
         const container=document.createElement("div")
-        container.setAttribute("class","div-menu")
-        const list=document.createElement("ul")
-        list.setAttribute("class","decision-menu")
+        container.setAttribute("class","spec-menu")
 
-    
+        const flex_container = document.createElement("div")
+        container.appendChild(flex_container)
+        flex_container.setAttribute("class", "flex-container")
+        const reanimate_beds = document.createElement("div")
+        flex_container.appendChild(reanimate_beds)
+        reanimate_beds.setAttribute("class", "reanimate-beds")
+        reanimate_beds.innerHTML = "reanimate beds: "+dictionary["reanimate_beds"]
+        const button = document.createElement("div")
+        flex_container.appendChild(button)
+        button.setAttribute("class", "require-beds")
+        button.innerHTML = "+"
+        button.addEventListener("click", pop)
+        a = document.createElement("p")
+        button.appendChild(a)
+        a.setAttribute("class", "spec-button")
+        const items = document.createElement("div")
+        flex_container.appendChild(items)
+        items.setAttribute("class", "require-menu-items")
+        for (i = 0;i<5;i++){
+            center = document.createElement("center")
+            const item = document.createElement("div")
+            items.appendChild(item)
+            item.setAttribute("class", "item"+(i+1))
+            item.setAttribute("id", "item"+(i+1))
+            item.addEventListener("click", function(){make_decision(this.textContent)})
+            item.appendChild(center)
+            const number = document.createElement("p")
+            center.appendChild(number)
+            number.setAttribute("class", "fa")
+            number.innerHTML = dictionary["level"] * (i+1)
+        }
+        const showcontainer = document.createElement("div")
+        showcontainer.setAttribute("class", "spec-show-container")
+        container.appendChild(showcontainer)
+        const showup = document.createElement("div")
+        showcontainer.appendChild(showup)
+        showup.setAttribute("class", "spec-showup")
+        showup.addEventListener("click", pop2)
+        showup.innerHTML = "show specialization"
+        const spec_show_menu_items = document.createElement("div")
+        showcontainer.appendChild(spec_show_menu_items)
+        spec_show_menu_items.setAttribute("class", "spec-show-menu-items")
+        var i = 0
         Object.keys(dictionary).forEach((key)=>{
-            if (key !== "reanimate_beds" && key !== "level"){
-                let curDec=document.createElement("li")
-                curDec.setAttribute("class","decision-toUpdate")
-                //curDec.innerHTML=key.replace(/_/g," ")+ ": " + (dec[key][0])
-                let displayer=document.createElement("span")
-                displayer.setAttribute("id",key+" toUpdate")
-                displayer.setAttribute("class","text-inner")
-                displayer.innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key]
-                curDec.appendChild(displayer)
-                list.appendChild(curDec)
+            if (key !== "level" && key !== "reanimate_beds"){
+                const spec_show_menu_item = document.createElement("div")
+                spec_show_menu_item.setAttribute("class", "spec-item"+(i+1))
+                spec_show_menu_item.setAttribute("id", key+" toUpdate")
+                spec_show_menu_items.appendChild(spec_show_menu_item)
+                spec_show_menu_item.innerHTML = key +": "+ dictionary[key] 
+                i++
             }
         })
-        //container.appendChild(list)
+
+        container_out.appendChild(container)
         
-        const out = document.createElement("div")
-        out.setAttribute("class", "container")
-        const row = document.createElement("div")
-        row.setAttribute("class", "row")
-        const col1 = document.createElement("div")
-        col1.setAttribute("class", "col-sm-3")
-        const col2 = document.createElement("div")
-        col2.setAttribute("class", "col-sm-1")
-        row.appendChild(col1)
-        row.appendChild(col2)
-        out.appendChild(list)
-        out.appendChild(row)
-        col1.innerHTML = "reanimate beds: "+dictionary["reanimate_beds"]
+        var i = 0
+        function pop(){
+            if (i === 0){
+                document.getElementById("item1").style.transform = "translateX(-80px)"
+                document.getElementById("item2").style.transform = "translate(-60px, 60px)"
+                document.getElementById("item3").style.transform = "translateY(80px)"
+                document.getElementById("item4").style.transform = "translate(60px, 60px)"
+                document.getElementById("item5").style.transform = "translateX(80px)"
+                i = 1
+            }
+            else{
+                document.getElementById("item1").style.transform = "translateX(0)"
+                document.getElementById("item2").style.transform = "translate(0)"
+                document.getElementById("item3").style.transform = "translateY(0)"
+                document.getElementById("item4").style.transform = "translate(0)"
+                document.getElementById("item5").style.transform = "translateX(0)"
+                i = 0
+
+            }
+        }
+
+        var j = 0
+        function pop2 () {
+            if (j === 0){
+                document.getElementById("cardiology_beds toUpdate").style.transform = "translate(-100px, 40px)"
+                document.getElementById("neurology_beds toUpdate").style.transform = "translate(100px, 40px)"
+                document.getElementById("gynecology_beds toUpdate").style.transform = "translate(-100px, 80px)"
+                document.getElementById("urology_beds toUpdate").style.transform = "translate(100px, 80px)"
+                document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(-100px, 120px)"
+                document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(100px, 120px)"
+                document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(150px)"
+                j = 1
+            }
+            else{
+                if (j === 1){
+                    document.getElementById("cardiology_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("neurology_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("gynecology_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("urology_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(0)"
+                document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(0)"
+                j = 0
+                }
+            }
+        }
+
+
+        
+
+
+        /*
         const dropdown = document.createElement("div")
         dropdown.setAttribute("class", "dropdown")
         const button = document.createElement("button")
@@ -71,7 +149,7 @@
         dropdown_menu.setAttribute("class", "dropdown-menu")
         dropdown_menu.setAttribute("aria-labelledby", "aria-labelledby-menu")
         dropdown.appendChild(dropdown_menu)
-        for (i = 0;i<10;i++){
+        for (i = 0;i<5;i++){
             const dropdown_item = document.createElement("a")
             dropdown_item.setAttribute("class", "dropdown-item")
             dropdown_item.setAttribute("href", "#")
@@ -79,15 +157,11 @@
             dropdown_item.addEventListener("click", function(){make_decision(this.textContent)})
             dropdown_menu.appendChild(dropdown_item)
         }
-        col2.appendChild(dropdown)
-        container.appendChild(out)
-        container_out.appendChild(container)
+        showcontainer.appendChild(dropdown)
+        */
         function make_decision(beds){
-            a = dictionary
-            b = dictionary["reanimate_beds"]
-            console.log(a["reanimate_beds"])
-            console.log(a)
-            console.log(b)
+            beds = parseInt(beds)
+            console.log(beds)
             spec = []
             Object.keys(dictionary).forEach(key => {
                 if (key !== "level" && key !== "reanimate_beds"){
@@ -96,11 +170,10 @@
             })
             special =  spec[Math.floor(Math.random() * spec.length)]
             dictionary[special] -= beds
-            a = "reanimate_beds"
-            dictionary[a] += beds
+            dictionary["reanimate_beds"] += beds
             update()
         }
-
+        
         update =() => {
             Object.keys(dictionary).forEach(key =>{
                 if (key !== "level"){
@@ -108,7 +181,7 @@
                         document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key]
                     }
                     else if (key === "reanimate_beds"){
-                        col1.innerHTML = key.replace(/_/g," ")+ ": "+dictionary[key]
+                        reanimate_beds.innerHTML = key.replace(/_/g," ")+ ": "+dictionary[key]
                     }
                 }
             })
