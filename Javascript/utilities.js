@@ -1,3 +1,22 @@
+const createGrid=(cols) =>{
+    
+    for(let y=0;y<cols;y++){
+    const tp=document.createElement("div")
+
+    tp.setAttribute("class","row")
+    for(let x=0;x<3;x++){
+        const col=document.createElement("div")
+        col.setAttribute("class","col-md-3 ")
+        col.setAttribute("id","col "+x+" "+y)
+    
+        col.innerHTML=x
+        tp.appendChild(col)
+    }
+    document.body.appendChild(tp)
+    document.getElementById("col 1 "+y).setAttribute("class","col-md-6")
+    } 
+    
+}
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
   

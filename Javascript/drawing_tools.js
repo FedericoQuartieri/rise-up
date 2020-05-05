@@ -1,3 +1,4 @@
+/*
 const dec={
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -14,6 +15,7 @@ const dec={
     close_stock: [false],
     block_trades_e: [0,0,0]
   }
+*/
 
 const drawing_tools={
     "display_decisions": 
@@ -93,6 +95,50 @@ const drawing_tools={
             })
         }
     },
+    "display_red_zone" : {
+        draw : (reference,container_out)=>{
+    
+            const div=document.createElement("div")
+            div.setAttribute("id","wrap")
+            const header=document.createElement("h2")
+            header.setAttribute("id","rangeValue")
+            const fill=document.createElement("div")
+            fill.setAttribute("id","fillRangeValue")
+            const input=document.createElement("input")
+        
+            $(input).attr({
+            "type":"range",
+            "class":"range",
+            "name":"",
+            "value":0,
+            "min":0,
+            "max":100,
+            //"onmousemove":"",
+            //"onChange":"rangeSlider(this.value)"
+        
+            })
+            div.appendChild(header)
+            div.appendChild(fill)
+            div.appendChild(input)
+            container_out.appendChild(div)
+        
+           
+            input.addEventListener("mousemove", function rangeSlider(){
+                reference[0]=parseInt(this.value)
+                document.getElementById("rangeValue").innerHTML=this.value
+                document.getElementById("fillRangeValue").style.width=+this.value+"%"
+            })
+            input.addEventListener("change", function rangeSlider(){
+                reference[0]=parseInt(this.value)
+                document.getElementById("rangeValue").innerHTML=this.value
+                document.getElementById("fillRangeValue").style.width=+this.value+"%"
+            })
+        
+            
+            
+        }
+    },
+
     display_specializations : {
         draw : (dictionary,container_out, state) =>{
             const container=document.createElement("div")
