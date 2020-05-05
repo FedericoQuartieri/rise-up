@@ -10,6 +10,7 @@ updates = () =>{
 const fps=10
 const daytime=.5
 
+
 //Create canvas
 
 createGrid(3)
@@ -55,7 +56,10 @@ drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getEleme
 
 
 //Loops 
-var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+//var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+
+var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
+
 var gameLoop = setInterval(function(){ updates()},1000/fps)
 
 /*

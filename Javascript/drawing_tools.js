@@ -155,11 +155,11 @@ const drawing_tools={
             const button = document.createElement("div")
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
-            button.innerHTML = "+"
             button.addEventListener("click", pop)
             a = document.createElement("p")
             button.appendChild(a)
             a.setAttribute("class", "spec-button")
+            a.innerHTML = "+"
             const items = document.createElement("div")
             flex_container.appendChild(items)
             items.setAttribute("class", "require-menu-items")
@@ -237,12 +237,12 @@ const drawing_tools={
                 else{
                     if (j === 1){
                         document.getElementById("cardiology_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("neurology_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("gynecology_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("urology_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(0)"
-                    document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(0)"
+                        document.getElementById("neurology_beds toUpdate").style.transform = "translate(0)"
+                        document.getElementById("gynecology_beds toUpdate").style.transform = "translate(0)"
+                        document.getElementById("urology_beds toUpdate").style.transform = "translate(0)"
+                        document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(0)"
+                        document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(0)"
+                        document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(0)"
                     j = 0
                     }
                 }
