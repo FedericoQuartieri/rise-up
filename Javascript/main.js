@@ -142,6 +142,7 @@ var State = function(state, World){
   this.health_funds_loan = 0
   this.loan_expired = false
   this.economy_rate = (100-(this.pil/this.pil_0 *100))
+  this.reanimate_beds_hospitals = 0
 
 
   this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.economy_rate > 30)
@@ -194,12 +195,13 @@ var State = function(state, World){
 
 
   this.make_new_hospital = () => {
+    console.log("ciao")
     this.decision["new_hospitals"] += 1
     this.health_funds -= 1000000000
     this.health_funds_used += 1000000000
     this.specializations["reanimate_beds"] += 2000
+    this.reanimate_beds_hospitals += 2000
   }
-
 
   this.make_change_bed_random = () => {
     spec = []
@@ -253,7 +255,7 @@ var State = function(state, World){
         new_beds = this.specializations[specialization] -= beds
       }
       this.specializations[specialization] = new_beds
-      this.reanimate_beds += beds 
+      this.reanimate_beds += beds += this.reanimate_beds_hospitals
       this.specializations["reanimate_beds"] = this.reanimate_beds
     }
     else{
@@ -316,6 +318,7 @@ var State = function(state, World){
       console.log("healh funds used: ", this.health_funds_used)
       console.log("pil :", this.pil)
       console.log("beds feeling", this.beds_feeling)
+      console.log("new hospitals", this.decision["new_hospitals"])
   }
 
   //-------------------------------------
