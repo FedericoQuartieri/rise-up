@@ -1,22 +1,19 @@
 const createGrid=(cols) =>{
-    
     for(let y=0;y<cols;y++){
-    const tp=document.createElement("div")
-
-    tp.setAttribute("class","row")
-    for(let x=0;x<3;x++){
-        const col=document.createElement("div")
-        col.setAttribute("class","col-md-3 ")
-        col.setAttribute("id","col "+x+" "+y)
-    
-        col.innerHTML=x
-        tp.appendChild(col)
-    }
-    document.body.appendChild(tp)
-    document.getElementById("col 1 "+y).setAttribute("class","col-md-6")
+        const tp=document.createElement("div")
+        tp.setAttribute("class","row")
+        for(let x=0;x<3;x++){
+            const col=document.createElement("div")
+            col.setAttribute("class","col-md-3")
+            col.setAttribute("id","col "+x+" "+y)
+            col.innerHTML=x
+            tp.appendChild(col)
+        }
+        document.body.appendChild(tp)
+        document.getElementById("col 1 "+y).setAttribute("class","col-md-6")
     } 
-    
 }
+
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
   
@@ -27,8 +24,6 @@ function sleep(miliseconds) {
 var c = 0
 var date = new Date();
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-var curWeekDay = days[date.getDay()];
 var curDay = date.getDate();
 var curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
@@ -67,9 +62,12 @@ function clock (state) {
         }
         else {curDay += 1}
     }
+    world.curMonth = curMonth
+    world.month_numb = months.indexOf(world.curMonth) + 1
+    world.curDay = curDay
+    world.curYear = curYear
     const datte = curDay +curMonth + curYear
     
-    state.World.date=datte
+    state.world.date=datte
     console.log(datte)
   }
-//------------------------------

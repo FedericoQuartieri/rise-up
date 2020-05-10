@@ -5,9 +5,10 @@
 //drawing_tools.display_decisions.draw(dizionario da dare,div esterno dove aggiunge la lista fatta bene)
 updates = () =>{
     drawing_tools.display_decisions.update(stato.decision)
-    //drawing_tools.display_specializations.update(stato.specializations)
+    drawing_tools.display_specializations.update(stato.specializations)
+    drawing_tools.display_loans.update(stato)
 }
-const fps=10
+const fps=30
 const daytime=.5
 
 
@@ -35,12 +36,14 @@ drawing_tools.display_decisions.draw(stato.decision,document.getElementById("col
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
 
+
+
 //1
 
 
 //2
-//drawing_tools.display_specializations.draw(stato.specializations, document.getElementById("col 2 1"), stato)
-
+drawing_tools.display_specializations.draw(stato.specializations, document.getElementById("col 2 1"), stato)
+drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 
 //------------------------
 //Bottom

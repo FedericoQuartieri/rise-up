@@ -139,7 +139,7 @@ const drawing_tools={
         }
     },
 
-    display_specializations : {
+    "display_specializations" : {
         draw : (dictionary,container_out, state) =>{
             const container=document.createElement("div")
             container.setAttribute("class","spec-menu")
@@ -151,8 +151,8 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "reanimate beds: "+dictionary["reanimate_beds"]
-            const button = document.createElement("div")
+            reanimate_beds.innerHTML = "reanimate beds: \n" + dictionary["reanimate_beds"]
+            const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
             button.addEventListener("click", pop)
@@ -176,6 +176,7 @@ const drawing_tools={
                 number.setAttribute("class", "fa")
                 number.innerHTML = dictionary["level"] * (i+1)
             }
+            /*
             const showcontainer = document.createElement("div")
             showcontainer.setAttribute("class", "spec-show-container")
             container.appendChild(showcontainer)
@@ -198,17 +199,17 @@ const drawing_tools={
                     i++
                 }
             })
-
+            */
             container_out.appendChild(container)
             
             var i = 0
             function pop(){
                 if (i === 0){
-                    document.getElementById("item1").style.transform = "translateX(-80px)"
-                    document.getElementById("item2").style.transform = "translate(-60px, 60px)"
-                    document.getElementById("item3").style.transform = "translateY(80px)"
-                    document.getElementById("item4").style.transform = "translate(60px, 60px)"
-                    document.getElementById("item5").style.transform = "translateX(80px)"
+                    document.getElementById("item1").style.transform = "translateX(-50px)"
+                    document.getElementById("item2").style.transform = "translate(-35px, 35px)"
+                    document.getElementById("item3").style.transform = "translateY(60px)"
+                    document.getElementById("item4").style.transform = "translate(35px, 35px)"
+                    document.getElementById("item5").style.transform = "translateX(50px)"
                     i = 1
                 }
                 else{
@@ -252,14 +253,82 @@ const drawing_tools={
             Object.keys(dictionary).forEach(key =>{
                 if (key !== "level" && key !== "min"){
                     if (key !== "reanimate_beds"){
-                        document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key]
+                        /*document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+ dictionary[key]*/
                     }
                     else if (key === "reanimate_beds"){
-                        document.getElementById("reanimate-beds").innerHTML = key.replace(/_/g," ")+ ": "+dictionary[key]
+                        document.getElementById("reanimate-beds").innerHTML = key.replace(/_/g," ")+ ": " + dictionary[key]
                     }
                 }
             })
         } 
+    },
+    "display_loans" : {
+        draw : (container_out, state) =>{
+            const container = document.createElement("div")
+            container.setAttribute("class", "loans_menu")
+            container_out.appendChild(container)
+            const make_loan_div = document.createElement("div")
+            container.appendChild(make_loan_div)
+            make_loan_div.setAttribute("class", "loans_buttons")
+            const low_risk = document.createElement("button")
+            low_risk.innerHTML = "make loan low risk"
+            low_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("low"), 1000000000, 3, 20, "low");drawing_tools.display_loans.update_internal(state)})
+            make_loan_div.appendChild(low_risk)
+            const high_risk = document.createElement("button")
+            high_risk.innerHTML = "make loan high risk"
+            high_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("high"), 2000000000, 6, 40, "high");drawing_tools.display_loans.update_internal(state)})
+            make_loan_div.appendChild(high_risk)
+
+            const show_loans = document.createElement("div")
+            show_loans.setAttribute("class", "loans")
+            container.appendChild(show_loans)
+            const list = document.createElement("ul")
+            list.setAttribute("class", "loans-list")
+            show_loans.appendChild(list)
+            for(let i= 0;i<5;i++){
+                const loan = document.createElement("li")
+                loan.setAttribute("id", "loan"+(i+1))
+                loan.setAttribute("class", "inactive")
+                list.appendChild(loan)
+            }
+        },
+        update_internal : (state) =>{
+            if (state.loans.length !== 0){
+                for (let i = 0;i<state.loans.length;i++){
+                    month = state.world.from_date_to_month(state.loans[i].date1)
+                    month = months[month - 1]
+                    day = state.world.from_date_to_day(state.loans[i].date1)
+                    year = state.world.from_date_to_year(state.loans[i].date1)
+                    date = day + " " + month + " " + year + " "
+                    document.getElementById("loan"+ (i+1)).setAttribute("class", "active")
+                    document.getElementById("loan"+ (i+1)).innerHTML = "scadenza: " + date + "risk: " + state.loans[i].risk  + " "+ "<span><button id = 'pay-loan-to-setup' class ='pay-loan'>Pay</button><span>"
+                    const pay_loan = document.getElementById("pay-loan-to-setup")
+                    pay_loan.setAttribute("id", "pay-loan"+(i+1))
+                    pay_loan.addEventListener("click", function(){state.pay_loan(state.loans[this.parentElement.parentElement.id.substring(4)- 1]);drawing_tools.display_loans.update_internal(state)})
+                }
+                for (let i = state.loans.length;i<5;i++){
+                    document.getElementById("loan"+(i+1)).innerHTML = ""
+
+                }
+            }
+            else {
+                for (let i = 0;i<5;i++){
+                    document.getElementById("loan"+ (i+1)).innerHTML = ""
+                }
+            }
+            for (let i = 0;i<5;i++){
+                loan = document.getElementById("loan"+ (i+1))
+                if (loan.textContent === ""){
+                    loan.setAttribute("class", "inactive")
+                }
+            }
+        },
+        update : (state) => {
+            if (state.loan_expired){
+                drawing_tools.display_loans.update_internal(state)
+                state.loan_expired = false
+            }
+        }
     }
     
 }

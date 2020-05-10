@@ -41,10 +41,13 @@ function sleep(miliseconds) {
   }
 }
 
-var Loan = function(date0,date1,amount){
-  this.date0 = date0
+
+var Loan = function(date1,amount,perc_paid, perc_not_paid, risk){
   this.date1 = date1
   this.amount = amount
+  this.perc_paid = perc_paid
+  this.perc_not_paid = perc_not_paid
+  this.risk = risk
 }
 
 var World = function(state){
@@ -54,51 +57,14 @@ var World = function(state){
   this.death_rate=0;
   this.date = null;
   this.curMonth = 0
-  this.month_numb
+  this.month_numb = 0
   this.curDay = 0
+  this.curYear = 0
 
 
   //-----------Starts Dates-----------
 
 
-  this.clock = () => {
-    const _30_month = ['April', 'June', 'September', 'November'];
-    const _31_month = ['January', 'March',  'May',  'July', 'August', 'October', 'December'];
-    if (world.curMonth === "December" && world.curDay === 31) {
-        curYear += 1
-        world.curMonth = "January"
-        world.curDay = 1
-    }
-    else {
-        if (world.curDay >= 29) {
-            if (world.curMonth === "February" && world.curDay === 29 ) {
-                world.curMonth = world.following_month(world.curMonth)
-                world.curDay = 1
-            }
-            else if (world.curDay === 30 && _30_month.includes(world.curMonth)) {
-                world.curMonth = world.following_month(world.curMonth)
-                world.curDay = 1
-            }
-            else if (world.curDay === 31 && _31_month.includes(world.curMonth)) {
-                world.curMonth = world.following_month(world.curMonth)
-                world.curDay = 1
-  
-            }
-            else {world.curDay += 1}
-        }
-        else {world.curDay += 1}
-    }
-    date = world.curDay + world.curMonth + curYear
-    world.month_numb = months.indexOf(world.curMonth) + 1
-    return date
-  }
-
-  this.following_month = (curMonth) => {
-    a = months.indexOf(curMonth)
-    curMonth = months[a + 1]
-    return curMonth
-  }
-  
   
 
 
@@ -122,6 +88,18 @@ var World = function(state){
     }
     return day
   }
+  this.from_date_to_year = (date) => {
+    if (isNaN(parseInt(date[1]))){
+      var month = date.substring(1, date.length - 4)
+      var year = date.substring(1 + month.length, date.length)
+
+    }
+    else {
+      var month = date.substring(2, date.length - 4)
+      var year = date.substring(2 + month.length, date.length)
+    }
+    return year
+  }
 }
 
 
@@ -129,7 +107,7 @@ var World = function(state){
 
 
 var State = function(state, World){
-  this.World = World
+  this.world = World
   this.reanimate_beds = state["reanimate_beds"]
   this.other_beds = state["other_beds"]
   this.pil = state["pil"]
@@ -160,6 +138,9 @@ var State = function(state, World){
   this.non_virus_dead = 0
   this.economy_judgment = ""
   this.health_funds_used = 0
+  this.health_funds = 0
+  this.health_funds_loan = 0
+  this.loan_expired = false
   this.economy_rate = (100-(this.pil/this.pil_0 *100))
 
 
@@ -241,7 +222,6 @@ var State = function(state, World){
         }
       }
     })
-    console.log("c: ", c)
     if (c !== 7){
       let specialization = this.make_change_bed_random()
       max = 0
@@ -253,8 +233,7 @@ var State = function(state, World){
         }
       });
       console.log(max,beds) 
-      while(this.specializations[specialization] - beds < this.specializations["min"]){ 
-           
+      while(this.specializations[specialization] - beds < this.specializations["min"]){   
         if (max - beds > this.specializations["min"]){
           specialization = this.make_change_bed_random()
           console.log(specialization)
@@ -280,13 +259,14 @@ var State = function(state, World){
     else{
       console.log("hai portato tutti i letti in reanimazione")
     }
+    this.changings_bed_problems()
   }
 
 
-  this.changings_bed_problems = () =>{
+  this.changings_bed_problems = () =>{  //non funziona come dovrebbe
     let total_beds = 0
     Object.keys(this.specializations).forEach(key =>{
-      if(key !== "beds_possible" && key !== "min" && key !== "level"){
+      if(key !== "beds_possible" && key !== "min" && key !== "level" && key !== "reanimate_beds"){
         total_beds += this.specializations[key]
       }
     })
@@ -335,6 +315,7 @@ var State = function(state, World){
       console.log("health funds :", this.health_funds)
       console.log("healh funds used: ", this.health_funds_used)
       console.log("pil :", this.pil)
+      console.log("beds feeling", this.beds_feeling)
   }
 
   //-------------------------------------
@@ -351,7 +332,7 @@ var State = function(state, World){
     console.log("6. Shut down international commerce (imports and exports)")
     //input
     //const choice=getRandomInt(1,7)
-    const outcome=[] //[health,feeling,economy]
+    const outcome = [] //[health,feeling,economy]
     switch(choice){
 
       case 1:
@@ -392,25 +373,60 @@ var State = function(state, World){
 
 
     }
-    this.decision["block_trades_e"]=outcome
+    this.decision["block_trades_e"] = outcome
   }
 
 
   this.health_funds_calcolate = () => {
     health_funds = this.pil * this.health_funds_rate
-    this.health_funds = health_funds - this.health_funds_used
+    this.health_funds = health_funds - this.health_funds_used + this.health_funds_loan
   }
 
   //-------------Start loans section------------------
 
-  this.make_loan=(date0,date1,amount) => {
-    this.loans.push(new Loan(date0,date1,amount))
+  
+  this.make_loan = (date1,amount, interests_paid, interests_not_paid, risk) => {
+    if (this.loans.length < 5){
+        this.health_funds_loan += amount
+        perc = amount/stato.pil
+        perc_paid = perc * interests_paid/100
+        perc_not_paid = perc * interests_not_paid/100
+        this.loans.push(new Loan(date1,amount, perc_paid, perc_not_paid, risk))
+    }
+    else{
+        console.log("hai gia 5 prestiti")
+    }
   }
 
 
+  this.pay_loan = (loan) => {
+    this.pil -= loan.perc_paid*this.pil // da controllare matematica
+    const index = this.loans.indexOf(loan)
+    this.loans.splice(index, 1)
+
+  }
+
+  this.create_date = (risk) => {  
+    if (risk === "high"){
+      month = world.month_numb + 1
+      
+    }
+    else if (risk === "low"){
+      month = world.month_numb + 2
+      
+    }
+    month = months[month-1]
+    day = world.curDay
+    year = world.curYear
+    a = day + month + year
+    return a
+  }
+
+
+
   this.loan_reader_expire = (element) =>{                         //chiamata da loan_reader_to_pay
-    if (element.date1 === world.date) {                          //va con stato. e non con this.
-      this.increase_debt(element.amount / this.money)                   //va con stato. e non con this.
+    if (element.date1 === world.date) {
+      this.increase_debt(element.amount / this.money)
       console.log("Il debito di euro ",element.amount," non è stato pagato")
       console.log("nuovo debito pubblico", this.public_debt)
       this.loans.splice(this.loans.indexOf(element),1)
@@ -426,18 +442,6 @@ var State = function(state, World){
     }
     else{
       console.log("non ci sono prestiti da pagare")
-    }
-  }
-
-
-  this.pay_loan = (element) => {
-    const to_pay = false
-    if (to_pay === true){
-      this.money -= element.amount
-      console.log("hai pagato il debito di ",element.amount , "con la nazione ", element.state)
-      console.log("nuovo capitale ", this.money)
-      this.loans.splice(this.loans.indexOf(element),1)
-      this.loans=this.loans.filter(Boolean)
     }
   }
 
@@ -632,7 +636,7 @@ var State = function(state, World){
       this.economy_judgment = "peggiorata economia"
       //const nr=this.pil_rate-this.rate_economy_daily
       this.pil-=(this.pil_0*((this.pil_rate)/500))
-      console.log(this.pil_0*((this.pil_rate)/500))
+      console.log(this.pil_0*((this.pil_rate)/500))   //da controllare la matematica
 
 
     }
@@ -658,6 +662,19 @@ var State = function(state, World){
 
 
   //-----------Start summaries-------------
+
+  this.loan_summary = () => {
+    if (this.loans.length != 0){
+      this.loans.forEach(currentItem => {
+        if (currentItem.date1 === world.date){
+          this.pil -= currentItem.perc_not_paid*this.pil // da controllare matematica
+          index = stato.loans.indexOf(currentItem)
+          this.loans.splice(index, 1)
+          this.loan_expired = true
+        }
+      });
+    }
+  }
 
   this.summary_death = () => {
     this.non_virus_death_update()
@@ -737,7 +754,6 @@ var State = function(state, World){
     if (this.feeling <0){
       this.feeling = 0
     }
-
   }
 
 
@@ -774,6 +790,7 @@ var State = function(state, World){
     this.summary_feeling()
     this.summary_death()
     this.health_funds_calcolate()
+    this.loan_summary()
   }
   
 
@@ -783,113 +800,11 @@ var State = function(state, World){
 //end state
 
 
-/*
-schools_opened : [100, 100,0],
-    museums_opened : [100, 100,0],
-    shops_opened : [100, 100,0],
-    ports_opened : [100, 100,0],
-    airports_opened : [100, 100,0],
-    sports_allowed : [100, 100,0],
-    remote_working_companies : [100, 100,0],
-    companies_opened : [100, 100,0],
-    red_zone : [0, 100,0],
-    block_trades_e : [0,100,0],
-    mandatory_masks : false,
-    army_using : false,
-    close_stock: false,
-    new_hospitals : 0
-*/
-
-debug_make_decision = (c) => {
-  console.log("counter",c)
-  if (c === 23){
-    stato.make_new_hospital()
-  }
-  else if (c === 3333){
-    stato.make_new_hospital()
-  }
-  else if (c === 100 ){
-    stato.make_new_hospital()
-  }
-  else if (c === 500){
-    stato.make_new_hospital()
-  }
-  else if (c === 300){
-    stato.make_new_hospital()
-  }
-  else if (c === 1){
-    stato.make_decision("schools_opened", 5)
-  }
-  else if (c === 3){
-    stato.make_decision("shops_opened", 5)
-  }
-  else if (c === 6){
-    stato.make_decision("schools_opened", 0)
-  }
-  else if (c === 5){
-    stato.make_decision("museums_opened", 5)
-  }
-  else if (c === 7){
-    stato.make_decision("ports_opened", 5)
-  }
-  else if (c === 9){
-    stato.make_decision("airports_opened", 5)
-  }
-  else if (c === 11){
-    stato.make_decision("companies_opened", 5)
-  }
-  else if (c === 13){
-    stato.make_decision("remote_working_companies", 5)
-  }
-  else if (c === 15){
-    stato.decision["army_using"] = true 
-  }
-  else if (c === 17){
-    stato.make_decision("sports_allowed", 5)
-  }
-  else if (c === 19){
-    stato.decision["close_stock"] = true 
-  }
-  else if (c === 21){
-    stato.decision["mandatory_masks"] = true 
-  }
-  else if (c === 23){
-    stato.make_decision_red(100)
-  }
-  else if (c === 25){
-    stato.block_trades(6)
-  }
-  else if (c === 27){
-  }
-  /*
-  else if (c === 15){
-    stato.make_change_bed(5)
-  }
-  else if (c === 20){
-    stato.make_change_bed(5)
-  }
-  else if (c === 21){
-    stato.make_change_bed(5)
-  }
-  else if (c === 22){
-    stato.make_change_bed(5)
-  }
-  else if (c === 23){
-    stato.make_change_bed(5)
-  }
-  else if (c === 24){
-    stato.make_change_bed(5)
-  }
-  else if (c === 25){
-    stato.make_change_bed(5)
-  }*/
-}
-
-
 state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
+
 //let count = 0
 
 /*

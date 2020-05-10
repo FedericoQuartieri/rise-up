@@ -133,7 +133,7 @@
     background-color: white;
     width: 195px;
     height: 30px;
-    transform: translateY(-30px);
+    /*transform: translateY(-30px);*/
     margin: auto;
 
 }
@@ -162,7 +162,7 @@
 }
 
 .require-menu-items {
-    transform: translateX(-35px);
+    /*transform: translateX(-35px);*/
     height: 35px;
     width: 35px;
     background-color: tomato;
@@ -224,6 +224,16 @@
 .item5 {
     bottom:140px;
 }
+
+.buttons {
+    justify-content : space-around;
+    display: flex;
+}
+
+.loans ul {
+    list-style: none;
+}
+
 
 /*
 .spec-button{
