@@ -9,8 +9,6 @@ const states = {
                 "public_debt" : 384738,
                 "money" : 48374837483,
                 "army_level" : 55344
-
-
               }
 }
 
@@ -143,8 +141,17 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_rate = (100-(this.pil/this.pil_0 *100))
   this.reanimate_beds_hospitals = 0
+  this.decision_dictonary = {
+    schools_opened : [100, 100,0],
+    museums_opened : [100, 100,0],
+    shops_opened : [100, 100,0],
+    ports_opened : [100, 100,0],
+    airports_opened : [100, 100,0],
+    sports_allowed : [100, 100,0],
+    companies_opened : [100, 100,0]
+  }
 
-
+  
   this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.economy_rate > 30)
 
 
@@ -173,6 +180,7 @@ var State = function(state, World){
 
     }
   }
+
 
   this.decision = {//helth feeling economy     health good = 0 feeling good = 100 economy good = 0
     schools_opened : [100, 100,0],
@@ -426,59 +434,6 @@ var State = function(state, World){
   }
 
 
-
-  this.loan_reader_expire = (element) =>{                         //chiamata da loan_reader_to_pay
-    if (element.date1 === world.date) {
-      this.increase_debt(element.amount / this.money)
-      console.log("Il debito di euro ",element.amount," non è stato pagato")
-      console.log("nuovo debito pubblico", this.public_debt)
-      this.loans.splice(this.loans.indexOf(element),1)
-      this.loans=this.loans.filter(Boolean)
-    }
-    else {}
-  }
-
-
-  this.pay_loans_review = ()=> {
-    if (this.loans.length !== 0){
-    this.loans.forEach(this.loan_reader_to_pay)               //chiamata in summary
-    }
-    else{
-      console.log("non ci sono prestiti da pagare")
-    }
-  }
-
-
-  this.loan_reader_to_pay = (element) =>{     //chiamata da pay_loans_review
-    const month = world.from_date_to_month(element.date1)
-    const day = parseInt(world.from_date_to_day(element.date1))
-    if (day - world.curDay === 1 && month === world.month_numb){
-      console.log("il prestito", element.name, "con la nazione", element.state, "scade domani")
-      this.pay_loan(element)
-    }
-    if (day - world.curDay === 15 && month === world.month_numb) {
-      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 15 giorni")
-      this.pay_loan(element)
-    }
-    else if (month - world.month_numb === 1 && day === world.curDay) {
-      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 1 mese")
-      this.pay_loan(element)
-    }
-    else if (month - world.month_numb === 2 && day === world.curDay){
-      console.log("il prestito", element.name, "con la nazione", element.state, "scade tra 2 mesi")
-      this.pay_loan(element)
-    }
-    else if (month - world.month_numb > 2){
-      console.log("non scadono prestiti entro 2 mesi")
-    }
-    else if (element.date1 === world.date){
-      this.loan_reader_expire(element)
-    }
-    else{
-      console.log("ci sono prestiti da pagare, non ci sono prestiti scaduti")  //poi qui metteremo un tasto paga manuale
-    }
-  }
-
   // End loans section
 
   //-------------------------------------
@@ -705,48 +660,52 @@ var State = function(state, World){
   this.summary_economy = () =>{
     let rate=0
     Object.keys(this.decision).forEach(key =>{
-      if(key !== "mandatory_masks" && key !== "army_using" && key !== "new_hospitals" && key !== "close_stock"){
-        if(key==="red zone"){
-          rate+=(this.decision[key][2]/100)*2
+      if (key !== "new_hospitals"){
+        if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
+          if (this.decision[key] === true){
+            rate += 1
+          }
         }
-        else{
-          rate+=(this.decision[key][2]/100) 
+        else if(key === "red_zone"){
+          rate+=(this.decision[key][2]/100) *4                            //red zone *4
         }
-      }
-      else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
-        if (this.decision[key] === true){
-          rate += 1
+        else if(key === "block_trades_e"){
+          rate+=(this.decision[key][2]/100) *3                             //*3
         }
-      }
-      else if (key === "new_hospitals"){
-        rate += this.decision[key]
-
+        else if (key === "shops_opened" || key === "companies_opened"){
+          rate+=(this.decision[key][2]/100) *2                            // *2
+        }
+        else if (key === "schools_opened" || key === "museums_opened" || key === "ports_opened" || key === "airports_opened" || key === "sports_allowed"){
+          rate+=(this.decision[key][2]/100)                               //*1
+        }
       }
     })
     this.pil_rate = rate
     this.economy_update()
-    //non andrebbe diviso per cento però il pil è grandissimo quindi per non influenzare troppo dividi per cento ancora,poi coi numeri vediamo dopo
   }
 
   this.summary_feeling=() =>{
     let sum=0
     c=0
     Object.keys(this.decision).forEach(key => {
-      //console.log(key, this.decision[key])
-      if(key !== "mandatory_masks" && key !== "army_using" && key !== "new_hospitals" && key !== "close_stock" && key !== "red_zone"){
-        sum += this.decision[key][1]
-        c += 1
-      }
-      else if (key === "red_zone"){
-        sum += this.decision[key][1] *2
-        c += 2 
-      }
-      else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
-        if (this.decision[key] === true){
-          sum -= 1
+      if (key !== "new_hospitals"){
+        if (key === "red_zone"){
+          sum += (this.decision[key][1]) *4                   //red_zone *4
+          c += 4
         }
-        else if(this.decision[key] === false){
-          sum += 1
+        else if (key === "shops_opened" || key === "airports_opened" || key === "sports_allowed" || key === "companies_opened"){
+          sum += (this.decision[key][1]) *2                  //2*
+          c += 2
+        }
+        else if (key === "schools_opened" || key === "museums_opened" || key === "ports_opened" || key === "block_trades_e"){
+          sum += (this.decision[key][1])                    //*1
+          c += 1
+        }
+        else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
+          if (this.decision[key] === false){
+            sum += 100                                      //true = 100, false = 0
+          }
+          c += 1
         }
       }
     })
@@ -762,20 +721,24 @@ var State = function(state, World){
 
   this.summary_infect =() =>{
     var rate = this.rate_0
-    rate += 10
     Object.keys(this.decision).forEach(key =>{
-      if(key !== "mandatory_masks" && key !== "army_using" && key !== "new_hospitals" && key !== "close_stock" && key !=="red_zone"){
-        rate += (this.decision[key][0]/100)
-      }
-      else if(key === "red_zone"){
-        rate += ((100-this.decision[key][0])/100)
-      }
-      else if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){
-        if (this.decision[key] === true){
-          rate -= 0.5 
+      if (key !== "new_new_hospitals"){
+        if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){    //bool
+          if (this.decision[key] === true){
+            rate -= 0.5 
+          }
+          else if(this.decision[key] === false){
+            rate += 0.5
+          }
+        } 
+        else if(key === "red_zone"){                                                        //red zone 4*
+          rate += ((100-this.decision[key][0])/100)*4
         }
-        else if(this.decision[key] === false){
-          rate += 0.5
+        else if (key === "schools_opened" || key === "shops_opened" || key === "airports_opened" || key === "companies_opened"){
+          rate += (this.decision[key][0]/100)*2                                                 
+        }                                                                                  //2*
+        else if (key === "museums_opened" || key === "ports_opened" || key === "sports_allowed" || key === "block_trades_e"){
+          rate += (this.decision[key][0]/100)
         }
       }
     })
@@ -786,7 +749,6 @@ var State = function(state, World){
     this.infect()
   }
 
-
   this.summaries=()=>{
     this.summary_infect()
     this.summary_economy()
@@ -795,8 +757,6 @@ var State = function(state, World){
     this.health_funds_calcolate()
     this.loan_summary()
   }
-  
-
 }
 
 

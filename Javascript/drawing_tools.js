@@ -24,8 +24,7 @@ const drawing_tools={
             const container=document.createElement("div")
             container.setAttribute("class","div-menu")
             const list=document.createElement("ul")
-            list.setAttribute("class","decision-menu")
-        
+            list.setAttribute("class","decision-menu")  
             Object.keys(dictionary).forEach((key)=>{
                 let curDec=document.createElement("li")
                 $(curDec).attr({
@@ -57,9 +56,15 @@ const drawing_tools={
             container.appendChild(list)
             container_out.appendChild(container)
         },
-        update:(dictionary) =>{
+        update : (dictionary) =>{
             Object.keys(dictionary).forEach(key =>{
               document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+dictionary[key][0]+"%"
+            })
+        },
+        update_dicto : (state) => {
+            Object.keys(state.decision).forEach(key =>{
+                if (key !== "red_zone" && key !== "block_trades_e" && key !== "mandatory_masks" && key !== "army_using" && key !== "close_stock" && key !== "new_hospitals")
+                    state.decision_dictonary[key] = state.decision[key]
             })
         }
     },

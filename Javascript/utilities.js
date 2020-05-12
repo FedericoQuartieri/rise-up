@@ -69,5 +69,4 @@ function clock (state) {
     const datte = curDay +curMonth + curYear
     
     state.world.date=datte
-    console.log(datte)
   }

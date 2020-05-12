@@ -4,7 +4,8 @@
 
 //drawing_tools.display_decisions.draw(dizionario da dare,div esterno dove aggiunge la lista fatta bene)
 updates = () =>{
-    drawing_tools.display_decisions.update(stato.decision)
+    drawing_tools.display_decisions.update(stato.decision_dictonary)
+    drawing_tools.display_decisions.update_dicto(stato)
     drawing_tools.display_specializations.update(stato.specializations)
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
@@ -33,11 +34,9 @@ createGrid(3)
 //Mid
 
 //0
-drawing_tools.display_decisions.draw(stato.decision,document.getElementById("col 0 1"),stato)
+drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElementById("col 0 1"),stato)
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
-
-
 //1
 
 
