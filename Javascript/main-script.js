@@ -9,6 +9,13 @@ updates = () =>{
     drawing_tools.display_specializations.update(stato.specializations)
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
+    drawing_tools.display_counters.update((stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
+    console.log("dati")
+    console.log(stato.infects)
+    console.log((stato.pil/stato.pil_0).toFixed(20)*100)
+    console.log(stato.pil)
+    
+    
 }
 const fps=30
 const daytime=.5
@@ -38,6 +45,7 @@ drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElemen
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
 //1
+drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,document.getElementById("col 1 1"))
 
 
 //2
