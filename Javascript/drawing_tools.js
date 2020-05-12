@@ -353,7 +353,146 @@ const drawing_tools={
                         
 
         }
+    },
+    "display_counters" :{
+        draw : (infects,economy,feeling,deaths,container_out)=>{
+            const container=document.createElement("div")
+            container.setAttribute("class","container_counters")
+            for(let i=0;i<3;i++){
+        
+        const card=document.createElement("div")
+        card.setAttribute("class","card")
+        
+        const box=document.createElement("div")
+        box.setAttribute("class","box")
+        
+        const perc=document.createElement("div")
+        perc.setAttribute("class","percent")
+    
+        const svg=document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        
+        
+        perc.appendChild(svg)
+        const h2=document.createElement("h2")
+        h2.setAttribute("id","display "+i)
+    
+        if(i===0){
+            h2.innerHTML=infects
+        }
+        else if(i===1){
+            h2.innerHTML=economy
+        }
+        else{
+            h2.innerHTML=feeling
+        }
+    
+        for(let j=0;j<2;j++){
+            const circle=document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            $(circle).attr({
+                "cx":"70",
+                "cy":"70",
+                "r":"70"
+                })
+            
+            if(j===1){
+                circle.setAttribute("id","circle "+i)
+                circle.style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ h2.innerHTML+ " ) /100) ;"
+                console.log(h2.innerHTML)
+            } 
+            
+            svg.appendChild(circle)
+        }
+    
+    
+        const number=document.createElement("div")
+        number.setAttribute("class","number")
+        perc.appendChild(number)
+    
+        const perc_graph=document.createElement("span")
+        perc_graph.setAttribute("class","perc_graph")
+        perc_graph.innerHTML="%"
+        
+    
+        
+        number.appendChild(h2)
+    
+        
+        h2.appendChild(perc_graph)
+    
+    
+        const header=document.createElement("h2")
+        header.setAttribute("class","text")
+        if(i===0){
+            header.innerHTML="infects"
+    
+        }
+        else if(i===1){
+            header.innerHTML="economy"
+    
+        }
+        else{
+            header.innerHTML="feeling"
+    
+        }
+        
+            
+    
+        box.appendChild(perc)
+        box.appendChild(header)
+        
+        card.appendChild(box)
+        container.appendChild(card)
+    
+        
+        }
+        const container_deaths=document.createElement("div")
+        container_deaths.setAttribute("class","container_deaths")
+        const ic=document.createElement("i")
+        ic.setAttribute("class","fa fa-exclamation-triangle fa-3x")
+        const disp=document.createElement("div")
+        disp.setAttribute("id","death_display")
+        disp.innerHTML=deaths
+        const p=document.createElement("p")
+        p.setAttribute("class","count_text")
+        p.innerHTML="deaths"
+
+
+
+        container_deaths.appendChild(ic)
+        container_deaths.appendChild(disp)
+        container_deaths.appendChild(p)
+
+        container_out.appendChild(container)
+        container_out.appendChild(container_deaths)
+    
+        
+    
+        },
+        update :(infects,economy,feeling,deaths) =>{
+            for(let i=0;i<3;i++){
+                const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
+                console.log(curPar)
+                if(i===0){
+                    document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(infects).toFixed(1)) 
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ infects+ " ) /100) ;"
+        
+                }
+                else if(i===1){
+                    document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(economy).toFixed(1)) 
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ economy+ " ) /100) ;"
+                }
+                else{
+                    document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(feeling).toFixed(1)) 
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ feeling+ " ) /100) ;"
+                }
+                
+                
+        
+            }
+            document.getElementById("death_display").innerHTML=deaths
+        }
     }
+
 }
 
 
