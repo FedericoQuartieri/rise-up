@@ -478,7 +478,6 @@ const drawing_tools={
     
         },
         update :(infects,economy,feeling,deaths) =>{
-            console.log(daytime)
             for(let i=0;i<3;i++){
                 const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
                 if(i===0){

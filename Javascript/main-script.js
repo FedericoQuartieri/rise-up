@@ -25,7 +25,7 @@ createGrid(3)
 //Top
 
 //0
-drawing_tools.display_speed.draw(document.getElementById("col 0 0"))
+
 //1
 
 //2
@@ -64,7 +64,7 @@ drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getEleme
 //Loops 
 //var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
 
-var timerClock = setInterval(function(){speed();clock(stato);stato.summaries();stato.print()}, 1000/daytime)
+var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
 
 var gameLoop = setInterval(function(){ updates()},1000/fps)
 
