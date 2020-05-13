@@ -143,6 +143,10 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_rate = (100-(this.pil/this.pil_0 *100))
   this.reanimate_beds_hospitals = 0
+  this.feeling_dead = 100
+  this.feeling_non_virus_dead = 100
+  this.riot_type = ""
+  this.riots =0
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -161,8 +165,8 @@ var State = function(state, World){
 
   this.make_decision_red = (level) => {
     this.decision["red_zone"][0] = level
-    this.decision["red_zone"][1] = 100-level
-    this.decision["red_zone"][2] = level
+    this.decision["red_zone"][1] = level
+    this.decision["red_zone"][2] = level 
   }
 
   this.make_decision = (decision, level_closing) => {
@@ -193,7 +197,7 @@ var State = function(state, World){
     sports_allowed : [100, 100,0],
     companies_opened : [100, 100,0],
     red_zone : [0, 100,0],
-    block_trades_e : [100,100,0],       //different function
+    block_trades_e : [100, 0,0],       //different function
     mandatory_masks : false,
     army_using : false,
     close_stock: false,
@@ -285,6 +289,9 @@ var State = function(state, World){
     })
     this.beds_feeling = (total_beds / this.other_beds)*100   //min 5 max 100
     this.non_virus_dead_rate = 100-this.beds_feeling
+    if (this.beds_feeling <= 5) {
+      this.beds_feeling = 0
+    }
   }
 
   this.specializations = {
@@ -321,7 +328,6 @@ var State = function(state, World){
       console.log("infected : " ,this.infects)
       console.log("rate : " ,this.infection_rate)
       console.log("feeling :", this.feeling)
-      console.log("dead :" ,this.dead)
       console.log("economy perc:","-", this.economy_rate,"%")
       console.log(this.economy_judgment)
       console.log("pil rate: ", this.pil_rate)
@@ -332,6 +338,14 @@ var State = function(state, World){
       console.log("new hospitals", this.decision["new_hospitals"])
       console.log("reanimate beds", this.reanimate_beds)
       console.log("need medical", this.need_medical)
+      console.log("non virus rate", this.non_virus_dead_rate)
+      console.log("dead :" ,this.dead)
+      console.log("non virus dead", this.non_virus_dead)
+      console.log("virus dead :" ,this.virus_dead)
+      console.log("feeling deads", this.feeling_dead)
+      console.log("feeling non virus dead",this.feeling_non_virus_dead)
+      console.log("riot", this.riot_type)
+      console.log("riots", this.riots)
   }
 
   //-------------------------------------
@@ -444,25 +458,43 @@ var State = function(state, World){
   //-------------------------------------
 
   this.riot=()=>{
-    const riot = getRandomInt()
+    this.riots += 1
+    const riot = getRandomInt(1,3)
+    console.log("a", riot)
     switch(riot){
       case 1:
-        this.riot = "hospital"
-        this.infects *= 40
+        this.riot_type = "hospital"
+        this.infects += this.infects*(40/100)
+        break
 
       case 2:
-        this.riot = "civil"
-        this.infects *= 20
-        this.pil-=(this.pil_0*(15/500))
+        this.riot_type = "civil"
+        this.infects += this.infects*(20/100)
+        this.pil-=(this.pil_0*(10/500))
+        break
 
       case 3:
-        this.riot = "economy"
-        this.pil-=(this.pil_0*(30/500))
+        this.riot_type = "economy"
+        this.pil-=(this.pil_0*(20/500))
+        break
     }
   }
 
   this.riot_summary = () => {
+    perc = Math.round((100-this.feeling)/20)
+    const riot = getRandomInt(1,100)
+    var a = 0
+    if (riot <= perc){
+      a = 1
+    }
+    else{
+      a = 2
+    }
+    switch(a){
+      case 1:
 
+        this.riot()
+    }
   }
   //-------------------------------------
 
@@ -677,6 +709,7 @@ var State = function(state, World){
     this.death_daily = death + this.non_virus_death_daily
     this.dead += this.death_daily
     this.infects -= death
+    this.virus_dead = this.dead-this.non_virus_dead
   }
 
 
@@ -713,7 +746,7 @@ var State = function(state, World){
     Object.keys(this.decision).forEach(key => {
       if (key !== "new_hospitals"){
         if (key === "red_zone"){
-          sum += (this.decision[key][1]) *4                   //red_zone *4
+          sum += (this.decision[key][1])*4                  //red_zone *4
           c += 4
         }
         else if (key === "shops_opened" || key === "airports_opened" || key === "sports_allowed" || key === "companies_opened"){
@@ -734,11 +767,20 @@ var State = function(state, World){
     })
     sum += this.beds_feeling*2
     c+=2
-    const max_dead = this.popolation * 0.2
-    this.dead / max_dead
+    this.feeling_dead = 100-((this.dead / (this.popolation * 0.23)) * 100)
+    sum += this.feeling_dead*4
+    if (this.feeling_dead < 0){
+      this.feeling_dead = 0
+    }
+    c += 4
+    this.feeling_non_virus_dead = 100-((this.non_virus_dead / 418) * 100)   
+    sum += this.feeling_non_virus_dead*4
+    if (this.feeling_non_virus_dead < 0){
+      this.feeling_non_virus_dead = 0
+    }
+    c += 4
     this.feeling = sum / c
-    this.feeling -= this.feeling * (this.death_daily / this.dead)
-    if (this.feeling <0){
+    if (this.feeling < 5){
       this.feeling = 0
     }
   }
@@ -746,6 +788,7 @@ var State = function(state, World){
 
   this.summary_infect =() =>{
     var rate = this.rate_0
+    rate += 1
     Object.keys(this.decision).forEach(key =>{
       if (key !== "new_new_hospitals"){
         if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){    //bool
@@ -781,6 +824,7 @@ var State = function(state, World){
     this.summary_death()
     this.health_funds_calcolate()
     this.loan_summary()
+    this.riot_summary()
   }
 }
 

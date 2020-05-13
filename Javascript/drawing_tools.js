@@ -130,11 +130,15 @@ const drawing_tools={
            
             input.addEventListener("mousemove", function rangeSlider(){
                 reference[0]=parseInt(this.value)
+                reference[1]=100-(parseInt(this.value))
+                reference[2]=parseInt(this.value)
                 document.getElementById("rangeValue").innerHTML=this.value
                 document.getElementById("fillRangeValue").style.width=+this.value+"%"
             })
             input.addEventListener("change", function rangeSlider(){
                 reference[0]=parseInt(this.value)
+                reference[1]=100-(parseInt(this.value))
+                reference[2]=parseInt(this.value)
                 document.getElementById("rangeValue").innerHTML=this.value
                 document.getElementById("fillRangeValue").style.width=+this.value+"%"
             })
@@ -146,6 +150,28 @@ const drawing_tools={
 
     "display_specializations" : {
         draw : (dictionary,container_out, state) =>{
+
+            var i = 0
+            pop = ()=>{
+                if (i === 0){
+                    document.getElementById("item1").style.transform = "translateX(-50px)"
+                    document.getElementById("item2").style.transform = "translate(-35px, 35px)"
+                    document.getElementById("item3").style.transform = "translateY(60px)"
+                    document.getElementById("item4").style.transform = "translate(35px, 35px)"
+                    document.getElementById("item5").style.transform = "translateX(50px)"
+                    i = 1
+                }
+                else{
+                    document.getElementById("item1").style.transform = "translateX(0)"
+                    document.getElementById("item2").style.transform = "translate(0)"
+                    document.getElementById("item3").style.transform = "translateY(0)"
+                    document.getElementById("item4").style.transform = "translate(0)"
+                    document.getElementById("item5").style.transform = "translateX(0)"
+                    i = 0
+
+                }
+            }
+
             const container=document.createElement("div")
             container.setAttribute("class","spec-menu")
 
@@ -160,6 +186,7 @@ const drawing_tools={
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
+            button.setAttribute("id", "require-beds")
             button.addEventListener("click", pop)
             a = document.createElement("p")
             button.appendChild(a)
@@ -207,26 +234,6 @@ const drawing_tools={
             */
             container_out.appendChild(container)
             
-            var i = 0
-            function pop(){
-                if (i === 0){
-                    document.getElementById("item1").style.transform = "translateX(-50px)"
-                    document.getElementById("item2").style.transform = "translate(-35px, 35px)"
-                    document.getElementById("item3").style.transform = "translateY(60px)"
-                    document.getElementById("item4").style.transform = "translate(35px, 35px)"
-                    document.getElementById("item5").style.transform = "translateX(50px)"
-                    i = 1
-                }
-                else{
-                    document.getElementById("item1").style.transform = "translateX(0)"
-                    document.getElementById("item2").style.transform = "translate(0)"
-                    document.getElementById("item3").style.transform = "translateY(0)"
-                    document.getElementById("item4").style.transform = "translate(0)"
-                    document.getElementById("item5").style.transform = "translateX(0)"
-                    i = 0
-
-                }
-            }
 
             var j = 0
             function pop2 () {
@@ -285,6 +292,10 @@ const drawing_tools={
 
     "display_loans" : {
         draw : (container_out, state) =>{
+
+            make_loan_low = () => {state.make_loan(state.create_date("low"), 1000000000, 3, 20, "low");drawing_tools.display_loans.update_internal(state)}
+            make_loan_high = () => {state.make_loan(state.create_date("high"), 2000000000, 6, 40, "high");drawing_tools.display_loans.update_internal(state)}
+            
             const container = document.createElement("div")
             container.setAttribute("class", "loans_menu")
             container_out.appendChild(container)
@@ -300,11 +311,13 @@ const drawing_tools={
             make_loan_div.appendChild(buttons_wrap)
             const low_risk = document.createElement("button")
             low_risk.innerHTML = "low risk"
-            low_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("low"), 1000000000, 3, 20, "low");drawing_tools.display_loans.update_internal(state)})
+            low_risk.setAttribute("id", "make-loan-low")
+            low_risk.addEventListener("click" , make_loan_low)
             buttons_wrap.appendChild(low_risk)
             const high_risk = document.createElement("button")
             high_risk.innerHTML = "high risk"
-            high_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("high"), 2000000000, 6, 40, "high");drawing_tools.display_loans.update_internal(state)})
+            high_risk.setAttribute("id", "make-loan-high")
+            high_risk.addEventListener("click" , make_loan_high)
             buttons_wrap.appendChild(high_risk)
 
             const show_loans = document.createElement("div")
@@ -573,6 +586,76 @@ const drawing_tools={
             document.getElementById("death_display").innerHTML=deaths
         }
     },
+    display_stop : (container_out) =>{
+
+        _1x_function = () => {if (currentLoop !== null){clearInterval(currentLoop)};daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
+        _05x_function = () => {clearInterval(currentLoop);daytime = .5; var timerClock0 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock0}
+        _2x_function = () => {clearInterval(currentLoop);daytime = 20;var timerClock2 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock2}
+        
+        const container = document.createElement("div")
+        container_out.appendChild(container)
+        container.setAttribute("class", "speed-menu")
+        const stop_button = document.createElement("button")
+        container.appendChild(stop_button)
+        stop_button.innerHTML = "stop"
+        stop_button.setAttribute("id", "stop-button")
+        stop_button.setAttribute("class", "stop-button")
+        stop_button.addEventListener("click", function(){clearInterval(currentLoop);currentLoop = null})
+
+        const _1x_span = document.createElement("span")
+        container.appendChild(_1x_span)
+        const _1x_button = document.createElement("button")
+        _1x_span.appendChild(_1x_button)
+        _1x_button.innerHTML = "1X"
+        _1x_button.setAttribute("id", "1x-button")
+        _1x_button.setAttribute("class", "1x-button")
+        _1x_button.addEventListener("click", _1x_function)
+       
+        const _05x_span = document.createElement("span")
+        container.appendChild(_05x_span)
+        const _05x_button = document.createElement("button")
+        _05x_span.appendChild(_05x_button)
+        _05x_button.innerHTML = "0.5X"
+        _05x_button.setAttribute("id", "05x-button")
+        _05x_button.setAttribute("class", "05x-button")
+        _05x_button.addEventListener("click", _05x_function)
+        
+        const _2x_span = document.createElement("span")
+        container.appendChild(_2x_span)
+        const _2x_button = document.createElement("button")
+        _2x_span.appendChild(_2x_button)
+        _2x_button.innerHTML = "2X"
+        _2x_button.setAttribute("id", "2x-button")
+        _2x_button.setAttribute("class", "2x-button")
+        _2x_button.addEventListener("click", _2x_function)
+    },
+    continue : (state) => {
+        if (state.infects === state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
+            clearInterval(currentLoop)
+            clearInterval(gameLoop)
+            document.getElementById("1x-button").removeEventListener("click",  _1x_function)
+            document.getElementById("05x-button").removeEventListener("click",  _05x_function)
+            document.getElementById("2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("require-beds").removeEventListener("click", pop)
+            document.getElementById("make-loan-high").removeEventListener("click", make_loan_high)
+            document.getElementById("make-loan-low").removeEventListener("click", make_loan_low)
+        }
+    },
+    display_date : {
+        draw : (container_out, world)  => {
+            const container = document.createElement("div")
+            container_out.appendChild(container)
+            const date = document.createElement("div")
+            container.appendChild(date)
+            date.setAttribute("id", "date")
+            date.setAttribute("class", "date")
+            date.innerHTML = world.date
+        },
+        update : (world) => {
+            document.getElementById("date").innerHTML = world.date
+        }
+
+    }
 }
 
 
