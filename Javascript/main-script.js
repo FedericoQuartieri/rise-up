@@ -10,7 +10,7 @@ updates = () =>{
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
     drawing_tools.display_counters.update((stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
-    
+    drawing_tools.display_funds.update(stato)
 }
 const fps=30
 var daytime=0.5
@@ -39,12 +39,14 @@ createGrid(3)
 drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElementById("col 0 1"),stato)
 drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
 drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
+drawing_tools.display_boolean.draw("army_using",stato.decision,document.getElementById("col 0 1"))
 //1
 drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,document.getElementById("col 1 1"))
 
 
 //2
 drawing_tools.display_specializations.draw(stato.specializations, document.getElementById("col 2 1"), stato)
+drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_hospitals.draw(document.getElementById("col 2 1"),stato)
 

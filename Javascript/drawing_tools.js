@@ -267,6 +267,22 @@ const drawing_tools={
             })
         } 
     },
+    "display_funds" : {
+        draw : (container_out, state) => {
+            const container = document.createElement("div")
+            container_out.appendChild(container)
+            const show_funds = document.createElement("div")
+            container.setAttribute("class", "funds-menu")
+            container.appendChild(show_funds)
+            show_funds.setAttribute("class", "show_funds")
+            show_funds.setAttribute("id", "show_funds")
+            show_funds.innerHTML = "health_funds: " + state.health_funds
+        },
+        update : (state) => {
+            document.getElementById("show_funds").innerHTML = "health_funds: " + state.health_funds
+        }
+    },
+
     "display_loans" : {
         draw : (container_out, state) =>{
             const container = document.createElement("div")
@@ -348,17 +364,36 @@ const drawing_tools={
             container.appendChild(add_hospitals)
             add_hospitals.setAttribute("class", "hopsital_button")
             add_hospitals.innerHTML = "add hospitals"
-            add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 > 0) {state.make_new_hospital()} else{/*alert*/}})
+            add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 >= 0) {state.make_new_hospital()} else{/*alert*/}})
             const new_hospitals = document.createElement("span")
             container.appendChild(new_hospitals)
             new_hospitals.setAttribute("class", "show-new-hospitals")
             new_hospitals.setAttribute("id", "show-new-hospitals")
             new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
+            const show_beds = document.createElement("div")
+            container.appendChild(show_beds)
+            show_beds.setAttribute("class", "show_free_beds")
+            show_beds.setAttribute("id", "show_free_beds")
+            var free_beds = state.reanimate_beds - state.need_medical
+            var beds_needed = 0
+            if (free_beds < 0){
+                var beds_needed = -free_beds
+                free_beds = 0
+            }
+            free_beds = Math.round(free_beds)
+            show_beds.innerHTML = "free beds: " + free_beds + "  "+ "beds needed: " + beds_needed
         },
         update : (state) => {
             const new_hospitals = document.getElementById("show-new-hospitals")
             new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
-
+            var free_beds = state.reanimate_beds - state.need_medical
+            var beds_needed = 0
+            if (free_beds < 0){
+                var beds_needed = -free_beds
+                free_beds = 0
+            }
+            free_beds = Math.round(free_beds)
+            document.getElementById("show_free_beds").innerHTML = "free beds: " + free_beds + "  "+ "beds needed: " + beds_needed
                         
 
         }
@@ -499,8 +534,7 @@ const drawing_tools={
             }
             document.getElementById("death_display").innerHTML=deaths
         }
-    }
-
+    },
 }
 
 
