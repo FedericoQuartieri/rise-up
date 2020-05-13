@@ -156,7 +156,7 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "reanimate beds: \n" + dictionary["reanimate_beds"]
+            reanimate_beds.innerHTML = "Total beds: \n" + dictionary["reanimate_beds"]
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
@@ -261,7 +261,7 @@ const drawing_tools={
                         /*document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+ dictionary[key]*/
                     }
                     else if (key === "reanimate_beds"){
-                        document.getElementById("reanimate-beds").innerHTML = key.replace(/_/g," ")+ ": " + dictionary[key]
+                        document.getElementById("reanimate-beds").innerHTML = "Total beds : " + dictionary[key]
                     }
                 }
             })
@@ -372,18 +372,50 @@ const drawing_tools={
             h.innerHTML="beds & hospitals"
             container.appendChild(h)
             const add_hospitals = document.createElement("button")
-            container.appendChild(add_hospitals)
-            add_hospitals.setAttribute("class", "hopsital_button")
-            add_hospitals.innerHTML = "build hospitals"
+            
+            add_hospitals.setAttribute("class", "hospital_button")
+            
+            add_hospitals.innerHTML = "<span>build hospitals</span>"
             add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 >= 0) {state.make_new_hospital()} else{/*alert*/}})
             const new_hospitals = document.createElement("span")
             container.appendChild(new_hospitals)
+            container.appendChild(add_hospitals)
+
             new_hospitals.setAttribute("class", "show-new-hospitals")
             new_hospitals.setAttribute("id", "show-new-hospitals")
             new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
-            /*
+            
+            
+        },
+        update : (state) => {
+            const new_hospitals = document.getElementById("show-new-hospitals")
+            new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
+            
+            var free_beds = state.reanimate_beds - state.need_medical
+            var beds_needed = 0
+            if (free_beds < 0){
+                var beds_needed = -free_beds
+                free_beds = 0
+            }
+            free_beds = Math.round(free_beds)
+            document.getElementById("show_free_beds").innerHTML = "Not used beds: " + free_beds 
+            document.getElementById("show_need").innerHTML= "People in medical need: " + beds_needed
+                       
+
+        }
+    },
+    "display_beds_stats":{
+        draw: (container_out,state)=>{
+            const wrap=document.createElement("div")
+            wrap.setAttribute("class","wrap_beds")
             const show_beds = document.createElement("div")
-            container.appendChild(show_beds)
+            const s1=document.createElement("div")
+            wrap.appendChild(s1)
+            s1.setAttribute("class","separator")
+            s1.setAttribute("id","st")
+            const show_need=document.createElement("div")
+            show_need.setAttribute("id", "show_need")
+            
             show_beds.setAttribute("class", "show_free_beds")
             show_beds.setAttribute("id", "show_free_beds")
             var free_beds = state.reanimate_beds - state.need_medical
@@ -393,23 +425,15 @@ const drawing_tools={
                 free_beds = 0
             }
             free_beds = Math.round(free_beds)
-            show_beds.innerHTML = "free beds: " + free_beds + "  "+ "beds needed: " + beds_needed
-            */
-        },
-        update : (state) => {
-            const new_hospitals = document.getElementById("show-new-hospitals")
-            new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
-            /*
-            var free_beds = state.reanimate_beds - state.need_medical
-            var beds_needed = 0
-            if (free_beds < 0){
-                var beds_needed = -free_beds
-                free_beds = 0
-            }
-            free_beds = Math.round(free_beds)
-            document.getElementById("show_free_beds").innerHTML = "free beds: " + free_beds + "  "+ "beds needed: " + beds_needed
-            */            
-
+            show_beds.innerHTML = "Not used beds: " + free_beds 
+            show_need.innerHTML= "People in medical need: " + beds_needed
+            wrap.appendChild(show_beds)
+            wrap.appendChild(show_need)
+            const s2=document.createElement("div")
+            wrap.appendChild(s2)
+            s2.setAttribute("class","separator")
+            s2.setAttribute("id","sb")
+            container_out.appendChild(wrap)
         }
     },
     "display_counters" :{
