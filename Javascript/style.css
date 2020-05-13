@@ -410,20 +410,6 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 
 
-
-
-
-
-
-
-.loans_buttons {
-    justify-content : space-around;
-    display: flex;
-}
-
-
-
-
 svg{
     position: relative;
     width: 150px;
@@ -535,7 +521,7 @@ svg circle:nth-child(2){
 .text{
     position: relative;
     color: #777;
-    font-weight: 700;
+    font-weight: 700; 
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -678,8 +664,47 @@ transition: 0.5s;}
 .loans ul .active button:hover{
     transform: scale(1.1);
 }
+.title{
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 20px;
+
+}
+
+.buttons_wrap {
+    margin: 7px 0 10px 0 ;
+    justify-content : space-evenly;
+    display: flex;
+}
+.buttons_wrap button{
+    font-size: 17px;
+    font-weight: 700;
+    color: #777;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    transition: .5s;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 10%;
+
+}
+.buttons_wrap button:hover{
+    color: #fff;
+}
 
 
+.buttons_wrap button:nth-child(1):hover{
+    background: rgb(0, 115, 255);
+    box-shadow: 0 0 10px rgb(0, 115, 255),0 0 40px rgb(0, 115, 255), 0 0 80px rgb(0, 115, 255);
+    
+}
+.buttons_wrap button:nth-child(2):hover{
+    background: rgb(255, 47, 0);
+    box-shadow: 0 0 10px rgb(255, 47, 0),0 0 40px rgb(255, 47, 0), 0 0 80px rgb(255, 47, 0);
+    
+}
 
 
 

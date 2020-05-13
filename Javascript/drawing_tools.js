@@ -275,14 +275,21 @@ const drawing_tools={
             const make_loan_div = document.createElement("div")
             container.appendChild(make_loan_div)
             make_loan_div.setAttribute("class", "loans_buttons")
+            const h=document.createElement("div")
+            h.setAttribute("class","title")
+            h.innerHTML="Make Loans"
+            make_loan_div.appendChild(h)
+            const buttons_wrap=document.createElement("div")
+            buttons_wrap.setAttribute("class","buttons_wrap")
+            make_loan_div.appendChild(buttons_wrap)
             const low_risk = document.createElement("button")
-            low_risk.innerHTML = "make loan low risk"
+            low_risk.innerHTML = "low risk"
             low_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("low"), 1000000000, 3, 20, "low");drawing_tools.display_loans.update_internal(state)})
-            make_loan_div.appendChild(low_risk)
+            buttons_wrap.appendChild(low_risk)
             const high_risk = document.createElement("button")
-            high_risk.innerHTML = "make loan high risk"
+            high_risk.innerHTML = "high risk"
             high_risk.addEventListener("click" ,function(){state.make_loan(state.create_date("high"), 2000000000, 6, 40, "high");drawing_tools.display_loans.update_internal(state)})
-            make_loan_div.appendChild(high_risk)
+            buttons_wrap.appendChild(high_risk)
 
             const show_loans = document.createElement("div")
             show_loans.setAttribute("class", "loans")
