@@ -286,6 +286,10 @@ const drawing_tools={
 
             const show_loans = document.createElement("div")
             show_loans.setAttribute("class", "loans")
+            const title=document.createElement("h2")
+            title.setAttribute("class","header")
+            title.innerHTML="Loans"
+            show_loans.appendChild(title)
             container.appendChild(show_loans)
             const list = document.createElement("ul")
             list.setAttribute("class", "loans-list")
@@ -306,7 +310,7 @@ const drawing_tools={
                     year = state.world.from_date_to_year(state.loans[i].date1)
                     date = day + " " + month + " " + year + " "
                     document.getElementById("loan"+ (i+1)).setAttribute("class", "active")
-                    document.getElementById("loan"+ (i+1)).innerHTML = "scadenza: " + date + "risk: " + state.loans[i].risk  + " "+ "<span><button id = 'pay-loan-to-setup' class ='pay-loan'>Pay</button><span>"
+                    document.getElementById("loan"+ (i+1)).innerHTML = "expires: " + date + "risk: " + state.loans[i].risk  + " "+ "<span><button id = 'pay-loan-to-setup' class ='pay-loan'>Pay</button><span>"
                     const pay_loan = document.getElementById("pay-loan-to-setup")
                     pay_loan.setAttribute("id", "pay-loan"+(i+1))
                     pay_loan.addEventListener("click", function(){state.pay_loan(state.loans[this.parentElement.parentElement.id.substring(4)- 1]);drawing_tools.display_loans.update_internal(state)})
