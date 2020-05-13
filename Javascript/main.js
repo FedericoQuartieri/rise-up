@@ -441,6 +441,24 @@ var State = function(state, World){
   //-------------------------------------
 
   this.riot=()=>{
+    const riot = getRandomInt()
+    switch(riot){
+      case 1:
+        this.riot = "hospital"
+        this.infects *= 40
+
+      case 2:
+        this.riot = "civil"
+        this.infects *= 20
+        this.pil-=(this.pil_0*(15/500))
+
+      case 3:
+        this.riot = "economy"
+        this.pil-=(this.pil_0*(30/500))
+    }
+  }
+
+  this.riot_summary = () => {
 
   }
   //-------------------------------------
@@ -602,8 +620,8 @@ var State = function(state, World){
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
-      this.pil-=(this.pil_0*(this.pil_rate/1000))
-      console.log(this.pil_0*(this.pil_rate/1000))
+      this.pil-=(this.pil_0*(this.pil_rate/2000))
+      console.log(this.pil_0*(this.pil_rate/2000))
     }
 
     else{
@@ -713,6 +731,8 @@ var State = function(state, World){
     })
     sum += this.beds_feeling*2
     c+=2
+    const max_dead = this.popolation * 0.2
+    this.dead / max_dead
     this.feeling = sum / c
     this.feeling -= this.feeling * (this.death_daily / this.dead)
     if (this.feeling <0){

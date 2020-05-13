@@ -10,15 +10,10 @@ updates = () =>{
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
     drawing_tools.display_counters.update((stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
-    console.log("dati")
-    console.log(stato.infects)
-    console.log((stato.pil/stato.pil_0).toFixed(20)*100)
-    console.log(stato.pil)
-    
     
 }
 const fps=30
-const daytime=.5
+var daytime=0.5
 
 
 //Create canvas
@@ -30,7 +25,7 @@ createGrid(3)
 //Top
 
 //0
-
+drawing_tools.display_speed.draw(document.getElementById("col 0 0"))
 //1
 
 //2
@@ -69,9 +64,10 @@ drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getEleme
 //Loops 
 //var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
 
-var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
+var timerClock = setInterval(function(){speed();clock(stato);stato.summaries();stato.print()}, 1000/daytime)
 
 var gameLoop = setInterval(function(){ updates()},1000/fps)
+
 
 /*
 var timerUpdate =setInterval(() => {

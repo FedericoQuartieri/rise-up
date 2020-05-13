@@ -402,7 +402,7 @@ const drawing_tools={
             if(j===1){
                 circle.setAttribute("id","circle "+i)
                 circle.style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ h2.innerHTML+ " ) /100) ;"
-                console.log(h2.innerHTML)
+                //console.log(h2.innerHTML)
             } 
             
             svg.appendChild(circle)
@@ -474,9 +474,9 @@ const drawing_tools={
     
         },
         update :(infects,economy,feeling,deaths) =>{
+            console.log(daytime)
             for(let i=0;i<3;i++){
                 const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
-                console.log(curPar)
                 if(i===0){
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(infects).toFixed(1)) 
                     document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ infects+ " ) /100) ;"
