@@ -1,3 +1,19 @@
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+ }
+ 
+ body {
+    margin: 0px;
+    min-height: 100%;
+    width: 100%;
+    
+    
+ }
+ 
+
 /* lista delle decision */
 .div-menu ul{  
     list-style: none;
@@ -591,9 +607,9 @@ transition: 0.5s;}
 .container_deaths:hover .fa-3x {
     color: rgba(235, 12, 12, 0.815);
 }
- 
+
 .loans{
-    width: 300px;
+    width: 320px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-bottom: 20px solid #03a9f4;
