@@ -47,10 +47,11 @@ drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.
 
 
 //2
+drawing_tools.display_hospitals.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_specializations.draw(stato.specializations, document.getElementById("col 2 1"), stato)
 drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
-drawing_tools.display_hospitals.draw(document.getElementById("col 2 1"),stato)
+
 
 //------------------------
 //Bottom
