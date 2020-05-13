@@ -210,6 +210,7 @@ var State = function(state, World){
     this.health_funds -= 1000000000
     this.health_funds_used += 1000000000
     this.specializations["reanimate_beds"] += 2000
+    this.reanimate_beds += 2000
     this.reanimate_beds_hospitals += 2000
   }
 
@@ -329,6 +330,8 @@ var State = function(state, World){
       console.log("pil :", this.pil)
       console.log("beds feeling", this.beds_feeling)
       console.log("new hospitals", this.decision["new_hospitals"])
+      console.log("reanimate beds", this.reanimate_beds)
+      console.log("need medical", this.need_medical)
   }
 
   //-------------------------------------
@@ -388,10 +391,10 @@ var State = function(state, World){
     }
     this.decision["block_trades_e"] = outcome
   }
-
+  
 
   this.health_funds_calcolate = () => {
-    health_funds = this.pil * this.health_funds_rate
+    health_funds = Math.round(this.pil * this.health_funds_rate)
     this.health_funds = health_funds - this.health_funds_used + this.health_funds_loan
   }
 
@@ -658,7 +661,7 @@ var State = function(state, World){
     this.non_virus_death_update()
     let total_death = this.infects * 0.03
     let death = total_death - this.dead
-    this.need_medical = this.infects * 0.2
+    this.need_medical = Math.round(this.infects * 0.2)
     actually_med = (this.need_medical - this.reanimate_beds)
     if (actually_med > 0){
       death += actually_med
