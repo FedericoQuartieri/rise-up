@@ -604,7 +604,7 @@ const drawing_tools={
             location.href = "win.html"
         }
     },
-    display_date : {
+    "display_date" : {
         draw : (container_out, world)  => {
             const container = document.createElement("div")
             container_out.appendChild(container)
@@ -617,8 +617,132 @@ const drawing_tools={
         update : (world) => {
             document.getElementById("date").innerHTML = world.date
         }
+    },
+    "display_block_trades": {
+        
+        draw: (container_out,state)=>{
+        const toggle_button=document.createElement("button")
+        $(toggle_button).attr({
+            "type": "button",
+            "class":"btn btn-primary",
+            "data-toggle":"modal",
+            "data-target":".bd-example-modal-lg"
+        })
+    
+        toggle_button.innerHTML="BLOCK TRADES"
+    
+        const modal_outer=document.createElement("div")
+        $(modal_outer).attr({
+            "class":"modal fade bd-example-modal-lg",
+            "tabindex":"-1",
+            "role":"dialog",
+            "aria-labelledby":"myLargeModalLabel",
+            "aria-hidden":"true"
+    
+        })
+        const modal_inner=document.createElement("div")
+        modal_inner.setAttribute("class","modal-dialog modal-lg")
+        const modal_content=document.createElement("div")
+        modal_content.setAttribute("class","modal-content")
+        modal_inner.appendChild(modal_content)
+        modal_outer.appendChild(modal_inner)
+    
+        //HEADER 
+        const header=document.createElement("div")
+        header.setAttribute("class","modal-header")
+        const title=document.createElement("h5")
+        $(title).attr({
+            "class":"modal-title",
+            "id":"exampleModalLongTitle"
+        })
+        title.innerHTML="BLOCK TRADES"
+        header.appendChild(title)
+        const close_button=document.createElement("button")
+        $(close_button).attr({
+            "type":"button",
+            "class":"close" ,
+            "data-dismiss":"modal" ,
+            "aria-label":"Close"
+        })
+        const s=document.createElement("span")
+        s.setAttribute("aria-hidden","true")
+        s.innerHTML="&times;"
+        close_button.appendChild(s)
+        header.appendChild(close_button)
+        modal_content.appendChild(header)
+    
+        //----------
+    
+        const body=document.createElement("div")
+        body.setAttribute("class","modal-body")
+        modal_content.appendChild(body)
+    
+        const trades_wrap=document.createElement("div")
+        trades_wrap.setAttribute("class","trades_wrap")
+        const trades=document.createElement("ul")
+        for(let i=0;i<6;i++){
+            const curTrade=document.createElement("li")
+            curTrade.setAttribute("class","trade-item")
+            curTrade.setAttribute("id","trade"+(i+1))
+            switch(i){
+                case 0:
+                    curTrade.innerHTML="No blocks"
+                    
+                    break
+                case 1:
+                    curTrade.innerHTML="Limit every trade"
+                    
+                    break
+                case 2:
+                    curTrade.innerHTML="Block trades from  adjoinig countries"
+                    
+                    break
+                case 3:
+                    curTrade.innerHTML="Block trades from  and to adjoinig countries"
+                    
+                    break
+                case 4:
+                    curTrade.innerHTML="Block every economic import"
+                    
+                    break
+                case 5:
+                    curTrade.innerHTML="Shut down international commerce imports and exports"
+                    
+                    break
+                
+            }
+            trades.appendChild(curTrade)
+        }
+    
+        trades_wrap.appendChild(trades)
+        body.appendChild(trades_wrap)
+        container_out.appendChild(toggle_button)
+        container_out.appendChild(modal_outer)
+        
+        for(let i=1;i<7;i++){
+            let id="#trade"+i
+            $(id).click(()=>{state.block_trades(i)
+                console.log("ciao")
+            for(let j=1;j<7;j++){
+                let idd=id.replace("#","")
+                if(j===i){
+                    document.getElementById(idd).setAttribute("class","on")
+                }
+                else{
+                    document.getElementById(idd).setAttribute("class","trade-item")  }
+               }
+            
+            })
+            
+        }
+         
+        
     }
+
 }
+}
+
+
 
 
 
