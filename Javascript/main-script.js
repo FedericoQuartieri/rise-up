@@ -9,7 +9,7 @@ updates = () =>{
     drawing_tools.display_specializations.update(stato.specializations)
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
-    drawing_tools.display_counters.update((stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
+    drawing_tools.display_counters.update(stato.infects, (stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
     drawing_tools.display_funds.update(stato)
     drawing_tools.continue(stato)
     drawing_tools.display_date.update(world)
