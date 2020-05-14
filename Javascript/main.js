@@ -2,8 +2,8 @@
 const states = {
   "italia" :
               {
-                "other_beds" : 150000,
-                "reanimate_beds" : 5000,
+                "other_beds" : 2000000,
+                "reanimate_beds" : 100000,
                 "pil" : 1935000000000,
                 "popolation" : 60000000,
                 "public_debt" : 384738,
@@ -58,6 +58,7 @@ var World = function(state){
   this.month_numb = 0
   this.curDay = 0
   this.curYear = 0
+  this.initial_year = 0
 
 
   //-----------Starts Dates-----------
@@ -109,7 +110,7 @@ var State = function(state, World){
   this.reanimate_beds = state["reanimate_beds"]
   this.other_beds = state["other_beds"]
   this.pil = state["pil"]
-  this.health_funds_rate = 5000000000 / this.pil 
+  this.health_funds_rate = 50000000000 / this.pil 
   this.pil_0=this.pil
   this.perc_economy=((this.pil/this.pil_0).toFixed(3))*100
   this.popolation = state["popolation"]     
@@ -147,6 +148,7 @@ var State = function(state, World){
   this.feeling_non_virus_dead = 100
   this.riot_type = ""
   this.riots =0
+  this.end_game = null
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -211,11 +213,11 @@ var State = function(state, World){
   this.make_new_hospital = () => {
     console.log("ciao")
     this.decision["new_hospitals"] += 1
-    this.health_funds -= 1000000000
-    this.health_funds_used += 1000000000
-    this.specializations["reanimate_beds"] += 2000
-    this.reanimate_beds += 2000
-    this.reanimate_beds_hospitals += 2000
+    this.health_funds -= 10000000000
+    this.health_funds_used += 10000000000
+    this.specializations["reanimate_beds"] += 10000
+    this.reanimate_beds += 10000
+    this.reanimate_beds_hospitals += 10000
   }
 
   this.make_change_bed_random = () => {
@@ -648,22 +650,22 @@ var State = function(state, World){
     if(this.pil_rate>this.rate_economy_daily){
       this.economy_judgment = "peggiorata economia"
       //const nr=this.pil_rate-this.rate_economy_daily
-      this.pil-=(this.pil_0*((this.pil_rate)/500))
-      console.log(this.pil_0*((this.pil_rate)/500))   //da controllare la matematica
+      this.pil-=(this.pil_0*((this.pil_rate)/5000))
+      console.log(this.pil_0*((this.pil_rate)/5000))   //da controllare la matematica
 
 
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
-      this.pil-=(this.pil_0*(this.pil_rate/2000))
-      console.log(this.pil_0*(this.pil_rate/2000))
+      this.pil-=(this.pil_0*(this.pil_rate/5000))
+      console.log(this.pil_0*(this.pil_rate/5000))
     }
 
     else{
       this.economy_judgment = "migliorata economia"
       const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil_0*(nr/100))
-      console.log(this.pil_0*(nr/100))
+      this.pil+=(this.pil_0*(nr/500))
+      console.log(this.pil_0*(nr/500))
     }
     this.rate_economy_daily=this.pil_rate
     this.economy_rate = 100-(this.pil/this.pil_0 *100)

@@ -208,58 +208,8 @@ const drawing_tools={
                 number.setAttribute("class", "fa")
                 number.innerHTML = dictionary["level"] * (i+1)
             }
-            /*
-            const showcontainer = document.createElement("div")
-            showcontainer.setAttribute("class", "spec-show-container")
-            container.appendChild(showcontainer)
-            const showup = document.createElement("div")
-            showcontainer.appendChild(showup)
-            showup.setAttribute("class", "spec-showup")
-            showup.addEventListener("click", pop2)
-            showup.innerHTML = "show specialization"
-            const spec_show_menu_items = document.createElement("div")
-            showcontainer.appendChild(spec_show_menu_items)
-            spec_show_menu_items.setAttribute("class", "spec-show-menu-items")
-            var i = 0
-            Object.keys(dictionary).forEach((key)=>{
-                if (key !== "level" && key !== "reanimate_beds" && key !== "beds_possible" && key !== "min"){
-                    const spec_show_menu_item = document.createElement("div")
-                    spec_show_menu_item.setAttribute("class", "spec-item"+(i+1))
-                    spec_show_menu_item.setAttribute("id", key+" toUpdate")
-                    spec_show_menu_items.appendChild(spec_show_menu_item)
-                    spec_show_menu_item.innerHTML = key +": "+ dictionary[key] 
-                    i++
-                }
-            })
-            */
             container_out.appendChild(container)
             
-
-            var j = 0
-            function pop2 () {
-                if (j === 0){
-                    document.getElementById("cardiology_beds toUpdate").style.transform = "translate(-100px, 40px)"
-                    document.getElementById("neurology_beds toUpdate").style.transform = "translate(100px, 40px)"
-                    document.getElementById("gynecology_beds toUpdate").style.transform = "translate(-100px, 80px)"
-                    document.getElementById("urology_beds toUpdate").style.transform = "translate(100px, 80px)"
-                    document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(-100px, 120px)"
-                    document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(100px, 120px)"
-                    document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(150px)"
-                    j = 1
-                }
-                else{
-                    if (j === 1){
-                        document.getElementById("cardiology_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("neurology_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("gynecology_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("urology_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("pulmonology_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("pediatrics_beds toUpdate").style.transform = "translate(0)"
-                        document.getElementById("psychiatry_beds toUpdate").style.transform = "translateY(0)"
-                    j = 0
-                    }
-                }
-            }
         },
         update : (dictionary) => {
             Object.keys(dictionary).forEach(key =>{
@@ -292,10 +242,6 @@ const drawing_tools={
 
     "display_loans" : {
         draw : (container_out, state) =>{
-
-            make_loan_low = () => {state.make_loan(state.create_date("low"), 1000000000, 3, 20, "low");drawing_tools.display_loans.update_internal(state)}
-            make_loan_high = () => {state.make_loan(state.create_date("high"), 2000000000, 6, 40, "high");drawing_tools.display_loans.update_internal(state)}
-            
             const container = document.createElement("div")
             container.setAttribute("class", "loans_menu")
             container_out.appendChild(container)
@@ -312,12 +258,12 @@ const drawing_tools={
             const low_risk = document.createElement("button")
             low_risk.innerHTML = "low risk"
             low_risk.setAttribute("id", "make-loan-low")
-            low_risk.addEventListener("click" , make_loan_low)
+            low_risk.addEventListener("click" , function(){state.make_loan(state.create_date("low"), 10000000000, 10, 50, "low");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(low_risk)
             const high_risk = document.createElement("button")
             high_risk.innerHTML = "high risk"
             high_risk.setAttribute("id", "make-loan-high")
-            high_risk.addEventListener("click" , make_loan_high)
+            high_risk.addEventListener("click" , function(){state.make_loan(state.create_date("high"), 20000000000, 20, 100, "high");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(high_risk)
 
             const show_loans = document.createElement("div")
@@ -630,15 +576,15 @@ const drawing_tools={
         _2x_button.addEventListener("click", _2x_function)
     },
     continue : (state) => {
-        if (state.infects === state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
+        if (state.infects >= state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
             clearInterval(currentLoop)
             clearInterval(gameLoop)
-            document.getElementById("1x-button").removeEventListener("click",  _1x_function)
-            document.getElementById("05x-button").removeEventListener("click",  _05x_function)
-            document.getElementById("2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("require-beds").removeEventListener("click", pop)
-            document.getElementById("make-loan-high").removeEventListener("click", make_loan_high)
-            document.getElementById("make-loan-low").removeEventListener("click", make_loan_low)
+            location.href = "loose.html"
+        }
+        else if (state.world.curYear === (state.world.initial_year + 1)){
+            clearInterval(currentLoop)
+            clearInterval(gameLoop)
+            location.href = "win.html"
         }
     },
     display_date : {
@@ -654,7 +600,6 @@ const drawing_tools={
         update : (world) => {
             document.getElementById("date").innerHTML = world.date
         }
-
     }
 }
 
