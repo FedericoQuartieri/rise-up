@@ -557,7 +557,7 @@ svg circle:nth-child(2){
     text-align: center;
     margin: auto;
     margin-top: 15px;
-    transform: translateX(-5px);
+    transform: translateX(-2.8%);
 }
 
 
@@ -778,7 +778,12 @@ transition: 0.5s;}
 .buttons_wrap button:focus {outline:none}
 
 
-
+.text div{
+    margin-top: 3px;
+    font-weight: 550;
+    font-size: 17px;
+    transform: translateY(70%);
+}
 
 
 

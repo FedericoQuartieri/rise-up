@@ -463,12 +463,13 @@ const drawing_tools={
     
         const header=document.createElement("h2")
         header.setAttribute("class","text")
+        
         if(i===0){
+
             header.innerHTML="infects"
-            const header3 = document.createElement("h3")
-            header3.setAttribute("class", "text")
-            header3.setAttribute("id", "infects-number")
-            header.appendChild(header3)
+            const show=document.createElement("div")
+            show.setAttribute("id","infects-number")
+            header.appendChild(show)
     
         }
         else if(i===1){
@@ -514,7 +515,15 @@ const drawing_tools={
     
         },
         update :(infects_number,infects,economy,feeling,deaths) =>{
-            document.getElementById("infects-number").innerHTML = infects_number
+            
+            const show=document.getElementById("infects-number")
+            if(infects<5){
+                show.innerHTML = infects_number
+            }
+            else{
+                show.innerHTML = ""
+            }
+            
             for(let i=0;i<3;i++){
                 const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
                 if(i===0){
