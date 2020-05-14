@@ -440,11 +440,11 @@ svg circle:nth-child(2){
 
 .container_counters{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     position: relative;
-    width: 690px;
-    margin-right: 5px;
+    
+   
 
 }
 .container_counters .card{
@@ -555,9 +555,9 @@ svg circle:nth-child(2){
     border-radius: 5px;
     width: 270px;
     text-align: center;
-    margin: auto;
+    
     margin-top: 15px;
-    transform: translateX(-2.8%);
+    
 }
 
 
@@ -597,9 +597,10 @@ transition: 0.5s;}
 }
 
 .loans{
-    width: 320px;
+
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-right: 2%;
     border-bottom: 20px solid #03a9f4;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -783,6 +784,10 @@ transition: 0.5s;}
     font-weight: 550;
     font-size: 17px;
     transform: translateY(70%);
+}
+.wrap_deaths{
+    display: flex;
+    justify-content: center;
 }
 
 

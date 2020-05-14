@@ -491,6 +491,8 @@ const drawing_tools={
     
         
         }
+        const w=document.createElement("div")
+        w.setAttribute("class","wrap_deaths")
         const container_deaths=document.createElement("div")
         container_deaths.setAttribute("class","container_deaths")
         const ic=document.createElement("i")
@@ -507,9 +509,10 @@ const drawing_tools={
         container_deaths.appendChild(ic)
         container_deaths.appendChild(disp)
         container_deaths.appendChild(p)
+        w.appendChild(container_deaths)
 
         container_out.appendChild(container)
-        container_out.appendChild(container_deaths)
+        container_out.appendChild(w)
     
         
     
