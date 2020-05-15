@@ -778,17 +778,20 @@ var State = function(state, World){
     })
     sum += this.beds_feeling*2
     c+=2
-    this.feeling_dead = 100-((this.dead / (this.popolation * 0.23)) * 100)
+    this.feeling_dead = 100-((this.dead / (this.popolation * 0.05)) * 100)
+    if (this.feeling_dead < 0) {
+      this.feeling_dead = 0
+    }
     sum += this.feeling_dead*4
     if (this.feeling_dead < 0){
       this.feeling_dead = 0
     }
     c += 4
-    this.feeling_non_virus_dead = 100-((this.non_virus_dead / 418) * 100)   
-    sum += this.feeling_non_virus_dead*4
+    this.feeling_non_virus_dead = 100-((this.non_virus_dead / 100) * 100)
     if (this.feeling_non_virus_dead < 0){
       this.feeling_non_virus_dead = 0
-    }
+    }   
+    sum += this.feeling_non_virus_dead*4
     c += 4
     this.feeling = sum / c
     if (this.feeling < 5){
