@@ -182,7 +182,7 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "Total beds: \n" + dictionary["reanimate_beds"]
+            reanimate_beds.innerHTML = "Total beds: \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
@@ -201,27 +201,19 @@ const drawing_tools={
                 items.appendChild(item)
                 item.setAttribute("class", "item"+(i+1))
                 item.setAttribute("id", "item"+(i+1))
-                item.addEventListener("click", function(){state.make_change_bed(this.textContent)})
+                item.addEventListener("click", function(){state.make_change_bed(parseInt(this.id[this.id.length-1])*dictionary["level"])})
                 item.appendChild(center)
                 const number = document.createElement("p")
                 center.appendChild(number)
                 number.setAttribute("class", "fa")
-                number.innerHTML = dictionary["level"] * (i+1)
+                number.innerHTML = drawing_tools.display_numbers(dictionary["level"] * (i+1))
             }
             container_out.appendChild(container)
             
         },
         update : (dictionary) => {
-            Object.keys(dictionary).forEach(key =>{
-                if (key !== "level" && key !== "min"){
-                    if (key !== "reanimate_beds"){
-                        /*document.getElementById(key+" toUpdate").innerHTML=key.replace(/_/g," ")+ ": "+ dictionary[key]*/
-                    }
-                    else if (key === "reanimate_beds"){
-                        document.getElementById("reanimate-beds").innerHTML = "Total beds : " + dictionary[key]
-                    }
-                }
-            })
+            document.getElementById("reanimate-beds").innerHTML = "Total beds : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            // qui metti l'update di show specialization del modal e stai solo zitto 
         } 
     },
     "display_funds" : {
@@ -233,10 +225,10 @@ const drawing_tools={
             container.appendChild(show_funds)
             show_funds.setAttribute("class", "show_funds")
             show_funds.setAttribute("id", "show_funds")
-            show_funds.innerHTML = "health_funds: " + state.health_funds
+            show_funds.innerHTML = "health_funds: " + drawing_tools.display_numbers(state.health_funds)
         },
         update : (state) => {
-            document.getElementById("show_funds").innerHTML = "health_funds: " + state.health_funds
+            document.getElementById("show_funds").innerHTML = "health_funds: " + drawing_tools.display_numbers(state.health_funds)
         }
     },
 
@@ -317,6 +309,9 @@ const drawing_tools={
         update : (state) => {
             if (state.loan_expired){
                 drawing_tools.display_loans.update_internal(state)
+                document.getElementById("exampleModalLongTitle").innerHTML = "Loan"
+                document.getElementById("modal-body").innerHTML = "loan"
+                $('#exampleModalCenter').modal('show')
                 state.loan_expired = false
             }
         }
@@ -335,7 +330,7 @@ const drawing_tools={
             add_hospitals.setAttribute("class", "hospital_button")
             
             add_hospitals.innerHTML = "<span>build hospitals</span>"
-            add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 >= 0) {state.make_new_hospital()} else{/*alert*/}})
+            add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 >= 0) {state.make_new_hospital()}})
             const new_hospitals = document.createElement("span")
             container.appendChild(new_hospitals)
             container.appendChild(add_hospitals)
@@ -349,34 +344,24 @@ const drawing_tools={
         update : (state) => {
             const new_hospitals = document.getElementById("show-new-hospitals")
             new_hospitals.innerHTML = "new hospitals: " + state.decision["new_hospitals"]
-            
-            var free_beds = state.reanimate_beds - state.need_medical
-            var beds_needed = 0
-            if (free_beds < 0){
-                var beds_needed = -free_beds
-                free_beds = 0
-            }
-            free_beds = Math.round(free_beds)
-            document.getElementById("show_free_beds").innerHTML = "Not used beds: " + free_beds 
-            document.getElementById("show_need").innerHTML= "People in medical need: " + beds_needed
-                       
-
         }
     },
     "display_beds_stats":{
         draw: (container_out,state)=>{
             const wrap=document.createElement("div")
             wrap.setAttribute("class","wrap_beds")
-            const show_beds = document.createElement("div")
             const s1=document.createElement("div")
             wrap.appendChild(s1)
             s1.setAttribute("class","separator")
             s1.setAttribute("id","st")
-            const show_need=document.createElement("div")
-            show_need.setAttribute("id", "show_need")
-            
+            const show_beds = document.createElement("div")
             show_beds.setAttribute("class", "show_free_beds")
             show_beds.setAttribute("id", "show_free_beds")
+            const show_need=document.createElement("div")
+            show_need.setAttribute("id", "show_need")
+            const show_other = document.createElement("div")
+            show_other.setAttribute("id", "show_other")
+            
             var free_beds = state.reanimate_beds - state.need_medical
             var beds_needed = 0
             if (free_beds < 0){
@@ -384,15 +369,44 @@ const drawing_tools={
                 free_beds = 0
             }
             free_beds = Math.round(free_beds)
-            show_beds.innerHTML = "Not used beds: " + free_beds 
-            show_need.innerHTML= "People in medical need: " + beds_needed
+            var other_beds = 0
+            Object.keys(state.specializations).forEach((key)=>{
+                if (key !== "reanimate_beds" && key !== "min" && key !== "level"){
+                    other_beds += state.specializations[key]
+                }
+            })
+            show_other.innerHTML = "Other beds: " + drawing_tools.display_numbers(other_beds)
+            show_beds.innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds)
+            show_need.innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
+            wrap.appendChild(show_other)
             wrap.appendChild(show_beds)
             wrap.appendChild(show_need)
+            
             const s2=document.createElement("div")
             wrap.appendChild(s2)
             s2.setAttribute("class","separator")
             s2.setAttribute("id","sb")
             container_out.appendChild(wrap)
+        },
+        update : (state) => {
+            var free_beds = state.reanimate_beds - state.need_medical
+            var beds_needed = 0
+            if (free_beds < 0){
+                var beds_needed = -free_beds
+                free_beds = 0
+            }
+
+
+            var other_beds = 0
+            Object.keys(state.specializations).forEach((key)=>{
+                if (key !== "reanimate_beds" && key !== "min" && key !== "level"){
+                    other_beds += state.specializations[key]
+                }
+            })
+            free_beds = Math.round(free_beds)
+            document.getElementById("show_other").innerHTML = "Other beds: " + drawing_tools.display_numbers(other_beds)
+            document.getElementById("show_free_beds").innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds) 
+            document.getElementById("show_need").innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
         }
     },
     "display_counters" :{
@@ -596,15 +610,15 @@ const drawing_tools={
         if (state.infects >= state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
             clearInterval(currentLoop)
             clearInterval(gameLoop)
-            location.href = "loose.html"
+            //location.href = "loose.html"
         }
         else if (state.world.curYear === (state.world.initial_year + 1)){
             clearInterval(currentLoop)
             clearInterval(gameLoop)
-            location.href = "win.html"
+            //location.href = "win.html"
         }
     },
-    display_date : {
+    "display_date" : {
         draw : (container_out, world)  => {
             const container = document.createElement("div")
             container_out.appendChild(container)
@@ -617,8 +631,103 @@ const drawing_tools={
         update : (world) => {
             document.getElementById("date").innerHTML = world.date
         }
+    },
+    display_numbers : (number) => {
+        number = number.toString()
+        if (number.length > 9){
+            number = number.substring(0, number.length - 9)
+            number = number + "Miliardi"
+        }
+
+        else if (number.length > 7){
+            number = number.substring(0, number.length - 6)
+            number = number + "M"
+        }
+        else if (number.length > 3){
+            number = number.substring(0, number.length - 3)
+            number = number + "k"
+        }
+
+        return number
+    },
+    "display_riot" : {
+        draw : (container_out) => {
+            const saas = document.createElement("butt")
+            const modal_fade = document.createElement("div")
+            modal_fade.setAttribute("class","modal fade")
+            modal_fade.setAttribute("id", "exampleModalCenter")
+            modal_fade.setAttribute("tabindex", "-1")
+            modal_fade.setAttribute("role", "dialog")
+            modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+            modal_fade.setAttribute("aria-hidden", "true")
+            const modal_dialog = document.createElement("div")
+            modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+            modal_dialog.setAttribute("role", "document")
+            const modal_content = document.createElement("div")
+            modal_content.setAttribute("class", "modal-content")
+            const modal_header = document.createElement("div")
+            modal_header.setAttribute("class", "modal-header")
+            const h5 = document.createElement("h5")
+            h5.setAttribute("class", "modal-title")
+            h5.setAttribute("id", "exampleModalLongTitle")
+            h5.innerHTML = "Modal title"
+            const button = document.createElement("button")
+            button.setAttribute("type", "button")
+            button.setAttribute("class","close")
+            button.setAttribute("data-dismiss", "modal")
+            button.setAttribute("aria-label", "Close")
+            const span = document.createElement("span")
+            span.setAttribute("aria-hidden", "true")
+            span.innerHTML = "&times;"
+            const modal_body = document.createElement("div")
+            modal_body.setAttribute("class", "modal-body")
+            modal_body.setAttribute("id", "modal-body")
+            modal_body.innerHTML = "riot"
+            const modal_footer = document.createElement("div")
+            modal_footer.setAttribute("class", "modal-footer")
+            const button2 = document.createElement("button")
+            button2.setAttribute("type","button")
+            button2.setAttribute("class","btn btn-secondary")
+            button2.setAttribute("data-dismiss","modal")
+            button2.innerHTML = "Close"
+            container_out.appendChild(modal_fade)
+            modal_fade.appendChild(modal_dialog)
+            modal_dialog.appendChild(modal_content)
+            modal_content.appendChild(modal_header)
+            modal_header.appendChild(h5)
+            modal_header.appendChild(button)
+            button.appendChild(span)
+            modal_content.appendChild(modal_body)
+            modal_content.appendChild(modal_footer)
+            modal_footer.appendChild(button2)
+        },
+
+        update : (state) => {
+            if (state.riot_type ==="hospital"){
+                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
+                document.getElementById("modal-body").innerHTML = "hospital"
+                $('#exampleModalCenter').modal('show')
+                state.riot_type = ""
+            }
+            else if (state.riot_type ==="civil"){
+                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
+                document.getElementById("modal-body").innerHTML = "civil"
+                $('#exampleModalCenter').modal('show')
+                state.riot_type = ""
+
+            }
+            else if (state.riot_type ==="economy"){
+                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
+                document.getElementById("modal-body").innerHTML = "economy"
+                $('#exampleModalCenter').modal('show')
+                state.riot_type = ""
+
+            }
+        }
     }
+    
 }
+
 
 
 

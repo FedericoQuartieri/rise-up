@@ -149,6 +149,7 @@ var State = function(state, World){
   this.riot_type = ""
   this.riots =0
   this.end_game = null
+  this.loan_expired = false
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -231,7 +232,7 @@ var State = function(state, World){
   }
 
   this.make_change_bed = (beds) =>{
-    console.log(this.specializations)
+    console.log(beds)
     beds = parseInt(beds)
     let c = 0
     Object.keys(this.specializations).forEach(key => {
@@ -251,7 +252,6 @@ var State = function(state, World){
           }
         }
       });
-      console.log(max,beds) 
       while(this.specializations[specialization] - beds < this.specializations["min"]){   
         if (max - beds > this.specializations["min"]){
           specialization = this.make_change_bed_random()
@@ -348,6 +348,8 @@ var State = function(state, World){
       console.log("feeling non virus dead",this.feeling_non_virus_dead)
       console.log("riot", this.riot_type)
       console.log("riots", this.riots)
+      console.log(this.specializations)
+      console.log("loan_expired", this.loan_expired)
   }
 
   //-------------------------------------
@@ -680,6 +682,7 @@ var State = function(state, World){
 
   this.loan_summary = () => {
     if (this.loans.length != 0){
+      console.log("dio")
       this.loans.forEach(currentItem => {
         if (currentItem.date1 === world.date){
           this.pil -= currentItem.perc_not_paid*this.pil // da controllare matematica

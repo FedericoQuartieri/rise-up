@@ -13,6 +13,8 @@ updates = () =>{
     drawing_tools.display_funds.update(stato)
     drawing_tools.continue(stato)
     drawing_tools.display_date.update(world)
+    drawing_tools.display_beds_stats.update(stato)
+    drawing_tools.display_riot.update(stato)
 }
 const fps=30
 var daytime=1
@@ -25,8 +27,9 @@ createGrid(3)
 
 //-------------------------
 //Top
-
+drawing_tools.display_riot.draw(document.getElementById("col 0 0"))
 //0
+
 drawing_tools.display_stop(document.getElementById("col 0 0"))
 //1
 

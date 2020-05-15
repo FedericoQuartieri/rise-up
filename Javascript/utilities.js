@@ -67,7 +67,7 @@ function clock (state) {
     world.month_numb = months.indexOf(world.curMonth) + 1
     world.curDay = curDay
     world.curYear = curYear
-    const datte = curDay + " " + curMonth + " " + curYear
+    const datte = curDay  + curMonth  + curYear
     
     state.world.date=datte
   }
