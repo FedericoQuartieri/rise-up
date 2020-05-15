@@ -36,7 +36,7 @@ html {
      font-size: 75%;
      transition: .5s;
      margin-bottom: 8px;
-     z-index: 10002;
+     z-index: 1002;
      
 }
 .div-menu .decision-menu .decision-toUpdate:hover{
@@ -711,7 +711,7 @@ transition: 0.5s;}
 
 .wrap_beds{
     margin-top: -15px;
-    margin-bottom: 57px;
+    margin-bottom: 22px;
     text-transform: uppercase;
     font-size: 13.5px;
     font-weight: 440;
@@ -788,6 +788,52 @@ transition: 0.5s;}
 .wrap_deaths{
     display: flex;
     justify-content: center;
+}
+.show_funds{
+    margin-top: 0px;
+}
+.modal-content .modal-body{
+    padding: 0px 0px 0px 0px;
+}
+.trades_wrap ul{
+    position: relative;
+    padding-left: 0px;
+    padding-top: 0px;
+    background: #fff;
+}
+.trades_wrap ul li{
+    list-style: none;
+}
+.trades_wrap ul li{
+    list-style: none;
+    padding: 10px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    transition: transform 0.5s;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+.trades_wrap ul:hover li{
+    opacity: 0.2;
+}
+.trades_wrap ul li:hover{
+    transform: scale(1.1);
+    z-index: 100;
+    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    box-shadow: 0 5px 25px rgba(0, 0, 0,.2);
+    color: #fff;
+    opacity: 1;
+}
+.trades_wrap .on{
+    list-style: none;
+    padding: 10px;
+    width: 100%;
+    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    transition: transform 0.5s;
+    font-size: 12px;
+    text-transform: uppercase; 
 }
 
 

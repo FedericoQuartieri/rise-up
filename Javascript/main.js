@@ -356,6 +356,7 @@ var State = function(state, World){
   // Start block section
 
   this.block_trades=(choice)=>{
+    /*
     console.log(" What level of trading block do you want to set?")
     console.log() //correggerò l'inglese poi
     console.log("1. No blocks")
@@ -366,6 +367,7 @@ var State = function(state, World){
     console.log("6. Shut down international commerce (imports and exports)")
     //input
     //const choice=getRandomInt(1,7)
+    */
     const outcome = [] //[health,feeling,economy]
     switch(choice){
 

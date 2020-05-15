@@ -15,6 +15,7 @@ updates = () =>{
     drawing_tools.display_date.update(world)
     drawing_tools.display_beds_stats.update(stato)
     drawing_tools.display_riot.update(stato)
+    console.log(stato.decision["block_trades_e"])
 }
 const fps=30
 var daytime=1
@@ -55,6 +56,7 @@ drawing_tools.display_specializations.draw(stato.specializations, document.getEl
 drawing_tools.display_beds_stats.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
+drawing_tools.display_block_trades.draw(document.getElementById("col 2 1"),stato)
 
 
 

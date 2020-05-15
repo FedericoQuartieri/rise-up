@@ -6,7 +6,6 @@ const createGrid=(cols) =>{
             const col=document.createElement("div")
             col.setAttribute("class","col-md-3")
             col.setAttribute("id","col "+x+" "+y)
-            col.innerHTML=x
             tp.appendChild(col)
         }
         document.body.appendChild(tp)
