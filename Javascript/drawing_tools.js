@@ -23,6 +23,11 @@ const drawing_tools={
         draw:(dictionary,container_out,state)=>{
             const container=document.createElement("div")
             container.setAttribute("class","div-menu")
+            const h=document.createElement("div")
+            h.setAttribute("class","title")
+            h.setAttribute("id","dec_title")
+            h.innerHTML="decisions"
+            container.appendChild(h)
             const list=document.createElement("ul")
             list.setAttribute("class","decision-menu")  
             Object.keys(dictionary).forEach((key)=>{
@@ -236,16 +241,18 @@ const drawing_tools={
             container.appendChild(show_funds)
             show_funds.setAttribute("class", "show_funds")
             show_funds.setAttribute("id", "show_funds")
+            /*
             const show_debit = document.createElement("div")
             container.appendChild(show_debit)
             show_debit.setAttribute("class", "show_debit")
             show_debit.setAttribute("id", "show_debit")
+            */
             const s2=document.createElement("div")
             container.appendChild(s2)
             s2.setAttribute("class","separator")
             s2.setAttribute("id","sb")
             show_funds.innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
-            show_debit.innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+            //show_debit.innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
 
         },
         update : (state) => {
@@ -257,7 +264,7 @@ const drawing_tools={
                 
             }
             document.getElementById("show_funds").innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
-            document.getElementById("show_debit").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+            //document.getElementById("show_debit").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
         }
     },
 

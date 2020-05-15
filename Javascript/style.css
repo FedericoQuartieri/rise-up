@@ -13,19 +13,28 @@ html {
     
  }
  
-
+.col-md-3:nth-child(1){
+    text-align: -webkit-center;
+}
 /* lista delle decision */
+.div-menu{
+    margin-bottom: 3%;
+}
 .div-menu ul{  
     list-style: none;
     margin: 0;
     padding-left: 12px;
-    margin-top: 10px;
+    margin-top: 1px;
     
+    
+}
+#dec_title{
+    margin-bottom: 0px;
 }
 .div-menu .decision-menu .decision-toUpdate{
      position: relative;
-     padding: 16px;
-     width: fit-content;
+     padding: 20px;
+     width: inherit;
      height: 90%;
      background-color: rgb(255, 255, 255);
      
@@ -35,7 +44,6 @@ html {
      letter-spacing: 1.5px;
      font-size: 75%;
      transition: .5s;
-     margin-bottom: 8px;
      z-index: 1002;
      
 }
@@ -92,13 +100,17 @@ html {
     transition: all 0.3s ease-in-out;
     opacity: 0;
     visibility: hidden;
-    position: absolute;
     left: 100%;
     top: 16%;
+    display: none;
+    transition: .5s;
 }
 .decision-toUpdate:hover .showUpmenu{
     opacity: 1;
     visibility: visible;
+    display: block;
+    margin-top: 9%;
+    margin-bottom: 3%;
 }
 .showUpmenu{
     padding-right: 3px;
@@ -110,6 +122,8 @@ html {
     background-color: white;
     border: 1px solid black;
     margin-right: 5px;
+    border-radius: 20%;
+
 
 }
 input[type="checkbox"]{
@@ -184,12 +198,12 @@ input[type="checkbox"]:checked ~ .check::after{
     height: 50px;
     width: 230px;
     padding-top: 18px;
-    padding-left: 13px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: aqua;
     transition: 0.5s step-end;
+    margin-left: 3.55%;
 
 }
 .ca p{
@@ -691,7 +705,7 @@ transition: 0.5s;}
 
 .wrap_beds{
     margin-top: -40px;
-    margin-bottom: 22px;
+    margin-bottom: 10%;
     text-transform: uppercase;
     font-size: 13.5px;
     font-weight: 440;
