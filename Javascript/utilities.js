@@ -27,6 +27,8 @@ var curDay = date.getDate();
 var curMonth = months[date.getMonth()];
 var curYear = date.getFullYear();
 world.initial_year = curYear
+world.initial_month = date.getMonth()
+world.initial_day = curDay
   
   
 function following_month (curMonth) {

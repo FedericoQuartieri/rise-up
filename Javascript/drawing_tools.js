@@ -610,11 +610,17 @@ const drawing_tools={
         if (state.infects >= state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
             clearInterval(currentLoop)
             clearInterval(gameLoop)
+            document.getElementById("2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("05x-button").removeEventListener("click", _05x_function)
+            document.getElementById("1x-button").removeEventListener("click", _1x_function)
             //location.href = "loose.html"
         }
-        else if (state.world.curYear === (state.world.initial_year + 1)){
+        else if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
             clearInterval(currentLoop)
             clearInterval(gameLoop)
+            document.getElementById("2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("05x-button").removeEventListener("click", _05x_function)
+            document.getElementById("1x-button").removeEventListener("click", _1x_function)
             //location.href = "win.html"
         }
     },
@@ -831,15 +837,15 @@ const drawing_tools={
                 let id="#trade"+i
                 $(id).click(()=>{state.block_trades(i)
                     console.log("ciao")
-                for(let j=1;j<7;j++){
-                    let idd=id.replace("#","")
-                    if(j===i){
-                        document.getElementById(idd).setAttribute("class","on")
+                    for(let j=1;j<7;j++){
+                        let idd=id.replace("#","")
+                        if(j===i){
+                            document.getElementById(idd).setAttribute("class","on")
+                        }
+                        else{
+                            document.getElementById(idd).setAttribute("class","trade-item")  
+                        }
                     }
-                    else{
-                        document.getElementById(idd).setAttribute("class","trade-item")  }
-                }
-                
                 })
                 
             }

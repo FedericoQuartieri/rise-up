@@ -59,6 +59,8 @@ var World = function(state){
   this.curDay = 0
   this.curYear = 0
   this.initial_year = 0
+  this.initial_month = 0
+  this.initial_day = 0
 
 
   //-----------Starts Dates-----------
@@ -200,7 +202,7 @@ var State = function(state, World){
     sports_allowed : [100, 100,0],
     companies_opened : [100, 100,0],
     red_zone : [0, 100,0],
-    block_trades_e : [100, 0,0],       //different function
+    block_trades_e : [100, 100,0],       //different function
     mandatory_masks : false,
     army_using : false,
     close_stock: false,
@@ -350,6 +352,8 @@ var State = function(state, World){
       console.log("riots", this.riots)
       console.log(this.specializations)
       console.log("loan_expired", this.loan_expired)
+      console.log(world.initial_day, world.initial_month, world.initial_year)
+      console.log(world.month_numb)
   }
 
   //-------------------------------------
@@ -795,7 +799,7 @@ var State = function(state, World){
 
   this.summary_infect =() =>{
     var rate = this.rate_0
-    rate += 1
+    rate += 2.5
     Object.keys(this.decision).forEach(key =>{
       if (key !== "new_new_hospitals"){
         if (key === "mandatory_masks" || key === "army_using" || key === "close_stock"){    //bool
@@ -820,6 +824,7 @@ var State = function(state, World){
     if (rate < this.rate_0){
       rate = this.rate_0
     }
+    rate = rate/2
     this.infection_rate = rate
     this.infect()
   }
