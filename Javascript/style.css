@@ -330,11 +330,11 @@ input[type="checkbox"]:checked ~ .check::after{
     background: linear-gradient(to right,#56ccf2,#2f80ed);
     border-radius: 50%;
     z-index: 2;
-    transform: translateX(107px);
+    transform: translateX(221%);
 }
 
 .require-menu-items {
-    transform: translateX(70px);
+    transform: translateX(131%);
     width: 35px;
     height: 35px;
     background: linear-gradient(to right,#56ccf2,#2f80ed);
