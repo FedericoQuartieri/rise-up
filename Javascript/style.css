@@ -269,6 +269,9 @@ input[type="checkbox"]:checked ~ .check::after{
  
 
 
+
+
+
 .spec-menu{
     width: 260px;
     margin: 0;
@@ -305,7 +308,7 @@ input[type="checkbox"]:checked ~ .check::after{
     background-color: aqua;
     width: 195px;
     height: 30px;
-    transform: translateY(-30px);
+    transform: translateY(-90px);
     margin: auto;
 
 }
@@ -322,18 +325,18 @@ input[type="checkbox"]:checked ~ .check::after{
     position: relative;
     font-size: 30px;
     text-align: center;
-    height: 30px;
-    width: 30px;
+    height: 37px;
+    width: 37px;
     background: linear-gradient(to right,#56ccf2,#2f80ed);
     border-radius: 50%;
     z-index: 2;
-    transform: translateX(60px);
+    transform: translateX(107px);
 }
 
 .require-menu-items {
-    transform: translateX(30px);
-    width: 30px;
-    height: 30px;
+    transform: translateX(70px);
+    width: 35px;
+    height: 35px;
     background: linear-gradient(to right,#56ccf2,#2f80ed);
     border-radius: 50%;
 }
@@ -341,8 +344,8 @@ input[type="checkbox"]:checked ~ .check::after{
 .require-menu-items>div{
     text-align:center;
     background: linear-gradient(to right,#56ccf2,#2f80ed);
-    height: 30px;
-    width: 30px;
+    height: 35px;
+    width: 35px;
     border-radius: 50%;
     font-size: 12px;
     position: relative;
@@ -365,50 +368,27 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 
 .spec-button{
-    bottom:10.5px;
+    bottom:7.5px;
+    left: 2px;
     position: relative;
     color:black;
-    height: 32px;
+    height: 30px;
     width: 32px;
 }
 
-.spec-item2{
-    bottom:23px
-}
-
-.spec-item3{
-    bottom:46px
-}
-
-.spec-item4{
-    bottom:69px
-}
-
-.spec-item5{
-    bottom:92px
-}
-
-.spec-item6{
-    bottom:115px
-}
-.spec-item7{
-    bottom:138px
-}
-
-
 .item2 {
-    bottom:30px;
+    bottom:35px;
 }
 
 .item3 {
-    bottom:62px;
+    bottom:70px;
 }
 
 .item4 {
-    bottom:92px;
+    bottom:103px;
 }
 .item5 {
-    bottom:122px;
+    bottom:140px;
 }
 
 
@@ -716,9 +696,6 @@ transition: 0.5s;}
     font-size: 13.5px;
     font-weight: 440;
     letter-spacing: 0px;
-    
-    
-    
 }
 .wrap_beds .separator{
     height: 4px;
@@ -736,7 +713,6 @@ transition: 0.5s;}
 }
 
 .hospital_button{
-    
     margin-top: 10px;
     padding: 0.2em;
     border-radius: 20px;
@@ -846,3 +822,17 @@ transition: 0.5s;}
     background:linear-gradient(to right,#2f80ed,#56ccf2);
 }
 
+
+.funds-menu{
+    margin-bottom: 22px;
+    text-transform: uppercase;
+    font-size: 13.5px;
+    font-weight: 440;
+    letter-spacing: 0px;
+}
+
+.funds-menu .separator{
+    height: 4px;
+    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    width: 20%;
+}

@@ -154,11 +154,11 @@ const drawing_tools={
             var i = 0
             pop = ()=>{
                 if (i === 0){
-                    document.getElementById("item1").style.transform = "translateX(-50px)"
-                    document.getElementById("item2").style.transform = "translate(-35px, 35px)"
+                    document.getElementById("item1").style.transform = "translateX(-60px)"
+                    document.getElementById("item2").style.transform = "translate(-40px, 40px)"
                     document.getElementById("item3").style.transform = "translateY(60px)"
-                    document.getElementById("item4").style.transform = "translate(35px, 35px)"
-                    document.getElementById("item5").style.transform = "translateX(50px)"
+                    document.getElementById("item4").style.transform = "translate(40px, 40px)"
+                    document.getElementById("item5").style.transform = "translateX(60px)"
                     i = 1
                 }
                 else{
@@ -220,15 +220,44 @@ const drawing_tools={
         draw : (container_out, state) => {
             const container = document.createElement("div")
             container_out.appendChild(container)
+            let health_funds = state.health_funds
+            let debit = 0
+            if (health_funds < 0){
+                debit =  -health_funds
+                health_funds = 0
+                
+            }
+            const s1=document.createElement("div")
+            container.appendChild(s1)
+            s1.setAttribute("class","separator")
+            s1.setAttribute("id","st")
             const show_funds = document.createElement("div")
             container.setAttribute("class", "funds-menu")
             container.appendChild(show_funds)
             show_funds.setAttribute("class", "show_funds")
             show_funds.setAttribute("id", "show_funds")
-            show_funds.innerHTML = "health_funds: " + drawing_tools.display_numbers(state.health_funds)
+            const show_debit = document.createElement("div")
+            container.appendChild(show_debit)
+            show_debit.setAttribute("class", "show_debit")
+            show_debit.setAttribute("id", "show_debit")
+            const s2=document.createElement("div")
+            container.appendChild(s2)
+            s2.setAttribute("class","separator")
+            s2.setAttribute("id","sb")
+            show_funds.innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
+            show_debit.innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+
         },
         update : (state) => {
-            document.getElementById("show_funds").innerHTML = "health_funds: " + drawing_tools.display_numbers(state.health_funds)
+            let health_funds = state.health_funds
+            let debit = 0
+            if (health_funds < 0){
+                debit =  -health_funds
+                health_funds = 0
+                
+            }
+            document.getElementById("show_funds").innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
+            document.getElementById("show_debit").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
         }
     },
 
