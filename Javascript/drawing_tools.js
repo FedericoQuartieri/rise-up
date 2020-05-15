@@ -833,26 +833,74 @@ const drawing_tools={
             container_out.appendChild(toggle_button)
             container_out.appendChild(modal_outer)
             
-            for(let i=1;i<7;i++){
-                let id="#trade"+i
-                $(id).click(()=>{state.block_trades(i)
-                    console.log("ciao")
-                    for(let j=1;j<7;j++){
-                        let idd=id.replace("#","")
-                        if(j===i){
-                            document.getElementById(idd).setAttribute("class","on")
-                        }
-                        else{
-                            document.getElementById(idd).setAttribute("class","trade-item")  
-                        }
-                    }
-                })
-                
-            }
+            $("#trade1").click(()=>{state.block_trades(1)
+                console.log(1)
+            
+                document.getElementById("trade1").setAttribute("class","on")
+                document.getElementById("trade2").setAttribute("class","trade-item")
+                document.getElementById("trade3").setAttribute("class","trade-item")
+                document.getElementById("trade4").setAttribute("class","trade-item")
+                document.getElementById("trade5").setAttribute("class","trade-item")
+                document.getElementById("trade6").setAttribute("class","trade-item")
+        
+            })
+            $("#trade2").click(()=>{state.block_trades(2)
+            
+                document.getElementById("trade2").setAttribute("class","on")
+                document.getElementById("trade1").setAttribute("class","trade-item")
+                document.getElementById("trade3").setAttribute("class","trade-item")
+                document.getElementById("trade4").setAttribute("class","trade-item")
+                document.getElementById("trade5").setAttribute("class","trade-item")
+                document.getElementById("trade6").setAttribute("class","trade-item")
+        
+            })
+            $("#trade3").click(()=>{state.block_trades(3)
+            
+                document.getElementById("trade3").setAttribute("class","on")
+                document.getElementById("trade2").setAttribute("class","trade-item")
+                document.getElementById("trade1").setAttribute("class","trade-item")
+                document.getElementById("trade4").setAttribute("class","trade-item")
+                document.getElementById("trade5").setAttribute("class","trade-item")
+                document.getElementById("trade6").setAttribute("class","trade-item")
+        
+            })
+            $("#trade4").click(()=>{state.block_trades(4)
+            
+                document.getElementById("trade4").setAttribute("class","on")
+                document.getElementById("trade2").setAttribute("class","trade-item")
+                document.getElementById("trade3").setAttribute("class","trade-item")
+                document.getElementById("trade1").setAttribute("class","trade-item")
+                document.getElementById("trade5").setAttribute("class","trade-item")
+                document.getElementById("trade6").setAttribute("class","trade-item")
+        
+            })
+            $("#trade5").click(()=>{state.block_trades(5)
+            
+                document.getElementById("trade5").setAttribute("class","on")
+                document.getElementById("trade2").setAttribute("class","trade-item")
+                document.getElementById("trade3").setAttribute("class","trade-item")
+                document.getElementById("trade4").setAttribute("class","trade-item")
+                document.getElementById("trade1").setAttribute("class","trade-item")
+                document.getElementById("trade6").setAttribute("class","trade-item")
+        
+            })
+            $("#trade6").click(()=>{state.block_trades(6)
+            
+                document.getElementById("trade6").setAttribute("class","on")
+                document.getElementById("trade2").setAttribute("class","trade-item")
+                document.getElementById("trade3").setAttribute("class","trade-item")
+                document.getElementById("trade4").setAttribute("class","trade-item")
+                document.getElementById("trade5").setAttribute("class","trade-item")
+                document.getElementById("trade1").setAttribute("class","trade-item")
+        
+            })
         }
 
     }
 }
+
+
+
 
 
 

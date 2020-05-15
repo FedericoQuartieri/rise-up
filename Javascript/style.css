@@ -795,6 +795,9 @@ transition: 0.5s;}
 .modal-content .modal-body{
     padding: 0px 0px 0px 0px;
 }
+.trades_wrap{
+    padding-top: 15px;
+}
 .trades_wrap ul{
     position: relative;
     padding-left: 0px;
@@ -813,6 +816,7 @@ transition: 0.5s;}
     transition: transform 0.5s;
     font-size: 12px;
     text-transform: uppercase;
+    
 }
 .trades_wrap ul:hover li{
     opacity: 0.2;
@@ -834,5 +838,11 @@ transition: 0.5s;}
     transition: transform 0.5s;
     font-size: 12px;
     text-transform: uppercase; 
+    
+}
+
+
+.modal-header{
+    background:linear-gradient(to right,#2f80ed,#56ccf2);
 }
 
