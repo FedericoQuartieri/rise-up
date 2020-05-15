@@ -221,6 +221,7 @@ const drawing_tools={
             // qui metti l'update di show specialization del modal e stai solo zitto 
         } 
     },
+
     "display_funds" : {
         draw : (container_out, state) => {
             const container = document.createElement("div")
@@ -286,12 +287,12 @@ const drawing_tools={
             const low_risk = document.createElement("button")
             low_risk.innerHTML = "low risk"
             low_risk.setAttribute("id", "make-loan-low")
-            low_risk.addEventListener("click" , function(){state.make_loan(state.create_date("low"), 10000000000, 10, 50, "low");drawing_tools.display_loans.update_internal(state)})
+            low_risk.addEventListener("click" , function(){state.make_loan(state.create_date("low"), 100000000000, 11, 40, "low");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(low_risk)
             const high_risk = document.createElement("button")
             high_risk.innerHTML = "high risk"
             high_risk.setAttribute("id", "make-loan-high")
-            high_risk.addEventListener("click" , function(){state.make_loan(state.create_date("high"), 20000000000, 20, 100, "high");drawing_tools.display_loans.update_internal(state)})
+            high_risk.addEventListener("click" , function(){state.make_loan(state.create_date("high"), 200000000000, 17, 80, "high");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(high_risk)
 
             const show_loans = document.createElement("div")
@@ -345,8 +346,8 @@ const drawing_tools={
         update : (state) => {
             if (state.loan_expired){
                 drawing_tools.display_loans.update_internal(state)
-                document.getElementById("exampleModalLongTitle").innerHTML = "Loan"
-                document.getElementById("modal-body").innerHTML = "loan"
+                document.getElementById("exampleModalLongTitle").innerHTML = "LOAN"
+                document.getElementById("modal-body").innerHTML = "loan expired <br>" + "pil has decreased of " + state.economy_loan_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.loan_expired = false
             }
@@ -384,6 +385,28 @@ const drawing_tools={
     },
     "display_beds_stats":{
         draw: (container_out,state)=>{
+
+            show_specialization = () => {
+                const div = document.createElement("div")
+                div.setAttribute("class", "specializations-wrap")
+                const list = document.createElement("ul")
+                div.appendChild(list)
+                Object.keys(state.specializations).forEach(key =>{
+                    if (key !== "reanimate_beds" && key !== "min" && key !== "level"){
+                        const item = document.createElement("li")
+                        item.innerHTML = key + ": " + state.specializations[key]
+                        list.appendChild(item)
+                    }
+                })
+                document.getElementById("exampleModalLongTitle").innerHTML = "SPECIALIZATION"
+                document.getElementById("modal-body").innerHTML = ""
+                document.getElementById("modal-body").appendChild(div)
+                document.getElementById("modal-body").removeChild(document.getElementById("modal-body").childNodes[0])
+                document.getElementById("modal-body").appendChild(div)
+                $('#exampleModalCenter').modal('show')
+
+            }
+
             const wrap=document.createElement("div")
             wrap.setAttribute("class","wrap_beds")
             const s1=document.createElement("div")
@@ -395,8 +418,19 @@ const drawing_tools={
             show_beds.setAttribute("id", "show_free_beds")
             const show_need=document.createElement("div")
             show_need.setAttribute("id", "show_need")
+            const flex_container = document.createElement("div")
+            flex_container.setAttribute("class", "flex-other")
             const show_other = document.createElement("div")
             show_other.setAttribute("id", "show_other")
+            const show_spec = document.createElement("span")
+            show_spec.setAttribute("class", "show_spec" )
+            const show_spec_button = document.createElement("button")
+            show_spec_button.setAttribute("class", "show-spec-button")
+            show_spec.appendChild(show_spec_button)
+            show_spec_button.innerHTML = "show specialization"
+            flex_container.appendChild(show_other)
+            flex_container.appendChild(show_spec)
+            show_spec_button.addEventListener("click", show_specialization)
             
             var free_beds = state.reanimate_beds - state.need_medical
             var beds_needed = 0
@@ -414,7 +448,7 @@ const drawing_tools={
             show_other.innerHTML = "Other beds: " + drawing_tools.display_numbers(other_beds)
             show_beds.innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds)
             show_need.innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
-            wrap.appendChild(show_other)
+            wrap.appendChild(flex_container)
             wrap.appendChild(show_beds)
             wrap.appendChild(show_need)
             
@@ -423,6 +457,8 @@ const drawing_tools={
             s2.setAttribute("class","separator")
             s2.setAttribute("id","sb")
             container_out.appendChild(wrap)
+
+
         },
         update : (state) => {
             var free_beds = state.reanimate_beds - state.need_medical
@@ -615,48 +651,68 @@ const drawing_tools={
         stop_button.setAttribute("class", "stop-button")
         stop_button.addEventListener("click", function(){clearInterval(currentLoop);currentLoop = null})
 
-        const _1x_span = document.createElement("span")
-        container.appendChild(_1x_span)
-        const _1x_button = document.createElement("button")
-        _1x_span.appendChild(_1x_button)
-        _1x_button.innerHTML = "1X"
-        _1x_button.setAttribute("id", "1x-button")
-        _1x_button.setAttribute("class", "1x-button")
-        _1x_button.addEventListener("click", _1x_function)
-       
         const _05x_span = document.createElement("span")
         container.appendChild(_05x_span)
         const _05x_button = document.createElement("button")
         _05x_span.appendChild(_05x_button)
         _05x_button.innerHTML = "0.5X"
-        _05x_button.setAttribute("id", "05x-button")
-        _05x_button.setAttribute("class", "05x-button")
+        _05x_button.setAttribute("id", "_05x-button")
+        _05x_button.setAttribute("class", "_05x-button")
         _05x_button.addEventListener("click", _05x_function)
+
+        const _1x_span = document.createElement("span")
+        container.appendChild(_1x_span)
+        const _1x_button = document.createElement("button")
+        _1x_span.appendChild(_1x_button)
+        _1x_button.innerHTML = "1X"
+        _1x_button.setAttribute("id", "_1x-button")
+        _1x_button.setAttribute("class", "_1x-button")
+        _1x_button.addEventListener("click", _1x_function)
+       
+        
         
         const _2x_span = document.createElement("span")
         container.appendChild(_2x_span)
         const _2x_button = document.createElement("button")
         _2x_span.appendChild(_2x_button)
         _2x_button.innerHTML = "2X"
-        _2x_button.setAttribute("id", "2x-button")
-        _2x_button.setAttribute("class", "2x-button")
+        _2x_button.setAttribute("id", "_2x-button")
+        _2x_button.setAttribute("class", "_2x-button")
         _2x_button.addEventListener("click", _2x_function)
     },
     continue : (state) => {
-        if (state.infects >= state.popolation || state.feeling === 0 || state.pil === state.pil_0*0.3){
+        if (state.infects >= state.popolation || state.feeling === 0 || state.pil < state.pil_0*0.3){
+            if (state.pil < state.pil_0*0.3){
+                state.pil = state.pil_0*0.3
+            }
+            document.getElementById("exampleModalLongTitle").innerHTML = "YOU LOST"
+            document.getElementById("modal-body").innerHTML = "you lost"
+            document.getElementById("x").innerHTML = ""
+            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "lose.html"})
+            $('#exampleModalCenter').modal({
+                backdrop: 'static',
+                keyboard: false  // to prevent closing with Esc button (if you want this too)
+            })
             clearInterval(currentLoop)
             clearInterval(gameLoop)
-            document.getElementById("2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("05x-button").removeEventListener("click", _05x_function)
-            document.getElementById("1x-button").removeEventListener("click", _1x_function)
-            //location.href = "loose.html"
+            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
+            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
         }
         else if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
+            document.getElementById("exampleModalLongTitle").innerHTML = "YOU WON"
+            document.getElementById("modal-body").innerHTML = "you win"
+            document.getElementById("x").innerHTML = ""
+            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
+            $('#exampleModalCenter').modal({
+                backdrop: 'static',
+                keyboard: false  // to prevent closing with Esc button (if you want this too)
+            })
             clearInterval(currentLoop)
             clearInterval(gameLoop)
-            document.getElementById("2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("05x-button").removeEventListener("click", _05x_function)
-            document.getElementById("1x-button").removeEventListener("click", _1x_function)
+            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
+            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
             //location.href = "win.html"
         }
     },
@@ -668,10 +724,10 @@ const drawing_tools={
             container.appendChild(date)
             date.setAttribute("id", "date")
             date.setAttribute("class", "date")
-            date.innerHTML = world.date
+            date.innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
         },
         update : (world) => {
-            document.getElementById("date").innerHTML = world.date
+            document.getElementById("date").innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
         }
     },
     display_numbers : (number) => {
@@ -692,75 +748,79 @@ const drawing_tools={
 
         return number
     },
+    display_modal_center : (container_out) => {
+        const modal_fade = document.createElement("div")
+        modal_fade.setAttribute("class","modal fade")
+        modal_fade.setAttribute("id", "exampleModalCenter")
+        modal_fade.setAttribute("tabindex", "-1")
+        modal_fade.setAttribute("role", "dialog")
+        modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+        modal_fade.setAttribute("aria-hidden", "true")
+        const modal_dialog = document.createElement("div")
+        modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+        modal_dialog.setAttribute("role", "document")
+        const modal_content = document.createElement("div")
+        modal_content.setAttribute("class", "modal-content")
+        const modal_header = document.createElement("div")
+        modal_header.setAttribute("class", "modal-header")
+        const h5 = document.createElement("h5")
+        h5.setAttribute("class", "modal-title")
+        h5.setAttribute("id", "exampleModalLongTitle")
+        h5.innerHTML = "Modal title"
+        const button = document.createElement("button")
+        button.setAttribute("type", "button")
+        button.setAttribute("class","close")
+        button.setAttribute("data-dismiss", "modal")
+        button.setAttribute("aria-label", "Close")
+        const span = document.createElement("span")
+        span.setAttribute("aria-hidden", "true")
+        span.setAttribute("id", "x")
+        span.innerHTML = "&times;"
+        const modal_body = document.createElement("div")
+        modal_body.setAttribute("class", "modal-body")
+        modal_body.setAttribute("id", "modal-body")
+        modal_body.innerHTML = ""
+        const modal_footer = document.createElement("div")
+        modal_footer.setAttribute("class", "modal-footer")
+        const button2 = document.createElement("button")
+        button2.setAttribute("type","button")
+        button2.setAttribute("class","btn btn-secondary")
+        button2.setAttribute("data-dismiss","modal")
+        button2.setAttribute("id", "modal_end_close")
+        button2.innerHTML = "Close"
+        container_out.appendChild(modal_fade)
+        modal_fade.appendChild(modal_dialog)
+        modal_dialog.appendChild(modal_content)
+        modal_content.appendChild(modal_header)
+        modal_header.appendChild(h5)
+        modal_header.appendChild(button)
+        button.appendChild(span)
+        modal_content.appendChild(modal_body)
+        modal_content.appendChild(modal_footer)
+        modal_footer.appendChild(button2)
+    },
     "display_riot" : {
-        draw : (container_out) => {
-            const saas = document.createElement("butt")
-            const modal_fade = document.createElement("div")
-            modal_fade.setAttribute("class","modal fade")
-            modal_fade.setAttribute("id", "exampleModalCenter")
-            modal_fade.setAttribute("tabindex", "-1")
-            modal_fade.setAttribute("role", "dialog")
-            modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
-            modal_fade.setAttribute("aria-hidden", "true")
-            const modal_dialog = document.createElement("div")
-            modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
-            modal_dialog.setAttribute("role", "document")
-            const modal_content = document.createElement("div")
-            modal_content.setAttribute("class", "modal-content")
-            const modal_header = document.createElement("div")
-            modal_header.setAttribute("class", "modal-header")
-            const h5 = document.createElement("h5")
-            h5.setAttribute("class", "modal-title")
-            h5.setAttribute("id", "exampleModalLongTitle")
-            h5.innerHTML = "Modal title"
-            const button = document.createElement("button")
-            button.setAttribute("type", "button")
-            button.setAttribute("class","close")
-            button.setAttribute("data-dismiss", "modal")
-            button.setAttribute("aria-label", "Close")
-            const span = document.createElement("span")
-            span.setAttribute("aria-hidden", "true")
-            span.innerHTML = "&times;"
-            const modal_body = document.createElement("div")
-            modal_body.setAttribute("class", "modal-body")
-            modal_body.setAttribute("id", "modal-body")
-            modal_body.innerHTML = "riot"
-            const modal_footer = document.createElement("div")
-            modal_footer.setAttribute("class", "modal-footer")
-            const button2 = document.createElement("button")
-            button2.setAttribute("type","button")
-            button2.setAttribute("class","btn btn-secondary")
-            button2.setAttribute("data-dismiss","modal")
-            button2.innerHTML = "Close"
-            container_out.appendChild(modal_fade)
-            modal_fade.appendChild(modal_dialog)
-            modal_dialog.appendChild(modal_content)
-            modal_content.appendChild(modal_header)
-            modal_header.appendChild(h5)
-            modal_header.appendChild(button)
-            button.appendChild(span)
-            modal_content.appendChild(modal_body)
-            modal_content.appendChild(modal_footer)
-            modal_footer.appendChild(button2)
-        },
-
         update : (state) => {
-            if (state.riot_type ==="hospital"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
-                document.getElementById("modal-body").innerHTML = "hospital"
+            var people = "people"
+            if (Math.round(state.infects*(40/100)) === 1){
+                people = "person"
+            }
+            if (state.riot_type ==="infects"){
+                document.getElementById("exampleModalLongTitle").innerHTML = "INFECTS RIOT"
+                document.getElementById("modal-body").innerHTML = "There has been a gathering of people and a new outbreak has formed. <br class = 'modal-riot-br'> Increase the feeling <br class = 'modal-riot-br'>" +  Math.round(state.infects*(40/100)) +  " " + people + "have been infected"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
             }
-            else if (state.riot_type ==="civil"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
-                document.getElementById("modal-body").innerHTML = "civil"
+            else if (state.riot_type ==="both"){
+                document.getElementById("exampleModalLongTitle").innerHTML = "INFECTS AND ECONOMY RIOT"
+                document.getElementById("modal-body").innerHTML = "there was an assault on supermarkets <br class = 'modal-riot-br'> increase the feeling <br class = 'modal-riot-br'>" + Math.round(state.infects*(20/100)) + " " + people + "have been infected" + "<br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
 
             }
             else if (state.riot_type ==="economy"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "Riot"
-                document.getElementById("modal-body").innerHTML = "economy"
+                document.getElementById("exampleModalLongTitle").innerHTML = "ECONOMY RIOT"
+                document.getElementById("modal-body").innerHTML = "there was a speculative bubble on the masks <br class = 'modal-riot-br'> increaseX the feeling <br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
 

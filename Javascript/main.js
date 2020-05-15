@@ -55,7 +55,7 @@ var World = function(state){
   this.death_rate=0;
   this.date = null;
   this.curMonth = 0
-  this.month_numb = 0
+  this.month_numb = 1
   this.curDay = 0
   this.curYear = 0
   this.initial_year = 0
@@ -112,7 +112,7 @@ var State = function(state, World){
   this.reanimate_beds = state["reanimate_beds"]
   this.other_beds = state["other_beds"]
   this.pil = state["pil"]
-  this.health_funds_rate = 50000000000 / this.pil 
+  this.health_funds_rate = 500000000000 / this.pil 
   this.pil_0=this.pil
   this.perc_economy=((this.pil/this.pil_0).toFixed(3))*100
   this.popolation = state["popolation"]     
@@ -152,6 +152,8 @@ var State = function(state, World){
   this.riots =0
   this.end_game = null
   this.loan_expired = false
+  this.economy_riot_influence = 0
+  this.economy_loan_influence = 0
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -216,8 +218,8 @@ var State = function(state, World){
   this.make_new_hospital = () => {
     console.log("ciao")
     this.decision["new_hospitals"] += 1
-    this.health_funds -= 10000000000
-    this.health_funds_used += 10000000000
+    this.health_funds -= 100000000000
+    this.health_funds_used += 100000000000
     this.specializations["reanimate_beds"] += 10000
     this.reanimate_beds += 10000
     this.reanimate_beds_hospitals += 10000
@@ -469,30 +471,32 @@ var State = function(state, World){
 
   this.riot=()=>{
     this.riots += 1
-    const riot = getRandomInt(1,3)
+    const riot = getRandomInt(1,4)
     console.log("a", riot)
     switch(riot){
       case 1:
-        this.riot_type = "hospital"
+        this.riot_type = "infects"
         this.infects += this.infects*(40/100)
         break
 
       case 2:
-        this.riot_type = "civil"
+        this.riot_type = "both"
         this.infects += this.infects*(20/100)
-        this.pil-=(this.pil_0*(10/500))
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(40/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(40/3000))
         break
 
       case 3:
         this.riot_type = "economy"
-        this.pil-=(this.pil_0*(20/500))
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(80/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(80/3000))
         break
     }
   }
 
   this.riot_summary = () => {
     perc = Math.round((100-this.feeling)/20)
-    const riot = getRandomInt(1,100)
+    const riot = getRandomInt(1,101)
     var a = 0
     if (riot <= perc){
       a = 1
@@ -658,8 +662,8 @@ var State = function(state, World){
     if(this.pil_rate>this.rate_economy_daily){
       this.economy_judgment = "peggiorata economia"
       //const nr=this.pil_rate-this.rate_economy_daily
-      this.pil-=(this.pil_0*((this.pil_rate)/5000))
-      console.log(this.pil_0*((this.pil_rate)/5000))   //da controllare la matematica
+      this.pil-=(this.pil_0*((this.pil_rate)/3000))
+      console.log(this.pil_0*((this.pil_rate)/3000))   //da controllare la matematica
 
 
     }
@@ -691,6 +695,7 @@ var State = function(state, World){
       console.log("dio")
       this.loans.forEach(currentItem => {
         if (currentItem.date1 === world.date){
+          this.economy_loan_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-currentItem.perc_not_paid*this.pil)/this.pil_0 * 100))
           this.pil -= currentItem.perc_not_paid*this.pil // da controllare matematica
           index = stato.loans.indexOf(currentItem)
           this.loans.splice(index, 1)

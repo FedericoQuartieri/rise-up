@@ -27,7 +27,7 @@ createGrid(3)
 
 //-------------------------
 //Top
-drawing_tools.display_riot.draw(document.getElementById("col 0 0"))
+drawing_tools.display_modal_center(document.getElementById("col 0 0"))
 //0
 
 drawing_tools.display_stop(document.getElementById("col 0 0"))
