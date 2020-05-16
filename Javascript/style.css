@@ -704,8 +704,8 @@ transition: 0.5s;}
 }
 
 .wrap_beds{
-    margin-top: -40px;
-    margin-bottom: 10%;
+    margin-top: -10px;
+    margin-bottom: 4%;
     text-transform: uppercase;
     font-size: 13.5px;
     font-weight: 440;
@@ -863,13 +863,13 @@ transition: 0.5s;}
 
 .flex-other {
     display: flex;
-    justify-content: space-between;
-    margin-right: 17%;
+    justify-content: baseline;
 }
 
 
 .show-spec-button{
     background: linear-gradient(to right,#56ccf2,#2f80ed);
+    margin-left: 40px;
     
 }
 
@@ -905,4 +905,17 @@ transition: 0.5s;}
     box-shadow: 0 5px 25px rgba(0, 0, 0,.2);
     color: #fff;
     opacity: 1;
+}
+
+.logo-funds {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-left: 70px;
+    margin-top: -5px;
+}
+
+.flex-funds{
+    display: flex;
+    justify-content: baseline;
 }

@@ -141,7 +141,7 @@ var State = function(state, World){
   this.non_virus_dead = 0
   this.economy_judgment = ""
   this.health_funds_used = 0
-  this.health_funds = 0
+  this.health_funds = 500000000000
   this.health_funds_loan = 0
   this.loan_expired = false
   this.economy_rate = (100-(this.pil/this.pil_0 *100))
@@ -220,9 +220,9 @@ var State = function(state, World){
     this.decision["new_hospitals"] += 1
     this.health_funds -= 100000000000
     this.health_funds_used += 100000000000
-    this.specializations["reanimate_beds"] += 10000
-    this.reanimate_beds += 10000
-    this.reanimate_beds_hospitals += 10000
+    this.specializations["reanimate_beds"] += 50000
+    this.reanimate_beds += 50000
+    this.reanimate_beds_hospitals += 50000
   }
 
   this.make_change_bed_random = () => {

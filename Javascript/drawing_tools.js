@@ -187,7 +187,7 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "Total beds: \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            reanimate_beds.innerHTML = "Total beds : \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
@@ -230,42 +230,48 @@ const drawing_tools={
             let debit = 0
             if (health_funds < 0){
                 debit =  -health_funds
-                health_funds = 0
-                
             }
             const s1=document.createElement("div")
             container.appendChild(s1)
             s1.setAttribute("class","separator")
             s1.setAttribute("id","st")
+            const flex_funds = document.createElement("div")
+            flex_funds.setAttribute("class", "flex-funds")
+            container.appendChild(flex_funds)
             const show_funds = document.createElement("div")
             container.setAttribute("class", "funds-menu")
-            container.appendChild(show_funds)
+            flex_funds.appendChild(show_funds)
             show_funds.setAttribute("class", "show_funds")
             show_funds.setAttribute("id", "show_funds")
-            /*
-            const show_debit = document.createElement("div")
-            container.appendChild(show_debit)
-            show_debit.setAttribute("class", "show_debit")
-            show_debit.setAttribute("id", "show_debit")
-            */
+            const logo = document.createElement("div")
+            flex_funds.appendChild(logo)
+            logo.setAttribute("class", "logo-funds")
+            logo.setAttribute("id", "logo-funds")
             const s2=document.createElement("div")
             container.appendChild(s2)
             s2.setAttribute("class","separator")
             s2.setAttribute("id","sb")
-            show_funds.innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
-            //show_debit.innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
-
+            if (health_funds >= 0){
+                show_funds.innerHTML = "health funds: "+ drawing_tools.display_numbers(health_funds)
+            }
+            else {
+                show_funds.innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+            }
         },
         update : (state) => {
             let health_funds = state.health_funds
             let debit = 0
             if (health_funds < 0){
                 debit =  -health_funds
-                health_funds = 0
-                
             }
-            document.getElementById("show_funds").innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
-            //document.getElementById("show_debit").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+            if (health_funds >= 0){
+                document.getElementById("show_funds").innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
+                document.getElementById("logo-funds").style.backgroundColor = "#68D534"
+            }
+            else {
+                document.getElementById("show_funds").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
+                document.getElementById("logo-funds").style.backgroundColor = "#D84728"
+            }
         }
     },
 
@@ -724,26 +730,38 @@ const drawing_tools={
             container.appendChild(date)
             date.setAttribute("id", "date")
             date.setAttribute("class", "date")
-            date.innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
+            var date0 = new Date()
+            date.innerHTML = date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
         },
         update : (world) => {
-            document.getElementById("date").innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
+            var date0 = new Date()
+            if (world.date !== null){
+                document.getElementById("date").innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
+            }
+            else {
+                document.getElementById("date").innerHTML = date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
+            }
         }
     },
     display_numbers : (number) => {
         number = number.toString()
         if (number.length > 9){
             number = number.substring(0, number.length - 9)
-            number = number + "Miliardi"
+            if (number == 1){
+                number = number + " Miliardo"
+            }
+            else {
+                number = number + " Miliardi"
+            }
         }
 
         else if (number.length > 7){
             number = number.substring(0, number.length - 6)
-            number = number + "M"
+            number = number + " M"
         }
         else if (number.length > 3){
             number = number.substring(0, number.length - 3)
-            number = number + "k"
+            number = number + " k"
         }
 
         return number
