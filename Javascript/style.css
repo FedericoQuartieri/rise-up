@@ -1,14 +1,10 @@
 html {
-    margin: 0px;
-    height: 100%;
-    width: 100%;
+   
     overflow-x: hidden;
  }
  
  body {
-    margin: 0px;
-    min-height: 100%;
-    width: 100%;
+   
     
     
  }
@@ -196,7 +192,7 @@ input[type="checkbox"]:checked ~ .check::after{
 .ca{
     
     height: 50px;
-    width: 230px;
+    width: inherit;
     padding-top: 18px;
     display: flex;
     justify-content: space-around;
