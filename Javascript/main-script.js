@@ -25,6 +25,7 @@ var daytime=1
 createGrid(3)
 
 
+
 //-------------------------
 //Top
 drawing_tools.display_modal_center(document.getElementById("col 0 0"))
@@ -72,8 +73,12 @@ drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getEleme
 
 
 
+
+
+//drawing_tools.initial_modal()
+
 //Loops 
-//var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+
 
 var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
 

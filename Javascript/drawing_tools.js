@@ -451,7 +451,8 @@ const drawing_tools={
                     other_beds += state.specializations[key]
                 }
             })
-            show_other.innerHTML = "Other beds: " + drawing_tools.display_numbers(other_beds)
+            other_beds -= state.specializations["min"]*7
+            show_other.innerHTML = "Other beds usable: " + drawing_tools.display_numbers(other_beds)
             show_beds.innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds)
             show_need.innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
             wrap.appendChild(flex_container)
@@ -473,16 +474,15 @@ const drawing_tools={
                 var beds_needed = -free_beds
                 free_beds = 0
             }
-
-
             var other_beds = 0
             Object.keys(state.specializations).forEach((key)=>{
                 if (key !== "reanimate_beds" && key !== "min" && key !== "level"){
                     other_beds += state.specializations[key]
                 }
             })
+            other_beds -= (state.specializations["min"]*7)
             free_beds = Math.round(free_beds)
-            document.getElementById("show_other").innerHTML = "Other beds: " + drawing_tools.display_numbers(other_beds)
+            document.getElementById("show_other").innerHTML = "Other beds usable: " + drawing_tools.display_numbers(other_beds)
             document.getElementById("show_free_beds").innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds) 
             document.getElementById("show_need").innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
         }
@@ -697,7 +697,7 @@ const drawing_tools={
             document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "lose.html"})
             $('#exampleModalCenter').modal({
                 backdrop: 'static',
-                keyboard: false  // to prevent closing with Esc button (if you want this too)
+                keyboard: false
             })
             clearInterval(currentLoop)
             clearInterval(gameLoop)
@@ -725,6 +725,7 @@ const drawing_tools={
     "display_date" : {
         draw : (container_out, world)  => {
             const container = document.createElement("div")
+            container.setAttribute("class", "date-menu")
             container_out.appendChild(container)
             const date = document.createElement("div")
             container.appendChild(date)
@@ -1010,6 +1011,15 @@ const drawing_tools={
             })
         }
 
+    },
+    initial_modal : () => {
+        document.getElementById("exampleModalLongTitle").innerHTML = "CHOOSE DIFFICULTY"
+        document.getElementById("x").innerHTML = ""
+        document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
+        jQuery('exampleModalCenter').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
     }
 }
 
