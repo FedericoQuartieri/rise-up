@@ -26,7 +26,7 @@ const drawing_tools={
             const h=document.createElement("div")
             h.setAttribute("class","title")
             h.setAttribute("id","dec_title")
-            h.innerHTML="decisions"
+            h.innerHTML="decisions closing"
             container.appendChild(h)
             const list=document.createElement("ul")
             list.setAttribute("class","decision-menu")  
