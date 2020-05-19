@@ -154,6 +154,7 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_riot_influence = 0
   this.economy_loan_influence = 0
+  this.difficulty = ""
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -352,10 +353,9 @@ var State = function(state, World){
       console.log("feeling non virus dead",this.feeling_non_virus_dead)
       console.log("riot", this.riot_type)
       console.log("riots", this.riots)
-      console.log(this.specializations)
       console.log("loan_expired", this.loan_expired)
-      console.log(world.initial_day, world.initial_month, world.initial_year)
-      console.log(world.month_numb)
+
+
   }
 
   //-------------------------------------

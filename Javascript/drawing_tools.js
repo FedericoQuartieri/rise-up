@@ -18,6 +18,7 @@ const dec={
 */
 
 const drawing_tools={
+
     "display_decisions": 
      {
         draw:(dictionary,container_out,state)=>{
@@ -687,6 +688,23 @@ const drawing_tools={
         _2x_button.addEventListener("click", _2x_function)
     },
     continue : (state) => {
+
+        win = () => {
+            document.getElementById("exampleModalLongTitle").innerHTML = "YOU WON"
+            document.getElementById("modal-body").innerHTML = "you win"
+            document.getElementById("x").innerHTML = ""
+            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
+            $('#exampleModalCenter').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            clearInterval(currentLoop)
+            clearInterval(gameLoop)
+            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
+            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
+            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
+        }
+
         if (state.infects >= state.popolation || state.feeling === 0 || state.pil < state.pil_0*0.3){
             if (state.pil < state.pil_0*0.3){
                 state.pil = state.pil_0*0.3
@@ -705,22 +723,23 @@ const drawing_tools={
             document.getElementById("_05x-button").removeEventListener("click", _05x_function)
             document.getElementById("_1x-button").removeEventListener("click", _1x_function)
         }
-        else if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
-            document.getElementById("exampleModalLongTitle").innerHTML = "YOU WON"
-            document.getElementById("modal-body").innerHTML = "you win"
-            document.getElementById("x").innerHTML = ""
-            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
-            $('#exampleModalCenter').modal({
-                backdrop: 'static',
-                keyboard: false  // to prevent closing with Esc button (if you want this too)
-            })
-            clearInterval(currentLoop)
-            clearInterval(gameLoop)
-            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
-            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
-            //location.href = "win.html"
+        else if (state.difficulty === "easy"){
+            if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 5){
+                win()
+            }
         }
+        else if (state.difficulty === "medium"){
+            if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
+                win()
+            }
+        }
+        else if (state.difficulty === "hard"){
+            if (state.world.curYear === (state.world.initial_year + 1)  && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 5){
+                win()
+            }
+        }
+
+
     },
     "display_date" : {
         draw : (container_out, world)  => {
@@ -848,7 +867,6 @@ const drawing_tools={
     },
     
     "display_block_trades": {
-        
         draw: (container_out,state)=>{
             const toggle_button=document.createElement("button")
             $(toggle_button).attr({
@@ -1012,11 +1030,71 @@ const drawing_tools={
         }
 
     },
-    initial_modal : () => {
-        document.getElementById("exampleModalLongTitle").innerHTML = "CHOOSE DIFFICULTY"
-        document.getElementById("x").innerHTML = ""
-        document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
-        jQuery('exampleModalCenter').modal({
+    initial_modal : (container_out, state) => {
+        console.log(container_out)
+        const modal_fade = document.createElement("div")
+        modal_fade.setAttribute("class","modal fade")
+        modal_fade.setAttribute("id", "InitialModal")
+        modal_fade.setAttribute("tabindex", "-1")
+        modal_fade.setAttribute("role", "dialog")
+        modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+        modal_fade.setAttribute("aria-hidden", "true")
+        const modal_dialog = document.createElement("div")
+        modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+        modal_dialog.setAttribute("role", "document")
+        const modal_content = document.createElement("div")
+        modal_content.setAttribute("class", "modal-content")
+        const modal_header = document.createElement("div")
+        modal_header.setAttribute("class", "modal-header")
+        const h5 = document.createElement("h5")
+        h5.setAttribute("class", "modal-title")
+        h5.setAttribute("id", "exampleModalLongTitle")
+        h5.innerHTML = "CHOOSE DIFFICULTY"
+        const button = document.createElement("button")
+        button.setAttribute("type", "button")
+        button.setAttribute("class","close")
+        button.setAttribute("data-dismiss", "modal")
+        button.setAttribute("aria-label", "Close")
+        const modal_body = document.createElement("div")
+        modal_body.setAttribute("class", "modal-body")
+        modal_body.setAttribute("id", "modal-body")
+        modal_body.innerHTML = ""
+        const modal_footer = document.createElement("div")
+        modal_footer.setAttribute("class", "modal-footer-initial")
+        modal_footer.setAttribute("id", "modal-footer-initial")
+        const button2 = document.createElement("button")
+        button2.setAttribute("type","button")
+        button2.setAttribute("class","btn btn-secondary")
+        button2.setAttribute("data-dismiss","modal")
+        button2.setAttribute("id", "modal_end_close")
+        button2.innerHTML = "Easy"
+        const button3 = document.createElement("button")
+        button3.setAttribute("type","button")
+        button3.setAttribute("class","btn btn-secondary")
+        button3.setAttribute("data-dismiss","modal")
+        button3.setAttribute("id", "modal_end_close")
+        button3.innerHTML = "Medium"
+        const button4 = document.createElement("button")
+        button4.setAttribute("type","button")
+        button4.setAttribute("class","btn btn-secondary")
+        button4.setAttribute("data-dismiss","modal")
+        button4.setAttribute("id", "modal_end_close")
+        button4.innerHTML = "Hard"
+        container_out.appendChild(modal_fade)
+        modal_fade.appendChild(modal_dialog)
+        modal_dialog.appendChild(modal_content)
+        modal_content.appendChild(modal_header)
+        modal_header.appendChild(h5)
+        modal_header.appendChild(button)
+        modal_content.appendChild(modal_body)
+        modal_content.appendChild(modal_footer)
+        modal_footer.appendChild(button2)
+        modal_footer.appendChild(button3)
+        modal_footer.appendChild(button4)
+        button2.addEventListener("click", function(){state.difficulty = "easy"})
+        button3.addEventListener("click", function(){state.difficulty = "medium"})
+        button4.addEventListener("click", function(){state.difficulty = "hard"})
+        $('#InitialModal').modal({
             backdrop: 'static',
             keyboard: false
         })
