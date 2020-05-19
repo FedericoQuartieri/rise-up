@@ -42,12 +42,13 @@ drawing_tools.display_date.draw(document.getElementById("col 2 0"), stato.world)
 
 //0
 drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElementById("col 0 1"),stato)
-drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
-drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
-drawing_tools.display_boolean.draw("army_using",stato.decision,document.getElementById("col 0 1"))
+//drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
+//drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
+//drawing_tools.display_boolean.draw("army_using",stato.decision,document.getElementById("col 0 1"))
+//drawing_tools.display_block_trades.draw(document.getElementById("col 0 1"),stato)
 //1
 drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,document.getElementById("col 1 1"))
-
+drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getElementById("col 0 1"))
 
 //2
 drawing_tools.display_hospitals.draw(document.getElementById("col 2 1"),stato)
@@ -55,7 +56,7 @@ drawing_tools.display_specializations.draw(stato.specializations, document.getEl
 drawing_tools.display_beds_stats.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
-drawing_tools.display_block_trades.draw(document.getElementById("col 2 1"),stato)
+
 
 
 
@@ -63,7 +64,7 @@ drawing_tools.display_block_trades.draw(document.getElementById("col 2 1"),stato
 //Bottom
 
 //0
-drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getElementById("col 0 2"))
+
 
 //1
 

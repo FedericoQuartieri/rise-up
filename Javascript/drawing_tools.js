@@ -110,6 +110,10 @@ const drawing_tools={
     
             const div=document.createElement("div")
             div.setAttribute("id","wrap")
+            const h=document.createElement("div")
+            h.setAttribute("class","title")
+            h.innerHTML="red zone"
+            container_out.appendChild(h)
             const header=document.createElement("h2")
             header.setAttribute("id","rangeValue")
             const fill=document.createElement("div")
@@ -824,21 +828,21 @@ const drawing_tools={
                 people = "person"
             }
             if (state.riot_type ==="infects"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "INFECTS RIOT"
-                document.getElementById("modal-body").innerHTML = "There has been a gathering of people and a new outbreak has formed. <br class = 'modal-riot-br'> Increase the feeling <br class = 'modal-riot-br'>" +  Math.round(state.infects*(40/100)) +  " " + people + "have been infected"
+                document.getElementById("exampleModalLongTitle").innerHTML = "URBAN RIOT"
+                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'>There has been a gathering of people and a new outbreak has formed. <br class = 'modal-riot-br'>  <br class = 'modal-riot-br'>" +  Math.round(state.infects*(40/100)) +  " " + people + " have been infected"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
             }
             else if (state.riot_type ==="both"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "INFECTS AND ECONOMY RIOT"
-                document.getElementById("modal-body").innerHTML = "there was an assault on supermarkets <br class = 'modal-riot-br'> increase the feeling <br class = 'modal-riot-br'>" + Math.round(state.infects*(20/100)) + " " + people + "have been infected" + "<br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
+                document.getElementById("exampleModalLongTitle").innerHTML = "URBAN RIOT"
+                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'> there has been an assault on supermarkets <br class = 'modal-riot-br'> <br class = 'modal-riot-br'>" + Math.round(state.infects*(20/100)) + " " + people + " have been infected" + "<br class = 'modal-riot-br'><br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
 
             }
             else if (state.riot_type ==="economy"){
-                document.getElementById("exampleModalLongTitle").innerHTML = "ECONOMY RIOT"
-                document.getElementById("modal-body").innerHTML = "there was a speculative bubble on the masks <br class = 'modal-riot-br'> increaseX the feeling <br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
+                document.getElementById("exampleModalLongTitle").innerHTML = "ECONOMIC ACCIDENT"
+                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'>there has been a speculative bubble on the masks <br class = 'modal-riot-br'> <br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
 

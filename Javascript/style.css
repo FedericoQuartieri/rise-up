@@ -9,7 +9,7 @@ html {
     
  }
  
-.col-md-3:nth-child(1){
+.col-md-3:nth-child(1),.col-md-6{
     text-align: -webkit-center;
 }
 /* lista delle decision */
@@ -219,14 +219,17 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 #wrap{
     position: relative;
-    width: 450px;
+    width: 59%;
+    height: 35%;
+    text-align: -webkit-center;
+    margin-top: 5%;
+    align-items: center;
 }
 
 #rangeValue{
     position: relative;
-    text-align: center;
     display: block;
-    font-size: 6em;
+    font-size: 3em;
     color: rgba(0, 0, 0,.8);
     font-weight: 620;
     z-index: 2;
@@ -246,13 +249,13 @@ input[type="checkbox"]:checked ~ .check::after{
     top: 0;
     left: 0;
 
-    height: 300px;
+    height: 100%;
     background: red;
     z-index: 1;
 }
 .range{
     position: relative;
-    width: 400px;
+    width: 82%;
     height: 15px;
     -webkit-appearance: none;
     outline: none;
@@ -262,7 +265,8 @@ input[type="checkbox"]:checked ~ .check::after{
     z-index: 2;
     overflow: hidden;
     margin-top: 14%;
-    margin-left: 9%;
+    
+    
 
 
 }
@@ -566,7 +570,7 @@ transition: 0.5s;}
 }
 .container_deaths:hover #death_display{
     color: #fff;
-    font-size: 30px;
+    font-size: 25px;
 }
 .count_text{
     font-size: 18px; 
