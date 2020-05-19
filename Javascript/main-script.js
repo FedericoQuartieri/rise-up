@@ -15,6 +15,7 @@ updates = () =>{
     drawing_tools.display_date.update(world)
     drawing_tools.display_beds_stats.update(stato)
     drawing_tools.display_riot.update(stato)
+
 }
 const fps=30
 var daytime=1
@@ -25,9 +26,13 @@ var daytime=1
 createGrid(3)
 
 
+
 //-------------------------
 //Top
+
+
 drawing_tools.display_modal_center(document.getElementById("col 0 0"))
+
 //0
 
 drawing_tools.display_stop(document.getElementById("col 0 0"))
@@ -72,15 +77,19 @@ drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 //2
 
 
+drawing_tools.initial_modal(document.getElementById("col 0 0"),stato)
+
+
 
 //Loops 
-//var timerClock = setInterval(function(){clock(stato);stato.summaries();/*stato.print()*/}, 1000/daytime)
+
 
 var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
 
 var gameLoop = setInterval(function(){ updates()},1000/fps)
 
 var currentLoop = timerClock
+
 
 /*
 var timerUpdate =setInterval(() => {

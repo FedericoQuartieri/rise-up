@@ -869,7 +869,7 @@ transition: 0.5s;}
 
 .show-spec-button{
     background: linear-gradient(to right,#56ccf2,#2f80ed);
-    margin-left: 40px;
+    margin-left: 20px;
     
 }
 
@@ -911,11 +911,28 @@ transition: 0.5s;}
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    margin-left: 70px;
+    margin-left: 40px;
     margin-top: -5px;
 }
 
 .flex-funds{
     display: flex;
     justify-content: baseline;
+}
+
+
+.date-menu{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.modal-footer-initial{
+    justify-content: space-around;
+    padding: .75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: calc(.3rem - 1px);
+    border-bottom-left-radius: calc(.3rem - 1px);
+    align-items: center;
+    flex-wrap: wrap;
+    display: flex;
 }
