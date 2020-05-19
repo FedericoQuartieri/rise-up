@@ -728,7 +728,7 @@ const drawing_tools={
             document.getElementById("_1x-button").removeEventListener("click", _1x_function)
         }
         else if (state.difficulty === "easy"){
-            if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 5){
+            if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
                 win()
             }
         }
@@ -738,7 +738,7 @@ const drawing_tools={
             }
         }
         else if (state.difficulty === "hard"){
-            if (state.world.curYear === (state.world.initial_year + 1)  && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 5){
+            if (state.world.curYear === (state.world.initial_year + 1)  && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
                 win()
             }
         }
