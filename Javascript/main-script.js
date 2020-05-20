@@ -11,7 +11,7 @@ updates = () =>{
     drawing_tools.display_hospitals.update(stato)
     drawing_tools.display_counters.update(stato.infects, (stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
     drawing_tools.display_funds.update(stato)
-    drawing_tools.continue(stato)
+    drawing_tools.continue.update(stato)
     drawing_tools.display_date.update(world)
     drawing_tools.display_beds_stats.update(stato)
     drawing_tools.display_riot.update(stato)
@@ -30,7 +30,7 @@ createGrid(3)
 //-------------------------
 //Top
 
-
+drawing_tools.continue.draw(document.getElementById("col 0 0"))
 drawing_tools.display_modal_center(document.getElementById("col 0 0"))
 
 //0
@@ -77,7 +77,7 @@ drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 //2
 
 
-drawing_tools.initial_modal(document.getElementById("col 0 0"),stato)
+//drawing_tools.initial_modal(document.getElementById("col 0 0"),stato)
 
 
 

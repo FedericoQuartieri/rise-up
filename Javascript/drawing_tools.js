@@ -298,12 +298,12 @@ const drawing_tools={
             const low_risk = document.createElement("button")
             low_risk.innerHTML = "low risk"
             low_risk.setAttribute("id", "make-loan-low")
-            low_risk.addEventListener("click" , function(){state.make_loan(state.create_date("low"), 100000000000, 11, 40, "low");drawing_tools.display_loans.update_internal(state)})
+            low_risk.addEventListener("click" , function(){state.make_loan(state.create_date("low"), 100000000000, 9, 40, "low");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(low_risk)
             const high_risk = document.createElement("button")
             high_risk.innerHTML = "high risk"
             high_risk.setAttribute("id", "make-loan-high")
-            high_risk.addEventListener("click" , function(){state.make_loan(state.create_date("high"), 200000000000, 17, 80, "high");drawing_tools.display_loans.update_internal(state)})
+            high_risk.addEventListener("click" , function(){state.make_loan(state.create_date("high"), 200000000000, 15, 80, "high");drawing_tools.display_loans.update_internal(state)})
             buttons_wrap.appendChild(high_risk)
 
             const show_loans = document.createElement("div")
@@ -691,59 +691,116 @@ const drawing_tools={
         _2x_button.setAttribute("class", "_2x-button")
         _2x_button.addEventListener("click", _2x_function)
     },
-    continue : (state) => {
-
-        win = () => {
-            document.getElementById("exampleModalLongTitle").innerHTML = "YOU WON"
-            document.getElementById("modal-body").innerHTML = "you win"
-            document.getElementById("x").innerHTML = ""
-            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "win.html"})
-            $('#exampleModalCenter').modal({
-                backdrop: 'static',
-                keyboard: false
-            })
-            clearInterval(currentLoop)
-            clearInterval(gameLoop)
-            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
-            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
-        }
-
-        if (state.infects >= state.popolation || state.feeling === 0 || state.pil < state.pil_0*0.3){
-            if (state.pil < state.pil_0*0.3){
-                state.pil = state.pil_0*0.3
+    "continue" : {
+        draw : (container_out) => {
+            const modal_fade = document.createElement("div")
+            modal_fade.setAttribute("class","modal fade")
+            modal_fade.setAttribute("id", "ModalEnd")
+            modal_fade.setAttribute("tabindex", "-1")
+            modal_fade.setAttribute("role", "dialog")
+            modal_fade.setAttribute ("aria-labelledby", "exampleModalLongTitle")
+            modal_fade.setAttribute("aria-hidden", "true")
+            const modal_dialog = document.createElement("div")
+            modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+            modal_dialog.setAttribute("role", "document")
+            const modal_content = document.createElement("div")
+            modal_content.setAttribute("class", "modal-content")
+            const modal_header = document.createElement("div")
+            modal_header.setAttribute("class", "modal-header")
+            const h5 = document.createElement("h5")
+            h5.setAttribute("class", "modal-title")
+            h5.setAttribute("id", "ModalEndTitle")
+            h5.innerHTML = "Modal title"
+            const button = document.createElement("button")
+            button.setAttribute("type", "button")
+            button.setAttribute("class","close")
+            button.setAttribute("data-dismiss", "modal")
+            button.setAttribute("aria-label", "Close")
+            const modal_body = document.createElement("div")
+            modal_body.setAttribute("class", "modal-body")
+            modal_body.setAttribute("id", "modal-body-end")
+            modal_body.innerHTML = ""
+            const modal_footer = document.createElement("div")
+            modal_footer.setAttribute("class", "modal-footer-initial-end")
+            const button2 = document.createElement("button")
+            button2.setAttribute("type","button")
+            button2.setAttribute("class","btn btn-secondary")
+            button2.setAttribute("data-dismiss","modal")
+            button2.setAttribute("id", "restart")
+            button2.innerHTML = "RESTART"
+            const button3 = document.createElement("button")
+            button3.setAttribute("type","button")
+            button3.setAttribute("class","btn btn-secondary")
+            button3.setAttribute("data-dismiss","modal")
+            button3.setAttribute("id", "exit")
+            button3.innerHTML = "EXIT"
+            container_out.appendChild(modal_fade)
+            modal_fade.appendChild(modal_dialog)
+            modal_dialog.appendChild(modal_content)
+            modal_content.appendChild(modal_header)
+            modal_header.appendChild(h5)
+            modal_header.appendChild(button)
+            modal_content.appendChild(modal_body)
+            modal_content.appendChild(modal_footer)
+            modal_footer.appendChild(button2)
+            modal_footer.appendChild(button3)
+        },
+        update : (state) => {
+            win = () => {
+                document.getElementById("ModalEndTitle").innerHTML = "YOU WON"
+                document.getElementById("modal-body-end").innerHTML = "you won"
+                document.getElementById("restart").addEventListener("click", function(){window.location.reload()})
+                document.getElementById("restart").innerHTML = "RESTART"
+                document.getElementById("exit").addEventListener("click", function(){})
+                document.getElementById("exit").innerHTML = "EXIT"
+                $('#ModalEnd').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                })
+                clearInterval(currentLoop)
+                clearInterval(gameLoop)
+                document.getElementById("_2x-button").removeEventListener("click", _2x_function)
+                document.getElementById("_05x-button").removeEventListener("click", _05x_function)
+                document.getElementById("_1x-button").removeEventListener("click", _1x_function)
             }
-            document.getElementById("exampleModalLongTitle").innerHTML = "YOU LOST"
-            document.getElementById("modal-body").innerHTML = "you lost"
-            document.getElementById("x").innerHTML = ""
-            document.getElementById("modal_end_close").addEventListener("click", function(){location.href = "lose.html"})
-            $('#exampleModalCenter').modal({
-                backdrop: 'static',
-                keyboard: false
-            })
-            clearInterval(currentLoop)
-            clearInterval(gameLoop)
-            document.getElementById("_2x-button").removeEventListener("click", _2x_function)
-            document.getElementById("_05x-button").removeEventListener("click", _05x_function)
-            document.getElementById("_1x-button").removeEventListener("click", _1x_function)
-        }
-        else if (state.difficulty === "easy"){
-            if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
-                win()
-            }
-        }
-        else if (state.difficulty === "medium"){
-            if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
-                win()
-            }
-        }
-        else if (state.difficulty === "hard"){
-            if (state.world.curYear === (state.world.initial_year + 1)  && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
-                win()
-            }
-        }
 
-
+            if (state.infects >= state.popolation || state.feeling === 0 || state.pil < state.pil_0*0.3){
+                if (state.pil < state.pil_0*0.3){
+                    state.pil = state.pil_0*0.3
+                }
+                document.getElementById("#ModalEnd").innerHTML = "YOU LOST"
+                document.getElementById("modal-body-end").innerHTML = "you lost"
+                document.getElementById("x").innerHTML = ""
+                document.getElementById("restart").addEventListener("click", function(){window.location.reload()})
+                document.getElementById("restart").innerHTML = "RESTART"
+                document.getElementById("exit").addEventListener("click", function(){close()})
+                document.getElementById("exit").innerHTML = "EXIT"
+                $('#ModalEnd').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                })
+                clearInterval(currentLoop)
+                clearInterval(gameLoop)
+                document.getElementById("_2x-button").removeEventListener("click", _2x_function)
+                document.getElementById("_05x-button").removeEventListener("click", _05x_function)
+                document.getElementById("_1x-button").removeEventListener("click", _1x_function)
+            }
+            else if (state.difficulty === "easy"){
+                if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
+                    win()
+                }
+            }
+            else if (state.difficulty === "medium"){
+                if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
+                    win()
+                }
+            }
+            else if (state.difficulty === "extreme"){
+                if (state.world.curYear === (state.world.initial_year + 1)  && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
+                    win()
+                }
+            }
+        }
     },
     "display_date" : {
         draw : (container_out, world)  => {
@@ -1064,8 +1121,8 @@ const drawing_tools={
         modal_body.setAttribute("id", "modal-body")
         modal_body.innerHTML = ""
         const modal_footer = document.createElement("div")
-        modal_footer.setAttribute("class", "modal-footer-initial")
-        modal_footer.setAttribute("id", "modal-footer-initial")
+        modal_footer.setAttribute("class", "modal-footer-initial-end")
+        modal_footer.setAttribute("id", "modal-footer-initial-end")
         const button2 = document.createElement("button")
         button2.setAttribute("type","button")
         button2.setAttribute("class","btn btn-secondary")
@@ -1097,7 +1154,7 @@ const drawing_tools={
         modal_footer.appendChild(button4)
         button2.addEventListener("click", function(){state.difficulty = "easy"})
         button3.addEventListener("click", function(){state.difficulty = "medium"})
-        button4.addEventListener("click", function(){state.difficulty = "hard"})
+        button4.addEventListener("click", function(){state.difficulty = "extreme"})
         $('#InitialModal').modal({
             backdrop: 'static',
             keyboard: false

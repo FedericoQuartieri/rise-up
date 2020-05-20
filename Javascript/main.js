@@ -6,13 +6,8 @@ const states = {
                 "reanimate_beds" : 100000,
                 "pil" : 1935000000000,
                 "popolation" : 60000000,
-                "public_debt" : 384738,
-                "money" : 48374837483,
-                "army_level" : 55344
               }
 }
-
-
 
 
 const options =[
@@ -154,7 +149,7 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_riot_influence = 0
   this.economy_loan_influence = 0
-  this.difficulty = ""
+  this.difficulty = difficulty
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -354,6 +349,7 @@ var State = function(state, World){
       console.log("riot", this.riot_type)
       console.log("riots", this.riots)
       console.log("loan_expired", this.loan_expired)
+      console.log("difficulty", this.difficulty)
 
 
   }
@@ -806,6 +802,15 @@ var State = function(state, World){
 
 
   this.summary_infect =() =>{
+    if (this.difficulty === "easy"){
+      this.rate_0 = 1
+    }
+    else if (this.difficulty === "medium"){
+      this.rate_0 = 1.5
+    }
+    else if (this.difficulty === "hard"){
+      this.rate_0 = 2
+    }
     var rate = this.rate_0
     rate += 2.5
     Object.keys(this.decision).forEach(key =>{
@@ -849,53 +854,8 @@ var State = function(state, World){
 }
 
 
-//end state
-
-
+//var a = setInterval(function(){console.log(difficulty), 5000})
 state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
-
-//let count = 0
-
-/*
-var date = new Date();
-var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-var curWeekDay = days[date.getDay()];
-world.curDay = date.getDate();
-world.curMonth = months[date.getMonth()];
-var curYear = date.getFullYear();
-
-
-stato.make_loan("saas","20March2020", "25May2020",343000000, "Francia")
-
-while (stato.continue()) {
-  sleep(1000)
-  count += 1
-  world.date = world.clock()
-  stato.summaries()
-  stato.print()
-  debug_make_decision(count)
-}
-*/
-
-
-
-
-
-
-
-/*
-this.right_way_to_say = (decision_feel, level) => {     // è il modo in cui esponi le leggi al popolo che influenza il feeling
-  console.log("...") // input right
-  console.log("...") //input wrong
-  const input = "right"                   //se viene detto in modo corretto il feeling aumenta e quindi diminuisce la percentuale
-  if (input === "wrong"){                 //se viene detto in modo sbagliato il feekung diminuisce quindi aumenta la percentuale
-    decision_feel = ((100/4)*level)/2     //aumento in modo direttamente proporzionale al livello di restriizioni massimo 50% minimo 12.5%
-  }
-  else if (input === "right"){
-    decision_feel /= 2
-  }
-}*/

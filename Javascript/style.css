@@ -861,6 +861,15 @@ transition: 0.5s;}
     text-transform: uppercase;
 }
 
+#modal-body-end{
+    padding: 10px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
+    font-size: 17px;
+    text-transform: uppercase;
+}
+
 .flex-other {
     display: flex;
     justify-content: baseline;
@@ -926,7 +935,7 @@ transition: 0.5s;}
     text-transform: uppercase;
 }
 
-.modal-footer-initial{
+.modal-footer-initial-end{
     justify-content: space-around;
     padding: .75rem;
     border-top: 1px solid #dee2e6;
