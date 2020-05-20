@@ -149,7 +149,7 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_riot_influence = 0
   this.economy_loan_influence = 0
-  this.difficulty = difficulty
+  this.difficulty = ""
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],

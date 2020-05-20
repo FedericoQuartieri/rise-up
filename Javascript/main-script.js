@@ -50,7 +50,7 @@ drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElemen
 //drawing_tools.display_boolean.draw("close_stock",stato.decision,document.getElementById("col 0 1"))
 //drawing_tools.display_boolean.draw("mandatory_masks",stato.decision,document.getElementById("col 0 1"))
 //drawing_tools.display_boolean.draw("army_using",stato.decision,document.getElementById("col 0 1"))
-//drawing_tools.display_block_trades.draw(document.getElementById("col 0 1"),stato)
+drawing_tools.display_block_trades.draw(document.getElementById("col 0 1"),stato)
 //1
 drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,document.getElementById("col 1 1"))
 drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getElementById("col 0 1"))
