@@ -68,10 +68,9 @@
         <h1>RISE UP</h1>
         <img src="logos/virus.svg" alt="" id="of">
         <p>Rise Up is a strategy-based game set during Modern Age. </p>
-        <p>A terrible plague has infected the world and only you can decide how to face this global threat. Choose carefully the best move and pay attention to your population in order to avoid riots or unpleasants outcomes.                     Everything will have a consequence, it's up to your whether to shine or to fall under the blows of the disease.</p>
-        <p> Choose your country and develop your plan to Rise! You will have full powers on every political and economical decision.</p>
+        <p>A terrible plague has infected the world and only you can decide how to face this global threat. Choose carefully the best move and pay attention to your population in order to avoid riots or unpleasants outcomes. Everything will have a consequence, it's up to you whether to shine or to fall under the blows of the disease.</p>
+        <p>You will have full powers on every political and economical decision.</p>
         <a class="btn btn-secondary btn-md" href="#resources">It's your turn now</a>
-
       </div>
 
     </div>
@@ -94,8 +93,8 @@
 
               <div class="feature">
                 <img src="logos/world.svg" alt="" id="icon">
-                <h3>YOUR COUNTRY</h3>
-                <p>Choose your country among 5 different options from global powers. Every State has its own characteristics, advantages and defects,  build your own strategy and explore every different administration. Try different times with every country and discover your favourite, or win with every choice and become the king of Rise Up!</p>
+                <h3>HEALTH</h3>
+                <p>Build hospitals using the health funds and move beds from different specialities to the reanimate in order to give to the infects who need, the right healthcare and reduce the deaths, but be careful, if you move too many beds people will die for other reasons. Pay attention, more people die, more feeling will decrease</p>
               </div>
 
             </div>
@@ -104,7 +103,7 @@
               <div class="feature">
                 <img src="logos/decision.svg" alt="" id="icon">
                 <h3>YOUR DECISIONS</h3>
-                <p>Structure the whole political system of your country, choose between several opportunities everytime and be careful because the popolation will be influenced by every move you make. Organize also every economical problem and make loans with other countries in order to gain advantages!</p>
+                <p>Structure the whole political system of your country, choose between several opportunities everytime and be careful because the popolation will be influenced by every move you make. Organize also every economical problem and make loans with the European Central Bank with different amounts, interests and deadline in order to gain advantages!</p>
               </div>
 
             </div>
@@ -113,7 +112,7 @@
               <div class="feature">
                 <img src="logos/fault.svg" alt="" id="icon">
                 <h3>YOUR FAULT</h3>
-                <p>Your goal will be to face a period of crysis and to develop a strategy in order to Rise. You can choose between 3 different worlds of increasing difficulty. Everytime your public debt will exceed the limit or the whole population of the country gets infected, you lose. Good Luck!</p>
+                <p>Your goal will be to face a period of crysis and to develop a strategy in order to Rise. You can choose between 3 different worlds of increasing difficulty. Everytime your pil will exceed the 30% of the initial, the whole population of the country gets infected or the feeling go to 0%, you lose. Good Luck!</p>
               </div>
 
             </div>
@@ -144,19 +143,19 @@
           <div class="col-md-4">
             <h3 style="color:rgb(12, 122, 98);">EASY WORLD</h3>
             <img src="logos/success.svg" alt="" id="icon">
-            <a class="btn btn-secondary btn-md " id = "easy-world" href="">PLAY</a>
+          <a class="btn btn-secondary btn-md " id = "easy-world" href="./Javascript/index.html">PLAY</a>
           </div>
 
           <div class="col-md-4">
             <h3 style="color: #2ab7c4;">NORMAL WORLD</h3>
             <img src="logos/journey.svg" alt="" id="icon">
-            <a class="btn btn-secondary btn-md " id = "normal-mode" href="">PLAY</a>
+            <a class="btn btn-secondary btn-md " id = "normal-mode" href="./Javascript/index.html">PLAY</a>
           </div>
 
           <div class="col-md-4">
             <h3 style="color:rgb(17, 92, 177) ;">EXTREME WORLD</h3>
             <img src="logos/climbing.svg" alt="" id="icon">
-            <a class="btn btn-secondary btn-md " id = "extreme-world" href="">PLAY</a>
+            <a class="btn btn-secondary btn-md " id = "extreme-world" href="./Javascript/index.html">PLAY</a>
           </div>
 
 
@@ -283,7 +282,8 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-
+    <script>
+      document.getElementById("easy-world").addEventListener("click",function(){difficulty = "easy"})
+    </script>
   </body>
 </html>
