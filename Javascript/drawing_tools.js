@@ -27,7 +27,7 @@ const drawing_tools={
             const h=document.createElement("div")
             h.setAttribute("class","title")
             h.setAttribute("id","dec_title")
-            h.innerHTML="decisions closing"
+            h.innerHTML="decisions opening"
             container.appendChild(h)
             const list=document.createElement("ul")
             list.setAttribute("class","decision-menu")  
@@ -52,7 +52,7 @@ const drawing_tools={
                     })
                     let level=i
                     curSelector.innerHTML=level
-                    curSelector.addEventListener("click",()=>state.make_decision(key,level))
+                    curSelector.addEventListener("click",()=>state.make_decision(key,5-level))
                     showUpmenu.appendChild(curSelector)
                 }
         
@@ -106,6 +106,22 @@ const drawing_tools={
             })
         }
     },
+    "display_booleans" : {
+        draw : (state,container_out)=>{
+            const wrapper=document.createElement("div")
+            wrapper.setAttribute("class","wrap_booleans")
+            const h=document.createElement("div")
+            h.setAttribute("class","title")
+            h.innerHTML="extra moves"
+            wrapper.appendChild(h)
+            drawing_tools.display_boolean.draw("close_stock",state.decision,wrapper)
+            drawing_tools.display_boolean.draw("mandatory_masks",state.decision,wrapper)
+            drawing_tools.display_boolean.draw("army_using",state.decision,wrapper)
+            container_out.appendChild(wrapper)
+
+        }
+
+    },
     "display_red_zone" : {
         draw : (reference,container_out)=>{
     
@@ -113,6 +129,7 @@ const drawing_tools={
             div.setAttribute("id","wrap")
             const h=document.createElement("div")
             h.setAttribute("class","title")
+            h.setAttribute("id","red")
             h.innerHTML="red zone"
             container_out.appendChild(h)
             const header=document.createElement("h2")
@@ -192,7 +209,7 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "Total beds : \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            reanimate_beds.innerHTML = "virus beds : \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
@@ -222,7 +239,7 @@ const drawing_tools={
             
         },
         update : (dictionary) => {
-            document.getElementById("reanimate-beds").innerHTML = "Total beds : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            document.getElementById("reanimate-beds").innerHTML = "beds for virus : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             // qui metti l'update di show specialization del modal e stai solo zitto 
         } 
     },
@@ -236,10 +253,12 @@ const drawing_tools={
             if (health_funds < 0){
                 debit =  -health_funds
             }
+            /*
             const s1=document.createElement("div")
             container.appendChild(s1)
             s1.setAttribute("class","separator")
             s1.setAttribute("id","st")
+            */
             const flex_funds = document.createElement("div")
             flex_funds.setAttribute("class", "flex-funds")
             container.appendChild(flex_funds)
@@ -252,10 +271,12 @@ const drawing_tools={
             flex_funds.appendChild(logo)
             logo.setAttribute("class", "logo-funds")
             logo.setAttribute("id", "logo-funds")
+            /*
             const s2=document.createElement("div")
             container.appendChild(s2)
             s2.setAttribute("class","separator")
             s2.setAttribute("id","sb")
+            */
             if (health_funds >= 0){
                 show_funds.innerHTML = "health funds: "+ drawing_tools.display_numbers(health_funds)
             }
@@ -427,20 +448,25 @@ const drawing_tools={
             const show_beds = document.createElement("div")
             show_beds.setAttribute("class", "show_free_beds")
             show_beds.setAttribute("id", "show_free_beds")
+            
             const show_need=document.createElement("div")
             show_need.setAttribute("id", "show_need")
-            const flex_container = document.createElement("div")
-            flex_container.setAttribute("class", "flex-other")
+            /*
             const show_other = document.createElement("div")
             show_other.setAttribute("id", "show_other")
-            const show_spec = document.createElement("span")
+            */
+            const show_spec = document.createElement("div")
             show_spec.setAttribute("class", "show_spec" )
+            const spec_visual=document.createElement("span")
+            spec_visual.setAttribute("id","spec_visual")
+            spec_visual.innerHTML="specialities beds"
+            show_spec.appendChild(spec_visual)
+
             const show_spec_button = document.createElement("button")
             show_spec_button.setAttribute("class", "show-spec-button")
             show_spec.appendChild(show_spec_button)
-            show_spec_button.innerHTML = "show specialization"
-            flex_container.appendChild(show_other)
-            flex_container.appendChild(show_spec)
+            show_spec_button.innerHTML = "."
+            
             show_spec_button.addEventListener("click", show_specialization)
             
             var free_beds = state.reanimate_beds - state.need_medical
@@ -457,11 +483,13 @@ const drawing_tools={
                 }
             })
             other_beds -= state.specializations["min"]*7
-            show_other.innerHTML = "Other beds usable: " + drawing_tools.display_numbers(other_beds)
+            //show_other.innerHTML = "Available beds: " + drawing_tools.display_numbers(other_beds)
             show_beds.innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds)
             show_need.innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
-            wrap.appendChild(flex_container)
+        
             wrap.appendChild(show_beds)
+            //wrap.appendChild(show_other)
+            wrap.appendChild(show_spec)
             wrap.appendChild(show_need)
             
             const s2=document.createElement("div")
@@ -487,7 +515,7 @@ const drawing_tools={
             })
             other_beds -= (state.specializations["min"]*7)
             free_beds = Math.round(free_beds)
-            document.getElementById("show_other").innerHTML = "Other beds usable: " + drawing_tools.display_numbers(other_beds)
+            //document.getElementById("show_other").innerHTML = "Other  beds : " + drawing_tools.display_numbers(other_beds)
             document.getElementById("show_free_beds").innerHTML = "Not used beds: " + drawing_tools.display_numbers(free_beds) 
             document.getElementById("show_need").innerHTML= "People in medical need: " + drawing_tools.display_numbers(beds_needed)
         }
@@ -750,10 +778,15 @@ const drawing_tools={
             const container = document.createElement("div")
             container.setAttribute("class", "date-menu")
             container_out.appendChild(container)
+            const span=document.createElement("span")
+            span.setAttribute("id","date_n")
+            span.innerHTML="day : "
+            container.appendChild(span)
             const date = document.createElement("div")
             container.appendChild(date)
             date.setAttribute("id", "date")
             date.setAttribute("class", "date")
+            
             var date0 = new Date()
             date.innerHTML = date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
         },

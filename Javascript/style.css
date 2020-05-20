@@ -179,10 +179,10 @@ input[type="checkbox"]:checked ~ .check::after{
 .c{
     padding-top: 18px;
     padding-left: 13px;
-    
+    margin-left: 4px;
     height: 50px;
     width: 230px;
-    display: flex;
+    display: inline-flex;
     justify-content: space-around;
     align-items: center;
     background-color: white;
@@ -192,14 +192,15 @@ input[type="checkbox"]:checked ~ .check::after{
 .ca{
     
     height: 50px;
-    width: inherit;
+    width: 230px;
     padding-top: 18px;
-    display: flex;
+    display: inline-flex;
     justify-content: space-around;
     align-items: center;
     background-color: aqua;
+    margin-left: 4px;
     transition: 0.5s step-end;
-    margin-left: 3.55%;
+    
 
 }
 .ca p{
@@ -217,10 +218,13 @@ input[type="checkbox"]:checked ~ .check::after{
     align-content: center;
 
 }
+#red{
+    margin-top: 10%;
+}
 #wrap{
     position: relative;
-    width: 59%;
-    height: 35%;
+    width: 96%;
+    height: 200px;
     text-align: -webkit-center;
     margin-top: 5%;
     align-items: center;
@@ -600,6 +604,9 @@ transition: 0.5s;}
     border-bottom-right-radius: 10px;
     
 }
+.loans_menu{
+    margin-top: 7%;
+}
 .loans-list{
     margin: 0;
     padding: 0;
@@ -789,6 +796,7 @@ transition: 0.5s;}
     padding-top: 15px;
 }
 .trades_wrap ul{
+    text-align: left;
     position: relative;
     padding-left: 0px;
     padding-top: 0px;
@@ -804,7 +812,7 @@ transition: 0.5s;}
     background: #fff;
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
-    font-size: 12px;
+    font-size: 14px;
     text-transform: uppercase;
     
 }
@@ -827,7 +835,7 @@ transition: 0.5s;}
     background: linear-gradient(to right,#56ccf2,#2f80ed);
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
-    font-size: 12px;
+    font-size: 14px;
     text-transform: uppercase; 
     
 }
@@ -922,10 +930,15 @@ transition: 0.5s;}
 
 
 .date-menu{
-    text-align: center;
     text-transform: uppercase;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 3%;
+    
 }
-
+#date_n{
+    margin-right: 3%;
+}
 .modal-footer-initial{
     justify-content: space-around;
     padding: .75rem;
@@ -935,4 +948,11 @@ transition: 0.5s;}
     align-items: center;
     flex-wrap: wrap;
     display: flex;
+}
+.wrap_booleans{
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+.wrap_booleans .title{
+    margin-bottom: 12px;
 }
