@@ -427,12 +427,16 @@ const drawing_tools={
                 Object.keys(state.specializations).forEach(key =>{
                     if (key !== "reanimate_beds" && key !== "min" && key !== "level"){
                         const item = document.createElement("li")
-                        item.innerHTML = key + ": " + state.specializations[key]
+                        var min = ""
+                        if (state.specializations[key] - 50 <= state.specializations["min"]){
+                            min = " (min)"
+                        }
+                        item.innerHTML = key.replace("_", " ")  + ": " + state.specializations[key]+ min
                         list.appendChild(item)
                     }
                 })
-                document.getElementById("exampleModalLongTitle").innerHTML = "SPECIALIZATION"
-                document.getElementById("modal-body").innerHTML = ""
+                document.getElementById("exampleModalLongTitle").innerHTML = "SPECIALITIES"
+                document.getElementById("modal-body").innerHTML = "<p>Attention!</p>" + "<br>Every bed you add to beds usable will be taken from specialities, this action is irreversible</br>"
                 document.getElementById("modal-body").appendChild(div)
                 document.getElementById("modal-body").removeChild(document.getElementById("modal-body").childNodes[0])
                 document.getElementById("modal-body").appendChild(div)
@@ -812,7 +816,7 @@ const drawing_tools={
                     keyboard: false
                 })
                 //clearInterval(currentLoop)
-                //clearInterval(gameLoop)
+                clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
@@ -841,7 +845,7 @@ const drawing_tools={
                     keyboard: false
                 })
                 //clearInterval(currentLoop)
-                //clearInterval(gameLoop)
+                clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
