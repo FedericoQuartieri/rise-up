@@ -8,7 +8,9 @@
   </head>
 
   <body data-spy="scroll" data-target="#navbarResponsive">
+    
     <!---Start Home--->
+
     <div id="home">
 
 
@@ -143,19 +145,20 @@
           <div class="col-md-4">
             <h3 style="color:rgb(12, 122, 98);">EASY WORLD</h3>
             <img src="logos/success.svg" alt="" id="icon">
-          <a class="btn btn-secondary btn-md " id = "easy-world" href="./Javascript/index.html">PLAY</a>
+          <a class="btn btn-secondary btn-md " id = "easy-world" href="">PLAY</a>
+            
           </div>
 
           <div class="col-md-4">
             <h3 style="color: #2ab7c4;">NORMAL WORLD</h3>
             <img src="logos/journey.svg" alt="" id="icon">
-            <a class="btn btn-secondary btn-md " id = "normal-mode" href="./Javascript/index.html">PLAY</a>
+            <a class="btn btn-secondary btn-md " id = "normal-world" href="">PLAY</a>
           </div>
 
           <div class="col-md-4">
             <h3 style="color:rgb(17, 92, 177) ;">EXTREME WORLD</h3>
             <img src="logos/climbing.svg" alt="" id="icon">
-            <a class="btn btn-secondary btn-md " id = "extreme-world" href="./Javascript/index.html">PLAY</a>
+            <a class="btn btn-secondary btn-md " id = "extreme-world" href="">PLAY</a>
           </div>
 
 
@@ -283,7 +286,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
-      document.getElementById("easy-world").addEventListener("click",function(){difficulty = "easy"})
+      document.getElementById("easy-world").addEventListener("click",function(){this.setAttribute("href","Javascript/index.html?var=easy")})
+      document.getElementById("normal-world").addEventListener("click",function(){this.setAttribute("href","Javascript/index.html?var=normal")})  
+      document.getElementById("extreme-world").addEventListener("click",function(){this.setAttribute("href","Javascript/index.html?var=extreme")})  
     </script>
   </body>
 </html>

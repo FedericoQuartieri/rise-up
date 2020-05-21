@@ -1,4 +1,17 @@
 
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+  })
+  
+  return vars;
+}
+
+var difficulty = getUrlVars()["var"];
+
+
+
 const states = {
   "italia" :
               {
@@ -149,7 +162,8 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_riot_influence = 0
   this.economy_loan_influence = 0
-  this.difficulty = ""
+  this.difficulty = difficulty
+  this.win_date = ""
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -159,9 +173,6 @@ var State = function(state, World){
     sports_allowed : [100, 100,0],
     companies_opened : [100, 100,0]
   }
-
-  
-  this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.economy_rate > 30)
 
 
   //start decision
@@ -472,20 +483,26 @@ var State = function(state, World){
     switch(riot){
       case 1:
         this.riot_type = "infects"
-        this.infects += this.infects*(40/100)
+        this.infects += this.infects*(30/100)
+        if (this.infects === this.popolation){
+          this.infects = this.popolation
+        }
         break
 
       case 2:
         this.riot_type = "both"
-        this.infects += this.infects*(20/100)
-        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(40/3000))))/this.pil_0 * 100))
-        this.pil-=(this.pil_0*(40/3000))
+        this.infects += this.infects*(15/100)
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(60/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(60/3000))
+        if (this.infects === this.popolation){
+          this.infects = this.popolation
+        }
         break
 
       case 3:
         this.riot_type = "economy"
-        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(80/3000))))/this.pil_0 * 100))
-        this.pil-=(this.pil_0*(80/3000))
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(100/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(100/3000))
         break
     }
   }
@@ -665,15 +682,20 @@ var State = function(state, World){
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
-      this.pil-=(this.pil_0*(this.pil_rate/5000))
-      console.log(this.pil_0*(this.pil_rate/5000))
+      this.pil-=(this.pil_0*(this.pil_rate/4700))
+      console.log(this.pil_0*(this.pil_rate/4700))
     }
 
     else{
       this.economy_judgment = "migliorata economia"
       const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil_0*(nr/500))
-      console.log(this.pil_0*(nr/500))
+      if (this.pil_rate >= 1.5){
+        this.pil+=(this.pil_0*(nr/300))
+        console.log(this.pil_0*(nr/300))
+      }
+    }
+    if (this.pil >= this.pil_0){
+      this.pil = this.pil_0
     }
     this.rate_economy_daily=this.pil_rate
     this.economy_rate = 100-(this.pil/this.pil_0 *100)
@@ -748,6 +770,7 @@ var State = function(state, World){
         }
       }
     })
+    rate = rate / 2
     this.pil_rate = rate
     this.economy_update()
   }
@@ -805,11 +828,22 @@ var State = function(state, World){
     if (this.difficulty === "easy"){
       this.rate_0 = 1
     }
-    else if (this.difficulty === "medium"){
+    else if (this.difficulty === "normal"){
       this.rate_0 = 1.5
     }
-    else if (this.difficulty === "hard"){
+    else if (this.difficulty === "extreme"){
       this.rate_0 = 2
+    }
+    if (this.infects / this.popolation * 100 > 50){ 
+      if (this.difficulty === "easy"){
+        this.rate_0 = 0.25
+      }
+      else if (this.difficulty === "normal"){
+        this.rate_0 = 0.5
+      }
+      else if (this.difficulty === "extreme"){
+        this.rate_0 = 0.75
+      }      
     }
     var rate = this.rate_0
     rate += 2.5
@@ -834,12 +868,47 @@ var State = function(state, World){
         }
       }
     })
+    if (this.infects / this.popolation * 100 < 50){
+      rate = rate/2
+    }
+    else if (this.infects / this.popolation * 100 > 50 && this.infects / this.popolation * 100 < 80){
+      rate = rate/4
+    }
+    else if (this.infects / this.popolation * 100 > 80){
+      rate = rate/8
+    }
     if (rate < this.rate_0){
       rate = this.rate_0
     }
-    rate = rate/2
     this.infection_rate = rate
     this.infect()
+  }
+
+  this.win_date = () => {
+    if (this.difficulty === ""){
+      this.difficulty = "normal"
+    }
+    var date = new Date();
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var day  = ""
+    var month = ""
+    var year = ""
+    if (this.difficulty === "easy"){
+      day = date.getDate()
+      month = months[date.getMonth() + 6]
+      year = date.getFullYear()
+    }
+    else if (this.difficulty === "normal"){
+      day = date.getDate()
+      month = months[date.getMonth()]
+      year = date.getFullYear() + 1
+    }
+    else if (this.difficulty === "extreme"){
+      day = date.getDate()
+      month = months[date.getMonth() + 6]
+      year = date.getFullYear() + 1
+    }
+    this.win_date = day + " " + month + " " + year
   }
 
   this.summaries=()=>{
@@ -853,9 +922,9 @@ var State = function(state, World){
   }
 }
 
-
-//var a = setInterval(function(){console.log(difficulty), 5000})
 state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
+stato.win_date()
+
