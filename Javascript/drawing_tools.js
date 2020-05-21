@@ -292,11 +292,11 @@ const drawing_tools={
             }
             if (health_funds >= 0){
                 document.getElementById("show_funds").innerHTML = "health funds: " + drawing_tools.display_numbers(health_funds)
-                document.getElementById("logo-funds").style.backgroundColor = "#68D534"
+                document.getElementById("logo-funds").style.backgroundColor = "#3f8efc"
             }
             else {
                 document.getElementById("show_funds").innerHTML = "debit health funds: " + drawing_tools.display_numbers(debit)
-                document.getElementById("logo-funds").style.backgroundColor = "#D84728"
+                document.getElementById("logo-funds").style.backgroundColor = "#59f8e8"
             }
         }
     },
@@ -470,7 +470,10 @@ const drawing_tools={
             const show_spec_button = document.createElement("button")
             show_spec_button.setAttribute("class", "show-spec-button")
             show_spec.appendChild(show_spec_button)
-            show_spec_button.innerHTML = "."
+            const icon=document.createElement("img")
+            icon.setAttribute("src","./icon.svg")
+            icon.setAttribute("id","icon")
+            show_spec_button.appendChild(icon)
             
             show_spec_button.addEventListener("click", show_specialization)
             
@@ -526,7 +529,7 @@ const drawing_tools={
         }
     },
     "display_counters" :{
-        draw : (infects,economy,feeling,deaths,container_out)=>{
+        draw : (infects,economy,feeling,deaths,state,container_out)=>{
             const container=document.createElement("div")
             container.setAttribute("class","container_counters")
             for(let i=0;i<3;i++){
@@ -634,11 +637,30 @@ const drawing_tools={
         p.setAttribute("class","count_text")
         p.innerHTML="deaths"
 
+        const det=document.createElement("div")
+        det.setAttribute("id","other")
+        for(let i=0;i<2;i++){
+            const pa=document.createElement("p")
+            
+            if(i===0){
+                pa.setAttribute("id","vd-inner")
+                pa.innerHTML="Virus deaths : "+(state.dead-state.non_virus_dead)
+
+            }
+            else{
+                pa.setAttribute("id","nvd-inner")
+                pa.innerHTML="Non virus deaths : "+state.non_virus_dead
+            }
+            det.appendChild(pa)
+        }
+       
+
 
 
         container_deaths.appendChild(ic)
         container_deaths.appendChild(disp)
         container_deaths.appendChild(p)
+        container_deaths.appendChild(det)
         w.appendChild(container_deaths)
 
         container_out.appendChild(container)
@@ -647,7 +669,7 @@ const drawing_tools={
         
     
         },
-        update :(infects_number,infects,economy,feeling,deaths) =>{
+        update :(infects_number,infects,economy,feeling,deaths,state) =>{
             
             const show=document.getElementById("infects-number")
             if(infects<5){
@@ -677,6 +699,8 @@ const drawing_tools={
         
             }
             document.getElementById("death_display").innerHTML=deaths
+            document.getElementById("vd-inner").innerHTML="Virus deaths : "+(state.dead-state.non_virus_dead)
+            document.getElementById("nvd-inner").innerHTML="Non virus deaths : "+state.non_virus_dead
         }
     },
     display_stop : (container_out) =>{
@@ -692,7 +716,7 @@ const drawing_tools={
         container.appendChild(stop_button)
         stop_button.innerHTML = "stop"
         stop_button.setAttribute("id", "stop-button")
-        stop_button.setAttribute("class", "stop-button")
+        stop_button.setAttribute("class", "speed-button")
         stop_button.addEventListener("click", function(){clearInterval(currentLoop);currentLoop = null})
 
         const _05x_span = document.createElement("span")
@@ -701,8 +725,9 @@ const drawing_tools={
         _05x_span.appendChild(_05x_button)
         _05x_button.innerHTML = "0.5X"
         _05x_button.setAttribute("id", "_05x-button")
-        _05x_button.setAttribute("class", "_05x-button")
+        _05x_button.setAttribute("class", "speed-button")
         _05x_button.addEventListener("click", _05x_function)
+
 
         const _1x_span = document.createElement("span")
         container.appendChild(_1x_span)
@@ -710,7 +735,7 @@ const drawing_tools={
         _1x_span.appendChild(_1x_button)
         _1x_button.innerHTML = "1X"
         _1x_button.setAttribute("id", "_1x-button")
-        _1x_button.setAttribute("class", "_1x-button")
+        _1x_button.setAttribute("class", "speed-button")
         _1x_button.addEventListener("click", _1x_function)
        
         
@@ -721,7 +746,7 @@ const drawing_tools={
         _2x_span.appendChild(_2x_button)
         _2x_button.innerHTML = "2X"
         _2x_button.setAttribute("id", "_2x-button")
-        _2x_button.setAttribute("class", "_2x-button")
+        _2x_button.setAttribute("class", "speed-button")
         _2x_button.addEventListener("click", _2x_function)
     },
     "continue" : {
@@ -984,6 +1009,7 @@ const drawing_tools={
             $(toggle_button).attr({
                 "type": "button",
                 "class":"btn btn-primary",
+                "id":"trades-btn",
                 "data-toggle":"modal",
                 "data-target":".bd-example-modal-lg"
             })
@@ -1041,7 +1067,13 @@ const drawing_tools={
             const trades=document.createElement("ul")
             for(let i=0;i<6;i++){
                 const curTrade=document.createElement("li")
-                curTrade.setAttribute("class","trade-item")
+                if(i===0){    
+                    curTrade.setAttribute("class","on")
+                }
+                else{
+                    curTrade.setAttribute("class","trade-item")
+                }
+                
                 curTrade.setAttribute("id","trade"+(i+1))
                 switch(i){
                     case 0:
@@ -1141,6 +1173,87 @@ const drawing_tools={
             })
         }
 
+<<<<<<< HEAD
+    },
+    "display_title":{
+        draw:(container_out)=>{
+            const wrap=document.createElement("div")
+            wrap.setAttribute("class","text-bg")
+            wrap.innerHTML="RISE UP"
+            container_out.appendChild(wrap)
+        }
+
+    },
+    initial_modal : (container_out, state) => {
+        console.log(container_out)
+        const modal_fade = document.createElement("div")
+        modal_fade.setAttribute("class","modal fade")
+        modal_fade.setAttribute("id", "InitialModal")
+        modal_fade.setAttribute("tabindex", "-1")
+        modal_fade.setAttribute("role", "dialog")
+        modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+        modal_fade.setAttribute("aria-hidden", "true")
+        const modal_dialog = document.createElement("div")
+        modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+        modal_dialog.setAttribute("role", "document")
+        const modal_content = document.createElement("div")
+        modal_content.setAttribute("class", "modal-content")
+        const modal_header = document.createElement("div")
+        modal_header.setAttribute("class", "modal-header")
+        const h5 = document.createElement("h5")
+        h5.setAttribute("class", "modal-title")
+        h5.setAttribute("id", "exampleModalLongTitle")
+        h5.innerHTML = "CHOOSE DIFFICULTY"
+        const button = document.createElement("button")
+        button.setAttribute("type", "button")
+        button.setAttribute("class","close")
+        button.setAttribute("data-dismiss", "modal")
+        button.setAttribute("aria-label", "Close")
+        const modal_body = document.createElement("div")
+        modal_body.setAttribute("class", "modal-body")
+        modal_body.setAttribute("id", "modal-body")
+        modal_body.innerHTML = ""
+        const modal_footer = document.createElement("div")
+        modal_footer.setAttribute("class", "modal-footer-initial-end")
+        modal_footer.setAttribute("id", "modal-footer-initial-end")
+        const button2 = document.createElement("button")
+        button2.setAttribute("type","button")
+        button2.setAttribute("class","btn btn-secondary")
+        button2.setAttribute("data-dismiss","modal")
+        button2.setAttribute("id", "modal_end_close")
+        button2.innerHTML = "Easy"
+        const button3 = document.createElement("button")
+        button3.setAttribute("type","button")
+        button3.setAttribute("class","btn btn-secondary")
+        button3.setAttribute("data-dismiss","modal")
+        button3.setAttribute("id", "modal_end_close")
+        button3.innerHTML = "Medium"
+        const button4 = document.createElement("button")
+        button4.setAttribute("type","button")
+        button4.setAttribute("class","btn btn-secondary")
+        button4.setAttribute("data-dismiss","modal")
+        button4.setAttribute("id", "modal_end_close")
+        button4.innerHTML = "Hard"
+        container_out.appendChild(modal_fade)
+        modal_fade.appendChild(modal_dialog)
+        modal_dialog.appendChild(modal_content)
+        modal_content.appendChild(modal_header)
+        modal_header.appendChild(h5)
+        modal_header.appendChild(button)
+        modal_content.appendChild(modal_body)
+        modal_content.appendChild(modal_footer)
+        modal_footer.appendChild(button2)
+        modal_footer.appendChild(button3)
+        modal_footer.appendChild(button4)
+        button2.addEventListener("click", function(){state.difficulty = "easy"})
+        button3.addEventListener("click", function(){state.difficulty = "medium"})
+        button4.addEventListener("click", function(){state.difficulty = "extreme"})
+        $('#InitialModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+=======
+>>>>>>> d56626d8d2fcc7a0fc64f7e55864456543947ed9
     }
 }
 

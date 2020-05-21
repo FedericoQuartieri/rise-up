@@ -44,7 +44,7 @@ html {
      
 }
 .div-menu .decision-menu .decision-toUpdate:hover{
-    background-color: aqua;
+    background: linear-gradient(#3f8efc, #226ce0);
     transition: linear .5s;
 }
 .text-inner::before{
@@ -54,7 +54,7 @@ html {
     left: 12px;
     height: 12px;
     width: 12px;
-    border: 3px solid aqua;
+    border: 3px solid #226ce0;
     border-width: 0 0 3px 3px;
     transition: .5s;
     opacity:0;
@@ -72,7 +72,7 @@ html {
     right: 12px;
     width: 12px;
     height: 12px;
-    border: 3px solid aqua;
+    border: 3px solid #3f8efc;
     border-width: 3px 3px 0 0;
     transition: .5s;
     opacity: 0;
@@ -88,7 +88,6 @@ html {
     position: relative;
      padding: 15px;
      width: 250px;
-     background-color: aqua;
      border-top: 1px solid white;
      border-radius: 2%;
 }
@@ -132,7 +131,7 @@ input[type="checkbox"]{
     display: inline-flex;
     width: 40px;
     height: 20px;
-    background: aqua;
+    background: #3f8efc;
     cursor: pointer;
     border-radius: 20px;
     overflow: hidden;
@@ -164,7 +163,7 @@ input[type="checkbox"]:checked ~ .check::before{
     position: absolute;
     top: 2px;
     left: 2px;
-    background: aqua;   
+    background: #3f8efc;   
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -197,7 +196,7 @@ input[type="checkbox"]:checked ~ .check::after{
     display: inline-flex;
     justify-content: space-around;
     align-items: center;
-    background-color: aqua;
+    background-color: #3f8efc;
     margin-left: 4px;
     transition: 0.5s step-end;
     
@@ -254,7 +253,7 @@ input[type="checkbox"]:checked ~ .check::after{
     left: 0;
 
     height: 100%;
-    background: red;
+    background:#59f8e8;
     z-index: 1;
 }
 .range{
@@ -279,10 +278,10 @@ input[type="checkbox"]:checked ~ .check::after{
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: red;
+    background: #59f8e8;
     border: 4px solid #222;
     z-index: 2;
-    box-shadow: -407px 0 0 400px red;
+    box-shadow: -407px 0 0 400px #59f8e8;
 }
  
 
@@ -313,7 +312,7 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 
 .spec-showup{
-    background-color: aqua;
+    background-color: #226CE0;
     text-align: center;
     height: 30px;
     width: 200px;
@@ -323,7 +322,7 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 
 .spec-show-menu-items{
-    background-color: aqua;
+    background-color: #226CE0;
     width: 195px;
     height: 30px;
     transform: translateY(-90px);
@@ -333,7 +332,7 @@ input[type="checkbox"]:checked ~ .check::after{
 
 .spec-show-menu-items>div{
     text-align:center;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: linear-gradient(to right,#89F9EF,#226CE0);
     position: relative;
     transition: 0.3s linear;
 
@@ -345,7 +344,7 @@ input[type="checkbox"]:checked ~ .check::after{
     text-align: center;
     height: 37px;
     width: 37px;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: linear-gradient(to right,#89F9EF,#226CE0);
     border-radius: 50%;
     z-index: 2;
     transform: translateX(221%);
@@ -355,13 +354,13 @@ input[type="checkbox"]:checked ~ .check::after{
     transform: translateX(131%);
     width: 35px;
     height: 35px;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background:  linear-gradient(to right,#89F9EF,#226CE0);
     border-radius: 50%;
 }
 
 .require-menu-items>div{
     text-align:center;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: linear-gradient(to right,#89F9EF,#226CE0);
     height: 35px;
     width: 35px;
     border-radius: 50%;
@@ -441,6 +440,7 @@ svg circle:nth-child(2){
     justify-content: space-evenly;
     align-items: center;
     position: relative;
+    transform: translateY(-15%);
     
    
 
@@ -535,14 +535,14 @@ svg circle:nth-child(2){
 
 }
 .card:nth-child(1) svg circle:nth-child(2){
-    stroke: rgb(196, 8, 36)
+    stroke: #226ce0
    
 }
 .card:nth-child(2) svg circle:nth-child(2){
-    stroke: rgb(255, 204, 0);
+    stroke: #59f8e8;
 }
 .card:nth-child(3) svg circle:nth-child(2){
-    stroke:  rgb(13, 234, 13);
+    stroke:  #3f8efc;
 }
 
 
@@ -553,13 +553,13 @@ svg circle:nth-child(2){
     border-radius: 5px;
     width: 270px;
     text-align: center;
-    
+    transform: translateY(32%);
     margin-top: 15px;
     
 }
 
 
-.fa-3x { margin: 0 auto; float: none; display: table; color:rgba(184, 58, 23, 0.5); 
+.fa-3x { margin: 0 auto; float: none; display: table; color:#226ce0; 
 transition: 0.5s;}
 
 #death_display{
@@ -574,7 +574,7 @@ transition: 0.5s;}
 }
 .container_deaths:hover #death_display{
     color: #fff;
-    font-size: 25px;
+    
 }
 .count_text{
     font-size: 18px; 
@@ -591,7 +591,7 @@ transition: 0.5s;}
     
 }
 .container_deaths:hover .fa-3x {
-    color: rgba(235, 12, 12, 0.815);
+     color: #59f8e8;
 }
 
 .loans{
@@ -599,7 +599,7 @@ transition: 0.5s;}
     margin-top: 20px;
     margin-bottom: 20px;
     margin-right: 2%;
-    border-bottom: 20px solid #03a9f4;
+    border-bottom: 20px solid #3f8efc;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     
@@ -613,7 +613,7 @@ transition: 0.5s;}
 }
 .loans .header{
     color: #fff;
-    background: #03a9f4;
+    background:linear-gradient(to right, #226ce0,#3f8efc);
     padding: 10px 20px;
     font-size: 20px;
     font-weight: 700;
@@ -643,13 +643,13 @@ transition: 0.5s;}
 .loans ul .active:hover{
     transform: scale(1.1);
     z-index: 100;
-    background: #25bcff;
+    background: #3f8efc;
     box-shadow: 0 5px 25px rgba(0, 0, 0,.2);
     color: #fff;
     opacity: 1;
 }
 .loans ul .active button{
-    background: #25bcff;
+    background: #3f8efc;
     color: #fff;
     text-align: center;
     display: inline-block;
@@ -705,8 +705,8 @@ transition: 0.5s;}
     
 }
 .buttons_wrap button:nth-child(2):hover{
-    background: rgb(255, 47, 0);
-    box-shadow: 0 0 10px rgb(255, 47, 0),0 0 40px rgb(255, 47, 0), 0 0 80px rgb(255, 47, 0);
+    background:#59f8e8;
+    box-shadow: 0 0 10px #59f8e8,0 0 40px#59f8e8, 0 0 80px #59f8e8;
     
 }
 
@@ -720,11 +720,12 @@ transition: 0.5s;}
 }
 .wrap_beds .separator{
     height: 4px;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: #226CE0;
     width: 20%;
 }
 #st{
     margin-bottom: 15px;
+    
 }
 #sb{
     margin-top: 15px;
@@ -740,7 +741,7 @@ transition: 0.5s;}
     cursor: pointer;
     border: 0;
     letter-spacing: 1px;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: linear-gradient(to right,#89F9EF,#226CE0);
     margin-left: 10%;
     transition: .5s;
 }
@@ -760,7 +761,7 @@ transition: 0.5s;}
 }
 .hospital_button:hover{
     transform: scale(1.05);
-    box-shadow: 0px 2px 12px 0px #2f80ed
+    box-shadow: 0px 2px 12px 0px #1abd99
 
 }
 .show-new-hospitals{
@@ -785,6 +786,7 @@ transition: 0.5s;}
 .wrap_deaths{
     display: flex;
     justify-content: center;
+    transform: translateY(-49%);
 }
 .show_funds{
     margin-top: 0px;
@@ -832,7 +834,7 @@ transition: 0.5s;}
     list-style: none;
     padding: 10px;
     width: 100%;
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
+    background: linear-gradient(270deg, #000000ff, #393e41ff, #1abd99ff, #f7f7f2ff, #6ef9f5ff);
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
     font-size: 14px;
@@ -885,8 +887,10 @@ transition: 0.5s;}
 
 
 .show-spec-button{
-    background: linear-gradient(to right,#56ccf2,#2f80ed);
-    margin-left: 20px;
+    background-image: url(./icon.svg);
+    margin-left: 5%;
+    display: contents;
+    border: 0;
     
 }
 
@@ -956,14 +960,87 @@ transition: 0.5s;}
     display: flex;
 }
 .wrap_booleans{
-    margin-top: 10%;
-    margin-bottom: 5%;
+    
+    transform: translateY(-8%);
+    margin-bottom: 1%;
+    
 }
 .wrap_booleans .title{
     margin-bottom: 12px;
 }
-
-.date-flex{
-    justify-content: space-around;
-    display: flex;
+#trades-btn{
+    transform: translateY(25%);
+    background-color:#3f8efc; 
 }
+#trades-btn:hover{
+    transform: translateY(25%);
+    background-color: #59f8e8;
+}
+#icon{
+    width: 10%;
+    transform: translateY(-6%);
+}
+#spec_visual{
+    margin-right: 5%;
+}
+#speed-menu{
+    display: flex;
+    justify-content: center;
+}
+#speed-menu span .speed-button{
+    -webkit-appearance: none;
+    color: white;
+    border-radius: 5%;
+    border: 2px solid black;
+}
+.text-bg{
+    background-image: url(./bg.jpg);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-size: cover;
+    white-space: nowrap;
+    background-position: 50% 50%;
+    background-repeat: repeat;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 500%;
+    background-origin: padding-box;
+    transform: translateY(-46%);
+
+
+}
+#other{
+    margin-top: 3%;
+}
+#vd-inner,#nvd-inner{
+    font-size: 12px; 
+    font-weight: 500;  
+    margin-top: 0.5%; 
+    margin-bottom: 0; 
+    padding-left: 13%;
+    text-align: left;
+    text-transform: uppercase;
+    color: #777;
+    letter-spacing: 1px;
+}
+$color1: #000000; black
+$color2: #393e41; onyx
+$color3: #1abd99; light green
+$color4: #f7f7f2; white powder
+$color5: #76F2DF; light blue
+
+
+
+
+
+
+$color1: #000000; bl
+$color2: #393e41; on
+$color3: #fdfffc; wh
+$color4: #59f8e8; lbb
+$color5: #3f8efc; lb
+$color6: #226ce0; b
+background:linear-gradient(to right, #226ce0,#3f8efc)
+
