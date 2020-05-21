@@ -1169,7 +1169,6 @@ const drawing_tools={
             })
         }
 
-<<<<<<< HEAD
     },
     "display_title":{
         draw:(container_out)=>{
@@ -1248,8 +1247,6 @@ const drawing_tools={
             backdrop: 'static',
             keyboard: false
         })
-=======
->>>>>>> d56626d8d2fcc7a0fc64f7e55864456543947ed9
     }
 }
 
