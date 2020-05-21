@@ -79,10 +79,17 @@ var World = function(state){
 
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
     if (isNaN(parseInt(date[1]))){
-      var month = date.substring(1, date.length - 4)
+      date = date.replace((date[0]),"")
+      console.log(date)
+      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      //var month = date.substring(1, date.length - 4)
     }
     else {
-      var month = date.substring(2, date.length - 4)
+      date = date.replace((date[0]+date[1]),"")
+      console.log(date)
+      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      console.log(month)
+      //var month = date.substring(2, date.length - 4)
     }
     const month_numb = months.indexOf(month) + 1
     return month_numb
@@ -98,6 +105,8 @@ var World = function(state){
     return day
   }
   this.from_date_to_year = (date) => {
+    year = date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]
+    /*
     if (isNaN(parseInt(date[1]))){
       var month = date.substring(1, date.length - 4)
       var year = date.substring(1 + month.length, date.length)
@@ -106,7 +115,7 @@ var World = function(state){
     else {
       var month = date.substring(2, date.length - 4)
       var year = date.substring(2 + month.length, date.length)
-    }
+    }*/
     return year
   }
 }
@@ -223,13 +232,12 @@ var State = function(state, World){
 
 
   this.make_new_hospital = () => {
-    console.log("ciao")
     this.decision["new_hospitals"] += 1
     this.health_funds -= 100000000000
     this.health_funds_used += 100000000000
-    this.specializations["reanimate_beds"] += 50000
-    this.reanimate_beds += 50000
-    this.reanimate_beds_hospitals += 50000
+    this.specializations["reanimate_beds"] += 100000
+    this.reanimate_beds += 100000
+    this.reanimate_beds_hospitals += 100000
   }
 
   this.make_change_bed_random = () => {
@@ -509,6 +517,7 @@ var State = function(state, World){
 
   this.riot_summary = () => {
     perc = Math.round((100-this.feeling)/20)
+    perc = perc / 2
     const riot = getRandomInt(1,101)
     var a = 0
     if (riot <= perc){
@@ -710,7 +719,6 @@ var State = function(state, World){
 
   this.loan_summary = () => {
     if (this.loans.length != 0){
-      console.log("dio")
       this.loans.forEach(currentItem => {
         if (currentItem.date1 === world.date){
           this.economy_loan_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-currentItem.perc_not_paid*this.pil)/this.pil_0 * 100))
