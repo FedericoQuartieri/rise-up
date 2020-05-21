@@ -239,7 +239,7 @@ const drawing_tools={
             
         },
         update : (dictionary) => {
-            document.getElementById("reanimate-beds").innerHTML = "beds for virus : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            document.getElementById("reanimate-beds").innerHTML = "beds usable : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             // qui metti l'update di show specialization del modal e stai solo zitto 
         } 
     },
@@ -347,6 +347,7 @@ const drawing_tools={
         update_internal : (state) =>{
             if (state.loans.length !== 0){
                 for (let i = 0;i<state.loans.length;i++){
+                    console.log(state.loans[i].date1)
                     month = state.world.from_date_to_month(state.loans[i].date1)
                     month = months[month - 1]
                     day = state.world.from_date_to_day(state.loans[i].date1)
@@ -785,8 +786,8 @@ const drawing_tools={
                     backdrop: 'static',
                     keyboard: false
                 })
-                clearInterval(currentLoop)
-                clearInterval(gameLoop)
+                //clearInterval(currentLoop)
+                //clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
@@ -814,8 +815,8 @@ const drawing_tools={
                     backdrop: 'static',
                     keyboard: false
                 })
-                clearInterval(currentLoop)
-                clearInterval(gameLoop)
+                //clearInterval(currentLoop)
+                //clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
