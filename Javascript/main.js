@@ -79,17 +79,20 @@ var World = function(state){
 
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
     if (isNaN(parseInt(date[1]))){
-      date = date.replace((date[0]),"")
+      //date = date.replace((date[0]),"")
       console.log(date)
-      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
-      //var month = date.substring(1, date.length - 4)
+
+      //var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      var month = date.toString().substring(1, date.length - 4)
+      console.log(month)
     }
     else {
-      date = date.replace((date[0]+date[1]),"")
+      //date = date.replace((date[0]+date[1]),"")
       console.log(date)
-      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      //var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+
+      var month = date.toString().substring(2, date.length - 4)
       console.log(month)
-      //var month = date.substring(2, date.length - 4)
     }
     const month_numb = months.indexOf(month) + 1
     return month_numb
@@ -105,17 +108,16 @@ var World = function(state){
     return day
   }
   this.from_date_to_year = (date) => {
-    year = date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]
-    /*
+    //year = date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]
     if (isNaN(parseInt(date[1]))){
       var month = date.substring(1, date.length - 4)
-      var year = date.substring(1 + month.length, date.length)
+      var year = date.toString().substring(1 + month.length, date.length)
 
     }
     else {
       var month = date.substring(2, date.length - 4)
-      var year = date.substring(2 + month.length, date.length)
-    }*/
+      var year = date.toString().substring(2 + month.length, date.length)
+    }
     return year
   }
 }
@@ -466,13 +468,21 @@ var State = function(state, World){
   this.create_date = (risk) => {  
     if (risk === "high"){
       month = world.month_numb + 1
-      
+      if (month === 13){
+        month = 1
+      }
     }
     else if (risk === "low"){
       month = world.month_numb + 2
-      
+      if (month === 13){
+        month = 1
+      }
+      else if(month === 14){
+        month = 2
+      }
+    
     }
-    month = months[month-1]
+    month = months[month - 1]
     day = world.curDay
     year = world.curYear
     a = day + month + year
@@ -893,7 +903,7 @@ var State = function(state, World){
   }
 
   this.win_date = () => {
-    if (this.difficulty === ""){
+    if (this.difficulty === undefined){
       this.difficulty = "normal"
     }
     var date = new Date();
@@ -920,13 +930,13 @@ var State = function(state, World){
   }
 
   this.summaries=()=>{
-    this.summary_infect()
     this.summary_economy()
     this.summary_feeling()
-    this.summary_death()
     this.health_funds_calcolate()
     this.loan_summary()
     this.riot_summary()
+    this.summary_infect()
+    this.summary_death()
   }
 }
 
