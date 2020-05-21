@@ -239,7 +239,7 @@ const drawing_tools={
             
         },
         update : (dictionary) => {
-            document.getElementById("reanimate-beds").innerHTML = "beds for virus : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            document.getElementById("reanimate-beds").innerHTML = "beds usable : " + drawing_tools.display_numbers(dictionary["reanimate_beds"])
             // qui metti l'update di show specialization del modal e stai solo zitto 
         } 
     },
@@ -347,6 +347,7 @@ const drawing_tools={
         update_internal : (state) =>{
             if (state.loans.length !== 0){
                 for (let i = 0;i<state.loans.length;i++){
+                    console.log(state.loans[i].date1)
                     month = state.world.from_date_to_month(state.loans[i].date1)
                     month = months[month - 1]
                     day = state.world.from_date_to_day(state.loans[i].date1)
@@ -810,8 +811,8 @@ const drawing_tools={
                     backdrop: 'static',
                     keyboard: false
                 })
-                clearInterval(currentLoop)
-                clearInterval(gameLoop)
+                //clearInterval(currentLoop)
+                //clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
@@ -820,9 +821,16 @@ const drawing_tools={
             if (state.infects >= state.popolation || state.feeling === 0 || state.pil < state.pil_0*0.3){
                 if (state.pil < state.pil_0*0.3){
                     state.pil = state.pil_0*0.3
+                    document.getElementById("modal-body-end").innerHTML = "your pil is less than 30% of the initial pil"
+
                 }
-                document.getElementById("#ModalEnd").innerHTML = "YOU LOST"
-                document.getElementById("modal-body-end").innerHTML = "you lost"
+                else if (state.infects >= state.popolation){
+                    document.getElementById("modal-body-end").innerHTML = "the entire popolation has been infected"
+                }
+                else if (state.feeling === 0){
+                    document.getElementById("modal-body-end").innerHTML = "feeling is 0% you had been dismissed"
+                }
+                document.getElementById("ModalEndTitle").innerHTML = "YOU LOST"
                 document.getElementById("x").innerHTML = ""
                 document.getElementById("restart").addEventListener("click", function(){window.location.reload()})
                 document.getElementById("restart").innerHTML = "RESTART"
@@ -832,8 +840,8 @@ const drawing_tools={
                     backdrop: 'static',
                     keyboard: false
                 })
-                clearInterval(currentLoop)
-                clearInterval(gameLoop)
+                //clearInterval(currentLoop)
+                //clearInterval(gameLoop)
                 document.getElementById("_2x-button").removeEventListener("click", _2x_function)
                 document.getElementById("_05x-button").removeEventListener("click", _05x_function)
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
@@ -843,8 +851,8 @@ const drawing_tools={
                     win()
                 }
             }
-            else if (state.difficulty === "medium"){
-                if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month - 1){
+            else if (state.difficulty === "normal"){
+                if (state.world.curYear === (state.world.initial_year + 1) && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 1){
                     win()
                 }
             }
@@ -860,26 +868,32 @@ const drawing_tools={
             const container = document.createElement("div")
             container.setAttribute("class", "date-menu")
             container_out.appendChild(container)
-            const span=document.createElement("span")
-            span.setAttribute("id","date_n")
-            span.innerHTML="day : "
-            container.appendChild(span)
+            const date_flex = document.createElement("div")
+            date_flex.setAttribute("class", "date-flex")
             const date = document.createElement("div")
-            container.appendChild(date)
+            date_flex.appendChild(date)
             date.setAttribute("id", "date")
             date.setAttribute("class", "date")
+            const win_date = document.createElement("div")
+            win_date.setAttribute("id", "win-date")
+            win_date.setAttribute("class", "date")
+            date_flex.appendChild(win_date)
+            container.appendChild(date_flex)
             
+
             var date0 = new Date()
-            date.innerHTML = date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
+            date.innerHTML = "date : " + date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
+            win_date.innerHTML = "   win date : " + world.state.win_date
         },
         update : (world) => {
             var date0 = new Date()
             if (world.date !== null){
-                document.getElementById("date").innerHTML = world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
+                document.getElementById("date").innerHTML = "date : " + world.curDay + " " + months[(world.month_numb) - 1] + " " + world.curYear
             }
             else {
-                document.getElementById("date").innerHTML = date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
+                document.getElementById("date").innerHTML = "date : " + date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
             }
+            document.getElementById("win-date").innerHTML = "     " + "win date : " + world.state.win_date
         }
     },
     display_numbers : (number) => {
@@ -1155,6 +1169,7 @@ const drawing_tools={
             })
         }
 
+<<<<<<< HEAD
     },
     "display_title":{
         draw:(container_out)=>{
@@ -1233,6 +1248,8 @@ const drawing_tools={
             backdrop: 'static',
             keyboard: false
         })
+=======
+>>>>>>> d56626d8d2fcc7a0fc64f7e55864456543947ed9
     }
 }
 

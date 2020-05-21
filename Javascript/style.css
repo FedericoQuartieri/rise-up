@@ -944,13 +944,8 @@ transition: 0.5s;}
 
 .date-menu{
     text-transform: uppercase;
-    display: flex;
-    justify-content: left;
-    margin-bottom: 3%;
-    
-}
-#date_n{
-    margin-right: 3%;
+    font-size: 70%;
+    margin-right: 2%;
 }
 
 

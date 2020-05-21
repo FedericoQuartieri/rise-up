@@ -3,6 +3,8 @@
 //bisogna dargli coscienza poi del main e passare lo stato per gli effetti
 
 //drawing_tools.display_decisions.draw(dizionario da dare,div esterno dove aggiunge la lista fatta bene)
+
+
 updates = () =>{
     drawing_tools.display_decisions.update(stato.decision_dictonary)
     drawing_tools.display_decisions.update_dicto(stato)
@@ -77,8 +79,6 @@ drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 
 //2
 
-
-//drawing_tools.initial_modal(document.getElementById("col 0 0"),stato)
 
 
 

@@ -1,4 +1,17 @@
 
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+  })
+  
+  return vars;
+}
+
+var difficulty = getUrlVars()["var"];
+
+
+
 const states = {
   "italia" :
               {
@@ -66,10 +79,17 @@ var World = function(state){
 
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
     if (isNaN(parseInt(date[1]))){
-      var month = date.substring(1, date.length - 4)
+      date = date.replace((date[0]),"")
+      console.log(date)
+      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      //var month = date.substring(1, date.length - 4)
     }
     else {
-      var month = date.substring(2, date.length - 4)
+      date = date.replace((date[0]+date[1]),"")
+      console.log(date)
+      var month = date.replace((date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]),"")
+      console.log(month)
+      //var month = date.substring(2, date.length - 4)
     }
     const month_numb = months.indexOf(month) + 1
     return month_numb
@@ -85,6 +105,8 @@ var World = function(state){
     return day
   }
   this.from_date_to_year = (date) => {
+    year = date[date.length - 4]+date[date.length - 3]+date[date.length - 2]+date[date.length - 1]
+    /*
     if (isNaN(parseInt(date[1]))){
       var month = date.substring(1, date.length - 4)
       var year = date.substring(1 + month.length, date.length)
@@ -93,7 +115,7 @@ var World = function(state){
     else {
       var month = date.substring(2, date.length - 4)
       var year = date.substring(2 + month.length, date.length)
-    }
+    }*/
     return year
   }
 }
@@ -149,7 +171,8 @@ var State = function(state, World){
   this.loan_expired = false
   this.economy_riot_influence = 0
   this.economy_loan_influence = 0
-  this.difficulty = ""
+  this.difficulty = difficulty
+  this.win_date = ""
   this.decision_dictonary = {
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
@@ -159,9 +182,6 @@ var State = function(state, World){
     sports_allowed : [100, 100,0],
     companies_opened : [100, 100,0]
   }
-
-  
-  this.continue=()=> !(this.infects===this.popolation || this.feeling===0 || this.economy_rate > 30)
 
 
   //start decision
@@ -212,13 +232,12 @@ var State = function(state, World){
 
 
   this.make_new_hospital = () => {
-    console.log("ciao")
     this.decision["new_hospitals"] += 1
     this.health_funds -= 100000000000
     this.health_funds_used += 100000000000
-    this.specializations["reanimate_beds"] += 50000
-    this.reanimate_beds += 50000
-    this.reanimate_beds_hospitals += 50000
+    this.specializations["reanimate_beds"] += 100000
+    this.reanimate_beds += 100000
+    this.reanimate_beds_hospitals += 100000
   }
 
   this.make_change_bed_random = () => {
@@ -472,26 +491,33 @@ var State = function(state, World){
     switch(riot){
       case 1:
         this.riot_type = "infects"
-        this.infects += this.infects*(40/100)
+        this.infects += this.infects*(30/100)
+        if (this.infects === this.popolation){
+          this.infects = this.popolation
+        }
         break
 
       case 2:
         this.riot_type = "both"
-        this.infects += this.infects*(20/100)
-        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(40/3000))))/this.pil_0 * 100))
-        this.pil-=(this.pil_0*(40/3000))
+        this.infects += this.infects*(15/100)
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(60/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(60/3000))
+        if (this.infects === this.popolation){
+          this.infects = this.popolation
+        }
         break
 
       case 3:
         this.riot_type = "economy"
-        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(80/3000))))/this.pil_0 * 100))
-        this.pil-=(this.pil_0*(80/3000))
+        this.economy_riot_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-((this.pil_0*(100/3000))))/this.pil_0 * 100))
+        this.pil-=(this.pil_0*(100/3000))
         break
     }
   }
 
   this.riot_summary = () => {
     perc = Math.round((100-this.feeling)/20)
+    perc = perc / 2
     const riot = getRandomInt(1,101)
     var a = 0
     if (riot <= perc){
@@ -665,15 +691,20 @@ var State = function(state, World){
     }
     else if(this.pil_rate===this.rate_economy_daily){
       this.economy_judgment = "uguale economia"
-      this.pil-=(this.pil_0*(this.pil_rate/5000))
-      console.log(this.pil_0*(this.pil_rate/5000))
+      this.pil-=(this.pil_0*(this.pil_rate/4700))
+      console.log(this.pil_0*(this.pil_rate/4700))
     }
 
     else{
       this.economy_judgment = "migliorata economia"
       const nr=(this.rate_economy_daily-this.pil_rate)
-      this.pil+=(this.pil_0*(nr/500))
-      console.log(this.pil_0*(nr/500))
+      if (this.pil_rate >= 1.5){
+        this.pil+=(this.pil_0*(nr/300))
+        console.log(this.pil_0*(nr/300))
+      }
+    }
+    if (this.pil >= this.pil_0){
+      this.pil = this.pil_0
     }
     this.rate_economy_daily=this.pil_rate
     this.economy_rate = 100-(this.pil/this.pil_0 *100)
@@ -688,7 +719,6 @@ var State = function(state, World){
 
   this.loan_summary = () => {
     if (this.loans.length != 0){
-      console.log("dio")
       this.loans.forEach(currentItem => {
         if (currentItem.date1 === world.date){
           this.economy_loan_influence = ((this.pil/this.pil_0 * 100) - ((this.pil-currentItem.perc_not_paid*this.pil)/this.pil_0 * 100))
@@ -748,6 +778,7 @@ var State = function(state, World){
         }
       }
     })
+    rate = rate / 2
     this.pil_rate = rate
     this.economy_update()
   }
@@ -805,11 +836,22 @@ var State = function(state, World){
     if (this.difficulty === "easy"){
       this.rate_0 = 1
     }
-    else if (this.difficulty === "medium"){
+    else if (this.difficulty === "normal"){
       this.rate_0 = 1.5
     }
-    else if (this.difficulty === "hard"){
+    else if (this.difficulty === "extreme"){
       this.rate_0 = 2
+    }
+    if (this.infects / this.popolation * 100 > 50){ 
+      if (this.difficulty === "easy"){
+        this.rate_0 = 0.25
+      }
+      else if (this.difficulty === "normal"){
+        this.rate_0 = 0.5
+      }
+      else if (this.difficulty === "extreme"){
+        this.rate_0 = 0.75
+      }      
     }
     var rate = this.rate_0
     rate += 2.5
@@ -834,12 +876,47 @@ var State = function(state, World){
         }
       }
     })
+    if (this.infects / this.popolation * 100 < 50){
+      rate = rate/2
+    }
+    else if (this.infects / this.popolation * 100 > 50 && this.infects / this.popolation * 100 < 80){
+      rate = rate/4
+    }
+    else if (this.infects / this.popolation * 100 > 80){
+      rate = rate/8
+    }
     if (rate < this.rate_0){
       rate = this.rate_0
     }
-    rate = rate/2
     this.infection_rate = rate
     this.infect()
+  }
+
+  this.win_date = () => {
+    if (this.difficulty === ""){
+      this.difficulty = "normal"
+    }
+    var date = new Date();
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var day  = ""
+    var month = ""
+    var year = ""
+    if (this.difficulty === "easy"){
+      day = date.getDate()
+      month = months[date.getMonth() + 6]
+      year = date.getFullYear()
+    }
+    else if (this.difficulty === "normal"){
+      day = date.getDate()
+      month = months[date.getMonth()]
+      year = date.getFullYear() + 1
+    }
+    else if (this.difficulty === "extreme"){
+      day = date.getDate()
+      month = months[date.getMonth() + 6]
+      year = date.getFullYear() + 1
+    }
+    this.win_date = day + " " + month + " " + year
   }
 
   this.summaries=()=>{
@@ -853,9 +930,9 @@ var State = function(state, World){
   }
 }
 
-
-//var a = setInterval(function(){console.log(difficulty), 5000})
 state1 = "italia"
 dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
+stato.win_date()
+
