@@ -11,7 +11,7 @@ updates = () =>{
     drawing_tools.display_specializations.update(stato.specializations)
     drawing_tools.display_loans.update(stato)
     drawing_tools.display_hospitals.update(stato)
-    drawing_tools.display_counters.update(stato.infects, (stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead)
+    drawing_tools.display_counters.update(stato.infects, (stato.infects/stato.popolation)*100,((stato.pil/stato.pil_0).toFixed(20)*100),stato.feeling,stato.dead,stato)
     drawing_tools.display_funds.update(stato)
     drawing_tools.continue.update(stato)
     drawing_tools.display_date.update(world)
@@ -24,8 +24,10 @@ var daytime=1
 
 
 //Create canvas
-
-createGrid(3)
+const wrap=document.createElement("div")
+wrap.setAttribute("id","content")
+document.body.appendChild(wrap)
+createGrid(wrap,2)
 
 
 
@@ -51,8 +53,10 @@ drawing_tools.display_date.draw(document.getElementById("col 2 0"), stato.world)
 drawing_tools.display_decisions.draw(stato.decision_dictonary,document.getElementById("col 0 1"),stato)
 drawing_tools.display_red_zone.draw(stato.decision["red_zone"],document.getElementById("col 0 1"))
 
+
 //1
-drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,document.getElementById("col 1 1"))
+drawing_tools.display_title.draw(document.getElementById("col 1 1"))
+drawing_tools.display_counters.draw(stato.perc_infects,stato.perc_economy,stato.feeling,stato.dead,stato,document.getElementById("col 1 1"))
 drawing_tools.display_booleans.draw(stato,document.getElementById("col 1 1"))
 drawing_tools.display_block_trades.draw(document.getElementById("col 1 1"),stato)
 
