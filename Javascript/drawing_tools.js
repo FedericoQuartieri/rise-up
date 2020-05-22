@@ -707,7 +707,7 @@ const drawing_tools={
 
         _1x_function = () => {if (currentLoop !== null){clearInterval(currentLoop)};daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
         _05x_function = () => {clearInterval(currentLoop);daytime = .5; var timerClock0 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock0}
-        _2x_function = () => {clearInterval(currentLoop);daytime = 20;var timerClock2 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock2}
+        _2x_function = () => {clearInterval(currentLoop);daytime = 2;var timerClock2 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock2}
         
         const container = document.createElement("div")
         container_out.appendChild(container)
@@ -801,7 +801,7 @@ const drawing_tools={
             modal_content.appendChild(modal_body)
             modal_content.appendChild(modal_footer)
             modal_footer.appendChild(button2)
-            modal_footer.appendChild(button3)
+            //modal_footer.appendChild(button3)
         },
         update : (state) => {
             win = () => {
@@ -809,8 +809,8 @@ const drawing_tools={
                 document.getElementById("modal-body-end").innerHTML = "you won"
                 document.getElementById("restart").addEventListener("click", function(){window.location.reload()})
                 document.getElementById("restart").innerHTML = "RESTART"
-                document.getElementById("exit").addEventListener("click", function(){})
-                document.getElementById("exit").innerHTML = "EXIT"
+                //document.getElementById("exit").addEventListener("click", function(){})
+                //document.getElementById("exit").innerHTML = "EXIT"
                 $('#ModalEnd').modal({
                     backdrop: 'static',
                     keyboard: false
@@ -838,8 +838,8 @@ const drawing_tools={
                 document.getElementById("x").innerHTML = ""
                 document.getElementById("restart").addEventListener("click", function(){window.location.reload()})
                 document.getElementById("restart").innerHTML = "RESTART"
-                document.getElementById("exit").addEventListener("click", function(){close()})
-                document.getElementById("exit").innerHTML = "EXIT"
+                //document.getElementById("exit").addEventListener("click", function(){close()})
+                //document.getElementById("exit").innerHTML = "EXIT"
                 $('#ModalEnd').modal({
                     backdrop: 'static',
                     keyboard: false
