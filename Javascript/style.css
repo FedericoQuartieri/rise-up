@@ -1,17 +1,22 @@
 html {
    
     overflow-x: hidden;
- }
- 
- body,html {
-   
-    margin: 0;
-    padding: 0;
-    width: inherit;
-    height: inherit;
     
  }
  
+html,body {
+   
+   height: 100%;
+   width: 100%;
+    
+    
+ }
+ #content{
+     height: 100vh;
+     
+     
+    
+ }
 .col-md-3:nth-child(1),.col-md-6{
     text-align: -webkit-center;
 }
@@ -226,7 +231,7 @@ input[type="checkbox"]:checked ~ .check::after{
 #wrap{
     position: relative;
     width: 96%;
-    height: 200px;
+    
     text-align: -webkit-center;
     margin-top: 5%;
     align-items: center;
@@ -443,7 +448,7 @@ svg circle:nth-child(2){
     justify-content: space-evenly;
     align-items: center;
     position: relative;
-    transform: translateY(-15%);
+    transform: translateY(-23%);
     
    
 
@@ -789,7 +794,7 @@ transition: 0.5s;}
 .wrap_deaths{
     display: flex;
     justify-content: center;
-    transform: translateY(-49%);
+    transform: translateY(-65%);
 }
 .show_funds{
     margin-top: 0px;
@@ -964,7 +969,7 @@ transition: 0.5s;}
 }
 .wrap_booleans{
     
-    transform: translateY(-8%);
+    transform: translateY(-43%);
     margin-bottom: 1%;
     
 }
@@ -972,11 +977,11 @@ transition: 0.5s;}
     margin-bottom: 12px;
 }
 #trades-btn{
-    transform: translateY(25%);
+    transform: translateY(-62%);
     background-color:#3f8efc; 
 }
 #trades-btn:hover{
-    transform: translateY(25%);
+    transform: translateY(-62%);
     background-color: #59f8e8;
 }
 #icon{
@@ -986,9 +991,14 @@ transition: 0.5s;}
 #spec_visual{
     margin-right: 5%;
 }
-#speed-menu{
+.speed-menu{
     display: flex;
     justify-content: center;
+    
+    transform: translateY(15%);
+}
+#dec_title{
+    transform: translateY(5%);
 }
 #speed-menu span .speed-button{
     -webkit-appearance: none;
@@ -996,6 +1006,7 @@ transition: 0.5s;}
     border-radius: 5%;
     border: 2px solid black;
 }
+
 .text-bg{
     background-image: url(./bg.jpg);
     -webkit-text-fill-color: transparent;
@@ -1008,7 +1019,7 @@ transition: 0.5s;}
     text-align: center;
     text-transform: uppercase;
     font-weight: 800;
-    font-size: 500%;
+    font-size: 11.5vh;
     background-origin: padding-box;
     transform: translateY(-46%);
 
@@ -1027,6 +1038,13 @@ transition: 0.5s;}
     text-transform: uppercase;
     color: #777;
     letter-spacing: 1px;
+}
+.speed-button{
+    text-transform: uppercase;
+    background: unset;
+    margin-left: 2%;
+    border-radius: 20%;
+    border: solid 1px #3f8efc;
 }
 $color1: #000000; black
 $color2: #393e41; onyx

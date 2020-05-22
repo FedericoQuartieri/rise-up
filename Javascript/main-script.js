@@ -24,8 +24,10 @@ var daytime=1
 
 
 //Create canvas
-
-createGrid(3)
+const wrap=document.createElement("div")
+wrap.setAttribute("id","content")
+document.body.appendChild(wrap)
+createGrid(wrap,2)
 
 
 
