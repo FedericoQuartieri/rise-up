@@ -3,6 +3,10 @@ html {
     overflow-x: hidden;
     
  }
+ body{
+    
+    
+ }
  
 html,body {
    
@@ -54,6 +58,7 @@ html,body {
 .div-menu .decision-menu .decision-toUpdate:hover{
     background: linear-gradient(#3f8efc, #226ce0);
     transition: linear .5s;
+    cursor: pointer;
 }
 .text-inner::before{
     content: "";
@@ -1046,6 +1051,9 @@ transition: 0.5s;}
     border-radius: 20%;
     border: solid 1px #3f8efc;
 }
+
+
+
 $color1: #000000; black
 $color2: #393e41; onyx
 $color3: #1abd99; light green
