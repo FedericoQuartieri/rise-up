@@ -564,14 +564,14 @@ const drawing_tools={
         for(let j=0;j<2;j++){
             const circle=document.createElementNS("http://www.w3.org/2000/svg", "circle");
             $(circle).attr({
-                "cx":"70",
-                "cy":"70",
-                "r":"70"
+                "cx":"8.5vh",
+                "cy":"8.5vh",
+                "r":"8vh"
                 })
             
             if(j===1){
                 circle.setAttribute("id","circle "+i)
-                circle.style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ h2.innerHTML+ " ) /100) ;"
+                circle.style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ h2.innerHTML+ " ) /100) ;"
                 //console.log(h2.innerHTML)
             } 
             
@@ -685,16 +685,16 @@ const drawing_tools={
                 const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
                 if(i===0){
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(infects).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ infects+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ infects+ " ) /100) ;"
         
                 }
                 else if(i===1){
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(economy).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ economy+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ economy+ " ) /100) ;"
                 }
                 else{
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(feeling).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ feeling+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ feeling+ " ) /100) ;"
                 }
                 
                 

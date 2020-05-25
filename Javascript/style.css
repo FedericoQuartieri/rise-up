@@ -477,8 +477,8 @@ input[type="checkbox"]:checked ~ .check::after{
 
 svg{
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 17vh;
+    height: 17vh;
     z-index: 1000;
 }
 
@@ -487,14 +487,14 @@ svg circle{
     height: 100%;
     fill: none;
     stroke: #191919;
-    stroke-width: 10;
+    stroke-width: 1vh;
     stroke-linecap: round;
-    transform: translate(5px,5px);
+    /*transform: translate(5px,5px)*/;
 }
 
 svg circle:nth-child(2){
-    stroke-dasharray: 440;
-    stroke-dashoffset: 440;
+    stroke-dasharray: 50vh;
+    stroke-dashoffset: 50vh;
 }
 
 .container_counters{
@@ -540,8 +540,8 @@ svg circle:nth-child(2){
 
 .percent{
     position: relative;
-    width: 97%;
-    /*height: 74%;*/
+    width: 17vh;
+    height: 17vh;
     border-radius: 50%;
     box-shadow: inset 0 0 50px #000;
     background: #222;
@@ -934,7 +934,7 @@ svg circle:nth-child(2){
     list-style: none;
     padding: 10px;
     width: 100%;
-    background: linear-gradient(270deg, #000000ff, #393e41ff, #1abd99ff, #f7f7f2ff, #6ef9f5ff);
+    background:linear-gradient(to left,#2f80ed,#56ccf2);
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
     font-size: 14px;
