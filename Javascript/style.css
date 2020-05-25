@@ -331,6 +331,7 @@ input[type="checkbox"]:checked ~ .check::after{
     z-index: 2;
     overflow: hidden;
     margin-top: 14%;
+    cursor: pointer;
 }
 
 .range::-webkit-slider-thumb{
@@ -376,6 +377,7 @@ input[type="checkbox"]:checked ~ .check::after{
     margin: auto;
     z-index: 2;
     position: relative;
+    cursor: pointer;
 }
 
 .spec-show-menu-items{
@@ -405,6 +407,7 @@ input[type="checkbox"]:checked ~ .check::after{
     border-radius: 50%;
     z-index: 2;
     transform: translateX(221%);
+    cursor: pointer;
 }
 
 .require-menu-items {
@@ -424,6 +427,7 @@ input[type="checkbox"]:checked ~ .check::after{
     font-size: 12px;
     position: relative;
     transition: 0.3s linear;
+    cursor: pointer;
 }
 
   
