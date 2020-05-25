@@ -153,6 +153,7 @@ const drawing_tools={
             div.appendChild(fill)
             div.appendChild(input)
             container_out.appendChild(div)
+
         
            
             input.addEventListener("mousemove", function rangeSlider(){
@@ -624,6 +625,7 @@ const drawing_tools={
     
         
         }
+        
         const w=document.createElement("div")
         w.setAttribute("class","wrap_deaths")
         const container_deaths=document.createElement("div")
@@ -1089,7 +1091,7 @@ const drawing_tools={
                         
                         break
                     case 3:
-                        curTrade.innerHTML="Block trades from  and to adjoinig countries"
+                        curTrade.innerHTML="Block trades from  and to adjoining countries"
                         
                         break
                     case 4:
