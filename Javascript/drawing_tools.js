@@ -707,7 +707,7 @@ const drawing_tools={
     },
     display_stop : (container_out) =>{
 
-        _1x_function = () => {if (currentLoop !== null){clearInterval(currentLoop)};daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
+        _1x_function = () => {clearInterval(currentLoop);daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
         _05x_function = () => {clearInterval(currentLoop);daytime = .5; var timerClock0 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock0}
         _2x_function = () => {clearInterval(currentLoop);daytime = 2;var timerClock2 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock2}
         
@@ -899,7 +899,7 @@ const drawing_tools={
             else {
                 document.getElementById("date").innerHTML = "date : " + date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
             }
-            document.getElementById("win-date").innerHTML = "     " + "win date : " + world.state.win_date
+            document.getElementById("win-date").innerHTML = "win date : " + world.state.win_date
         }
     },
     display_numbers : (number) => {

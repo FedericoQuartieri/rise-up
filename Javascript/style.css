@@ -359,6 +359,7 @@ input[type="checkbox"]:checked ~ .check::after{
 
 .reanimate-beds {
     margin-top: 5px;
+    position: absolute;
 }
 
 .flex-container{
@@ -367,7 +368,6 @@ input[type="checkbox"]:checked ~ .check::after{
     display: flex;
     justify-content: baseline;
 }
-
 
 .spec-show-container{
     width: 430px;
@@ -396,7 +396,7 @@ input[type="checkbox"]:checked ~ .check::after{
 .spec-show-menu-items>div{
     text-align:center;
     background: linear-gradient(to right,#89F9EF,#226CE0);
-    position: relative;
+    position: rel;
     transition: 0.3s linear;
 
 }
@@ -412,6 +412,7 @@ input[type="checkbox"]:checked ~ .check::after{
     z-index: 2;
     transform: translateX(221%);
     cursor: pointer;
+    margin-left: 55%;
 }
 
 .require-menu-items {
@@ -1085,6 +1086,8 @@ svg circle:nth-child(2){
     text-transform: uppercase;
     font-size: 1.7vh;
     margin-right: 2%;
+    margin-bottom: 1vh;
+    margin-top: 0.3vh;
 }
 
 /* -------------------------speed---------------------------- */
@@ -1094,7 +1097,6 @@ svg circle:nth-child(2){
     justify-content: center;
     
     margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
     font-size: 1.7vh;
 }
 
