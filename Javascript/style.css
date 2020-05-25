@@ -14,20 +14,21 @@ html,body {
  }
  
  #content{
-    height: 100vh;
+    /*height: 100vh;*/
 }
 
 .title{
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 1.5vh;
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
-    font-size: 22px;
+    font-size: 2.7vh;
 }
 
 #dec_title{
-    transform: translateY(5%);
+    /*transform: translateY(5%);*/
+    margin-bottom: 0px;
 }
 
 .text-bg{
@@ -60,7 +61,7 @@ html,body {
 .div-menu ul{  
     list-style: none;
     margin: 0;
-    padding-left: 12px;
+    padding-left: 3%;
     margin-top: 1px;
     
     
@@ -70,25 +71,26 @@ html,body {
 }
 .div-menu .decision-menu .decision-toUpdate{
     position: relative;
-    padding: 20px;
+    padding: 1.9vh;
     width: inherit;
-    height: 90%;
+    height: 7.5vh;
     background-color: rgb(255, 255, 255);
      
     border-top: 1px solid white;
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 1.5px;
-    font-size: 75%;
-    transition: .5s;
+    font-size: 1.5vh;
+    /*transition: .5s;*/
     z-index: 1002;
      
 }
 
 .div-menu .decision-menu .decision-toUpdate:hover{
     background: linear-gradient(#3f8efc, #226ce0);
-    transition: linear .5s;
+    /*transition: linear .5s;*/
     cursor: pointer;
+    height: 13vh;
 }
 
 .text-inner::before{
@@ -131,10 +133,14 @@ html,body {
 
 .level-selector{
     position: relative;
-    padding: 15px;
+    padding: 1.8vh;
     width: 250px;
-    border-top: 1px solid white;
-    border-radius: 2%;
+    /*border-top: 1px solid white;*/
+    display: inline;  
+    background-color: white;
+    border: 1px solid black;
+    margin-right: 0.7vh;
+    border-radius: 20%;
 }
 
 .showUpmenu{
@@ -151,7 +157,7 @@ html,body {
     opacity: 1;
     visibility: visible;
     display: block;
-    margin-top: 9%;
+    margin-top: 3.5vh;
     margin-bottom: 3%;
 }
 
@@ -160,11 +166,7 @@ html,body {
 }
 
 .level-selector{
-    display: inline;  
-    background-color: white;
-    border: 1px solid black;
-    margin-right: 5px;
-    border-radius: 20%;
+    
 }
 
 /* -------------------------bool---------------------------- */
@@ -227,27 +229,30 @@ input[type="checkbox"]:checked ~ .check::after{
 }
 
 .c{
-    padding-top: 18px;
-    padding-left: 13px;
-    margin-left: 4px;
-    height: 50px;
-    width: 230px;
+    padding-top: 1.5vh;
+    padding-left: 1.2vh;
+    margin-left: 0.5vh;
+    height: 6vh;
+    width: 32%;
     display: inline-flex;
     justify-content: space-around;
     align-items: center;
     background-color: white;
     transition: ease-in 1s;
+    margin-top: 1vh;
 }
 
 .ca{
-    height: 50px;
-    width: 230px;
-    padding-top: 18px;
+    height: 6vh;
+    width: 32%;
+    padding-top: 1.5vh;
+    padding-left: 1.2vh;
     display: inline-flex;
+    margin-top: 1vh;
     justify-content: space-around;
     align-items: center;
     background-color: #3f8efc;
-    margin-left: 4px;
+    margin-left: 0.5vh;
     transition: 0.5s step-end;
     
 
@@ -264,45 +269,43 @@ input[type="checkbox"]:checked ~ .check::after{
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 1.5px;
-    font-size: 75%;
+    font-size: 1.5vh;
     align-self: center;
     align-content: center;
 }
 
 .wrap_booleans{
-    transform: translateY(-43%);
+    height: 10vh;
     margin-bottom: 1%;
-}
-
-.wrap_booleans .title{
-    margin-bottom: 12px;
+    width: 100%;
+    margin-top: 3vh;
 }
 
 /* -------------------------red zone---------------------------- */
 
 #red{
-    margin-top: 10%;
+    margin-top: 0.5vhvh;
 }
 
 #wrap{
     position: relative;
     width: 96%;
-    
+    height: 26vh;
     text-align: -webkit-center;
-    margin-top: 5%;
+    margin-top: 2vh;
     align-items: center;
 }
 
 #rangeValue{
     position: relative;
     display: block;
-    font-size: 3em;
+    font-size: 5vh;
     color: rgba(0, 0, 0,.8);
     font-weight: 620;
     z-index: 2;
     margin-bottom: 0px;
     margin-top: 0px;
-    padding-top: 20%;
+    padding-top: 9.8vh;
 }
 
 #rangeValue::after{
@@ -322,7 +325,7 @@ input[type="checkbox"]:checked ~ .check::after{
 .range{
     position: relative;
     width: 82%;
-    height: 15px;
+    height: 2vh;
     -webkit-appearance: none;
     outline: none;
     border-radius: 15px ;
@@ -332,12 +335,13 @@ input[type="checkbox"]:checked ~ .check::after{
     overflow: hidden;
     margin-top: 14%;
     cursor: pointer;
+    margin-top: 7.7vh;
 }
 
 .range::-webkit-slider-thumb{
     -webkit-appearance: none;
-    width: 15px;
-    height: 15px;
+    width: 2vh;
+    height: 2vh;
     border-radius: 50%;
     background: #59f8e8;
     border: 4px solid #222;
@@ -438,7 +442,7 @@ input[type="checkbox"]:checked ~ .check::after{
 
 #reanimate-beds{
     text-transform: uppercase;
-    font-size: 13.5px;
+    font-size: 1.5vh;
     font-weight: 440;
     letter-spacing: 0.5px;
 }
@@ -498,17 +502,18 @@ svg circle:nth-child(2){
     align-items: center;
     position: relative;
     transform: translateY(-23%);
+    height: 36vh;
 }
 
 .container_counters .card{
     position: relative;
-    width: 220px;
+    width: 29%;
     background: linear-gradient(0deg,#1b1b1b,#222,#1b1b1b);
     display: flex;
     justify-content:center ;
     align-items: center;
     border-radius: 4px;
-    height: 300px;
+    height: 100%;
     text-align: center;
     overflow: hidden;
     transition: .5s;
@@ -534,8 +539,8 @@ svg circle:nth-child(2){
 
 .percent{
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 97%;
+    /*height: 74%;*/
     border-radius: 50%;
     box-shadow: inset 0 0 50px #000;
     background: #222;
@@ -557,17 +562,17 @@ svg circle:nth-child(2){
 .percent .number h2{
     color: #777;
     font-weight: 700;
-    font-size: 35px;
+    font-size: 3.9vh;
     transition: 0.5s;
 }
 .percent .number h2 span{
-    font-size: 24px;
+    font-size: 2vh;
     color: #777;
 }
 
 .card:hover .percent .number h2{
     color: #fff;
-    font-size: 40px;
+    font-size: 4.1vh;
 }
 
 .card:hover .percent .number h2 span{
@@ -579,17 +584,17 @@ svg circle:nth-child(2){
     position: relative;
     color: #777;
     font-weight: 700; 
-    font-size: 18px;
+    font-size: 2vh;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: 0.5s;
-    margin-top: 20px;
+    margin-top: 3.1vh;
 }
 
 .text div{
     margin-top: 3px;
     font-weight: 550;
-    font-size: 17px;
+    font-size: 1.9vh;
     transform: translateY(70%);
 }
 
@@ -612,23 +617,24 @@ svg circle:nth-child(2){
 .container_deaths{
     display:  block;
     background: linear-gradient(0deg,#1b1b1b,#222,#1b1b1b);
-    padding: 20px 0; 
+    padding: 2vh 0; 
     border-radius: 5px;
-    width: 270px;
+    width: 39%;
+    height: 100%;
     text-align: center;
-    transform: translateY(32%);
-    margin-top: 15px;   
+       
 }
 
 .fa-3x { 
     margin: 0 auto; float: none; display: table; color:#226ce0; 
     transition: 0.5s;
+    font-size: 6vh!important;
 }
 
 #death_display{
     color: #777;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 2.5vh;
     transition: 0.5s;
     margin-top: 6px;
     margin-bottom: -3px;
@@ -639,7 +645,7 @@ svg circle:nth-child(2){
 }
 
 .count_text{
-    font-size: 18px; 
+    font-size: 2vh; 
     font-weight: 500;  
     margin-top: 1px; 
     margin-bottom: 0; 
@@ -660,15 +666,16 @@ svg circle:nth-child(2){
 .wrap_deaths{
     display: flex;
     justify-content: center;
-    transform: translateY(-65%);
+    margin-top: -7vh;
+    height: 23vh;
 }
 
 #other{
-    margin-top: 3%;
+    margin-top: 2%;
 }
 
 #vd-inner,#nvd-inner{
-    font-size: 12px; 
+    font-size: 1.5vh; 
     font-weight: 500;  
     margin-top: 0.5%; 
     margin-bottom: 0; 
@@ -682,16 +689,16 @@ svg circle:nth-child(2){
 /* -------------------------loans---------------------------- */
 
 .loans{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right: 2%;
-    border-bottom: 20px solid #3f8efc;
+    margin-top: 2vh;
+    
+    margin-right: 1%;
+    border-bottom: 1.7vh solid #3f8efc;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
 
 .loans_menu{
-    margin-top: 7%;
+    margin-top: 0.5vh;
 }
 
 .loans-list{
@@ -702,8 +709,8 @@ svg circle:nth-child(2){
 .loans .header{
     color: #fff;
     background:linear-gradient(to right, #226ce0,#3f8efc);
-    padding: 10px 20px;
-    font-size: 20px;
+    padding: 1.5vh 2.5vh;
+    font-size: 2.2vh;
     font-weight: 700;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -720,12 +727,12 @@ svg circle:nth-child(2){
 
 .loans ul .active{
     list-style: none;
-    padding: 10px;
+    padding: 1.4vh;
     width: 100%;
     background: #fff;
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
-    font-size: 12px;
+    font-size: 1.5vh;
     text-transform: uppercase;
 }
 
@@ -747,10 +754,10 @@ svg circle:nth-child(2){
     color: #fff;
     text-align: center;
     display: inline-block;
-    line-height: 20px;
+    line-height: 2.5vh;
     border-radius: 20%;
-    margin-left: 5px;
-    font-size: 12px;
+    margin-left: 1vw;
+    font-size: 1.4vh;
     font-weight: 600;
     letter-spacing: 1px;
     transform: translateY(-2px);
@@ -766,17 +773,17 @@ svg circle:nth-child(2){
 }
 
 .buttons_wrap {
-    margin: 7px 0 10px 0 ;
+    margin: 0.7vh;
     justify-content : space-evenly;
     display: flex;
 }
 
 .buttons_wrap button{
-    font-size: 17px;
+    font-size: 2vh;
     font-weight: 700;
     color: #777;
     text-transform: uppercase;
-    padding: 10px 20px;
+    padding: 1vh 2vh;
     transition: .5s;
     border: 1px solid rgba(0, 0, 0, .1);
     border-radius: 10%;
@@ -804,13 +811,13 @@ svg circle:nth-child(2){
     margin-top: -10px;
     margin-bottom: 4%;
     text-transform: uppercase;
-    font-size: 13.5px;
+    font-size: 1.5vh;
     font-weight: 440;
     letter-spacing: 0px;
 }
 
 .wrap_beds .separator{
-    height: 4px;
+    height: 0.4vh;
     background: #226CE0;
     width: 20%;
 }
@@ -827,12 +834,13 @@ svg circle:nth-child(2){
 /* -------------------------hospitals---------------------------- */
 
 .hospitals-menu{
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
 }
 
 .hospital_button{
     margin-top: 10px;
-    padding: 0.2em;
+    font-size: 1.6vh;
+    padding: 0.4vh;
     border-radius: 20px;
     cursor: pointer;
     border: 0;
@@ -843,7 +851,7 @@ svg circle:nth-child(2){
 }
 
 .hospital_button span{
-    font-size: 12.5px;
+    font-size: 1.6vh;
     font-weight: 600;
     text-transform: uppercase;
     z-index: 3;
@@ -851,7 +859,7 @@ svg circle:nth-child(2){
     color: #fff;
     background-color: #2c2e36;
     border-radius: 17px;
-    padding: 0.6em;
+    padding: 0.8vh;
 }
 
 .hospital_button:hover{
@@ -860,8 +868,8 @@ svg circle:nth-child(2){
 }
 
 .show-new-hospitals{
-    margin-top: 10px;
-    font-size: 13.5px;
+    margin-top: 1vh;
+    font-size: 1.5vh;
     font-weight: 440;
     text-transform: uppercase;
     letter-spacing: 0px;
@@ -937,12 +945,15 @@ svg circle:nth-child(2){
 }
 
 #trades-btn{
-    transform: translateY(-62%);
+    width: 27%;
+    height: 5vh;
+    font-size: 2vh;
+    margin-top: 4vh;
     background-color:#3f8efc; 
 }
 
 #trades-btn:hover{
-    transform: translateY(-62%);
+    
     background-color: #59f8e8;
 }
 
@@ -950,18 +961,19 @@ svg circle:nth-child(2){
 
 .show_funds{
     margin-top: 0px;
+    font-size: 1.5vh;
 }
 
 .funds-menu{
-    margin-bottom: 22px;
+    margin-bottom: 2.2vh;
     text-transform: uppercase;
-    font-size: 13.5px;
+    font-size: 1.5vh;
     font-weight: 440;
     letter-spacing: 0px;
 }
 
 .funds-menu .separator{
-    height: 4px;
+    height: 1vh;
     background: linear-gradient(to right,#56ccf2,#2f80ed);
     width: 20%;
 }
@@ -1045,6 +1057,7 @@ svg circle:nth-child(2){
 #icon{
     width: 10%;
     transform: translateY(-6%);
+    height: 5vh;
 }
 
 #spec_visual{
@@ -1054,8 +1067,8 @@ svg circle:nth-child(2){
 /* -------------------------health funds---------------------------- */
 
 .logo-funds {
-    height: 30px;
-    width: 30px;
+    height: 3vh;
+    width: 3vh;
     border-radius: 50%;
     margin-left: 40px;
     margin-top: -5px;
@@ -1070,7 +1083,7 @@ svg circle:nth-child(2){
 
 .date-menu{
     text-transform: uppercase;
-    font-size: 70%;
+    font-size: 1.7vh;
     margin-right: 2%;
 }
 
@@ -1080,7 +1093,9 @@ svg circle:nth-child(2){
     display: flex;
     justify-content: center;
     
-    transform: translateY(15%);
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+    font-size: 1.7vh;
 }
 
 #speed-menu span .speed-button{
@@ -1094,8 +1109,32 @@ svg circle:nth-child(2){
     text-transform: uppercase;
     background: unset;
     margin-left: 2%;
+    margin-right: 1vh;
     border-radius: 20%;
     border: solid 1px #3f8efc;
 }
+
+/*
+
+$color1: #000000; black
+$color2: #393e41; onyx
+$color3: #1abd99; light green
+$color4: #f7f7f2; white powder
+$color5: #76F2DF; light blue
+
+
+
+
+
+
+$color1: #000000; bl
+$color2: #393e41; on
+$color3: #fdfffc; wh
+$color4: #59f8e8; lbb
+$color5: #3f8efc; lb
+$color6: #226ce0; b
+background:linear-gradient(to right, #226ce0,#3f8efc)
+
+*/
 
  /* -------------------------end---------------------------- */

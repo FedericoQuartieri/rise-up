@@ -74,9 +74,6 @@ var World = function(state){
   //-----------Starts Dates-----------
 
 
-  
-
-
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
     if (isNaN(parseInt(date[1]))){
       //date = date.replace((date[0]),"")
@@ -199,7 +196,7 @@ var State = function(state, World){
     //const level_closing = 1
     const dec = this.decision[decision]
     news = 100-((100/5)*level_closing)
-    new_e=100-news
+    new_e= 100-news
     new_f=news
 
     if(decision==="block_trades_e"){
@@ -214,7 +211,7 @@ var State = function(state, World){
   }
 
 
-  this.decision = {//helth feeling economy     health good = 0 feeling good = 100 economy good = 0
+  this.decision = {//health feeling economy     health good = 0 feeling good = 100 economy good = 0
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
     shops_opened : [100, 100,0],
@@ -880,8 +877,8 @@ var State = function(state, World){
           rate += ((100-this.decision[key][0])/100)*4
         }
         else if (key === "schools_opened" || key === "shops_opened" || key === "airports_opened" || key === "companies_opened"){
-          rate += (this.decision[key][0]/100)*2                                                 
-        }                                                                                  //2*
+          rate += (this.decision[key][0]/100)*2                                //2*                      
+        }                                                                             
         else if (key === "museums_opened" || key === "ports_opened" || key === "sports_allowed" || key === "block_trades_e"){
           rate += (this.decision[key][0]/100)
         }
