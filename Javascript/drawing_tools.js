@@ -153,6 +153,7 @@ const drawing_tools={
             div.appendChild(fill)
             div.appendChild(input)
             container_out.appendChild(div)
+
         
            
             input.addEventListener("mousemove", function rangeSlider(){
@@ -209,7 +210,7 @@ const drawing_tools={
             flex_container.appendChild(reanimate_beds)
             reanimate_beds.setAttribute("class", "reanimate-beds")
             reanimate_beds.setAttribute("id", "reanimate-beds")
-            reanimate_beds.innerHTML = "virus beds : \n" + drawing_tools.display_numbers(dictionary["reanimate_beds"])
+            reanimate_beds.innerHTML = "beds usable : "+ drawing_tools.display_numbers(dictionary["reanimate_beds"])
             const button = document.createElement("div") 
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
@@ -563,14 +564,14 @@ const drawing_tools={
         for(let j=0;j<2;j++){
             const circle=document.createElementNS("http://www.w3.org/2000/svg", "circle");
             $(circle).attr({
-                "cx":"70",
-                "cy":"70",
-                "r":"70"
+                "cx":"8.5vh",
+                "cy":"8.5vh",
+                "r":"8vh"
                 })
             
             if(j===1){
                 circle.setAttribute("id","circle "+i)
-                circle.style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ h2.innerHTML+ " ) /100) ;"
+                circle.style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ h2.innerHTML+ " ) /100) ;"
                 //console.log(h2.innerHTML)
             } 
             
@@ -624,6 +625,7 @@ const drawing_tools={
     
         
         }
+        
         const w=document.createElement("div")
         w.setAttribute("class","wrap_deaths")
         const container_deaths=document.createElement("div")
@@ -644,7 +646,7 @@ const drawing_tools={
             
             if(i===0){
                 pa.setAttribute("id","vd-inner")
-                pa.innerHTML="Virus deaths : "+(state.dead-state.non_virus_dead)
+                pa.innerHTML="Virus deaths : "+(state.virus_dead)
 
             }
             else{
@@ -683,16 +685,16 @@ const drawing_tools={
                 const curPar=document.getElementById("display "+i).innerHTML.replace("<span class=\"perc_graph\">%</span>","")
                 if(i===0){
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(infects).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ infects+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ infects+ " ) /100) ;"
         
                 }
                 else if(i===1){
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(economy).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ economy+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ economy+ " ) /100) ;"
                 }
                 else{
                     document.getElementById("display "+i).innerHTML=document.getElementById("display "+i).innerHTML.replace(curPar,parseFloat(feeling).toFixed(1)) 
-                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(440 - (440 * "+ feeling+ " ) /100) ;"
+                    document.getElementById("circle "+i).style.cssText=" stroke-dashoffset:"+ " calc(50vh - (50vh * "+ feeling+ " ) /100) ;"
                 }
                 
                 
@@ -705,7 +707,7 @@ const drawing_tools={
     },
     display_stop : (container_out) =>{
 
-        _1x_function = () => {if (currentLoop !== null){clearInterval(currentLoop)};daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
+        _1x_function = () => {clearInterval(currentLoop);daytime = 1; var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock}
         _05x_function = () => {clearInterval(currentLoop);daytime = .5; var timerClock0 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock0}
         _2x_function = () => {clearInterval(currentLoop);daytime = 2;var timerClock2 = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime);currentLoop = timerClock2}
         
@@ -897,7 +899,7 @@ const drawing_tools={
             else {
                 document.getElementById("date").innerHTML = "date : " + date0.getDate() + " " + months[date0.getMonth()] + " " + date0.getFullYear()
             }
-            document.getElementById("win-date").innerHTML = "     " + "win date : " + world.state.win_date
+            document.getElementById("win-date").innerHTML = "win date : " + world.state.win_date
         }
     },
     display_numbers : (number) => {
@@ -982,13 +984,13 @@ const drawing_tools={
             }
             if (state.riot_type ==="infects"){
                 document.getElementById("exampleModalLongTitle").innerHTML = "URBAN RIOT"
-                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'>There has been a gathering of people and a new outbreak has formed. <br class = 'modal-riot-br'>  <br class = 'modal-riot-br'>" +  Math.round(state.infects*(40/100)) +  " " + people + " have been infected"
+                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'>There has been a gathering of people and a new outbreak has formed. <br class = 'modal-riot-br'>  <br class = 'modal-riot-br'>" +  Math.round(state.infects*(30/100)) +  " " + people + " have been infected"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
             }
             else if (state.riot_type ==="both"){
                 document.getElementById("exampleModalLongTitle").innerHTML = "URBAN RIOT"
-                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'> there has been an assault on supermarkets <br class = 'modal-riot-br'> <br class = 'modal-riot-br'>" + Math.round(state.infects*(20/100)) + " " + people + " have been infected" + "<br class = 'modal-riot-br'><br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
+                document.getElementById("modal-body").innerHTML = "<br class = 'modal-riot-br'> there has been an assault on supermarkets <br class = 'modal-riot-br'> <br class = 'modal-riot-br'>" + Math.round(state.infects*(15/100)) + " " + people + " have been infected" + "<br class = 'modal-riot-br'><br class = 'modal-riot-br'>" + "Pil has decreased of " + state.economy_riot_influence.toFixed(1) + "%"
                 $('#exampleModalCenter').modal('show')
                 state.riot_type = ""
 
@@ -1089,7 +1091,7 @@ const drawing_tools={
                         
                         break
                     case 3:
-                        curTrade.innerHTML="Block trades from  and to adjoinig countries"
+                        curTrade.innerHTML="Block trades from  and to adjoining countries"
                         
                         break
                     case 4:

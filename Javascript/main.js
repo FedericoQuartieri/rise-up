@@ -74,9 +74,6 @@ var World = function(state){
   //-----------Starts Dates-----------
 
 
-  
-
-
   this.from_date_to_month =  (date) => {    //chiamata da loan_reader_to_pay
     if (isNaN(parseInt(date[1]))){
       //date = date.replace((date[0]),"")
@@ -156,6 +153,7 @@ var State = function(state, World){
   this.beds_feeling = 100
   this.non_virus_dead_rate = 0
   this.death_daily = 0
+  this.virus_dead = 1
   this.non_virus_death_daily = 0
   this.non_virus_dead = 0
   this.economy_judgment = ""
@@ -198,7 +196,7 @@ var State = function(state, World){
     //const level_closing = 1
     const dec = this.decision[decision]
     news = 100-((100/5)*level_closing)
-    new_e=100-news
+    new_e= 100-news
     new_f=news
 
     if(decision==="block_trades_e"){
@@ -213,7 +211,7 @@ var State = function(state, World){
   }
 
 
-  this.decision = {//helth feeling economy     health good = 0 feeling good = 100 economy good = 0
+  this.decision = {//health feeling economy     health good = 0 feeling good = 100 economy good = 0
     schools_opened : [100, 100,0],
     museums_opened : [100, 100,0],
     shops_opened : [100, 100,0],
@@ -744,7 +742,7 @@ var State = function(state, World){
   this.summary_death = () => {
     this.non_virus_death_update()
     let total_death = this.infects * 0.03
-    let death = total_death - this.dead
+    let death = total_death - this.virus_dead
     this.need_medical = Math.round(this.infects * 0.2)
     actually_med = (this.need_medical - this.reanimate_beds)
     if (actually_med > 0){
@@ -758,10 +756,10 @@ var State = function(state, World){
     }
     this.reminder_dead += death - Math.trunc(death)
     death = Math.trunc(death)
+    this.virus_dead += death
     this.death_daily = death + this.non_virus_death_daily
     this.dead += this.death_daily
     this.infects -= death
-    this.virus_dead = this.dead-this.non_virus_dead
   }
 
 
@@ -879,8 +877,8 @@ var State = function(state, World){
           rate += ((100-this.decision[key][0])/100)*4
         }
         else if (key === "schools_opened" || key === "shops_opened" || key === "airports_opened" || key === "companies_opened"){
-          rate += (this.decision[key][0]/100)*2                                                 
-        }                                                                                  //2*
+          rate += (this.decision[key][0]/100)*2                                //2*                      
+        }                                                                             
         else if (key === "museums_opened" || key === "ports_opened" || key === "sports_allowed" || key === "block_trades_e"){
           rate += (this.decision[key][0]/100)
         }
