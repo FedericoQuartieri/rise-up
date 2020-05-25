@@ -646,7 +646,7 @@ const drawing_tools={
             
             if(i===0){
                 pa.setAttribute("id","vd-inner")
-                pa.innerHTML="Virus deaths : "+(state.dead-state.non_virus_dead)
+                pa.innerHTML="Virus deaths : "+(state.virus_dead)
 
             }
             else{

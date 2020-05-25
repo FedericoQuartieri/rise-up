@@ -153,6 +153,7 @@ var State = function(state, World){
   this.beds_feeling = 100
   this.non_virus_dead_rate = 0
   this.death_daily = 0
+  this.virus_dead = 1
   this.non_virus_death_daily = 0
   this.non_virus_dead = 0
   this.economy_judgment = ""
@@ -741,7 +742,7 @@ var State = function(state, World){
   this.summary_death = () => {
     this.non_virus_death_update()
     let total_death = this.infects * 0.03
-    let death = total_death - this.dead
+    let death = total_death - this.virus_dead
     this.need_medical = Math.round(this.infects * 0.2)
     actually_med = (this.need_medical - this.reanimate_beds)
     if (actually_med > 0){
@@ -755,10 +756,10 @@ var State = function(state, World){
     }
     this.reminder_dead += death - Math.trunc(death)
     death = Math.trunc(death)
+    this.virus_dead += death
     this.death_daily = death + this.non_virus_death_daily
     this.dead += this.death_daily
     this.infects -= death
-    this.virus_dead = this.dead-this.non_virus_dead
   }
 
 
