@@ -928,7 +928,7 @@ svg circle:nth-child(2){
     list-style: none;
     padding: 10px;
     width: 100%;
-    background: linear-gradient(270deg, #000000ff, #393e41ff, #1abd99ff, #f7f7f2ff, #6ef9f5ff);
+    background:linear-gradient(to left,#2f80ed,#56ccf2);
     box-shadow: 0 5px 25px rgba(0, 0, 0, .1);
     transition: transform 0.5s;
     font-size: 14px;
