@@ -366,8 +366,15 @@ input[type="checkbox"]:checked ~ .check::after{
     margin-top: 10px;
     margin-bottom: 60px;
     display: flex;
-    justify-content: first baseline;
+    justify-content: baseline;
 }
+/*
+@media screen and (max-width: 2000px) {
+    .require-beds{display: block;}
+    .require-menu-items>div {display: block;}
+    .require-menu-items{display: block;}
+    .spec-showup{display: block;}
+}*/
 
 .spec-show-container{
     width: 430px;
@@ -396,13 +403,13 @@ input[type="checkbox"]:checked ~ .check::after{
 .spec-show-menu-items>div{
     text-align:center;
     background: linear-gradient(to right,#89F9EF,#226CE0);
-    position: absolute;
+    position: relative;
     transition: 0.3s linear;
 
 }
 
 .require-beds{
-    position: relative;
+    position: absolute;
     font-size: 30px;
     text-align: center;
     height: 4.6vh;
@@ -410,17 +417,17 @@ input[type="checkbox"]:checked ~ .check::after{
     background: linear-gradient(to right,#89F9EF,#226CE0);
     border-radius: 50%;
     z-index: 2;
-    transform: translateX(221%);
     cursor: pointer;
-    margin-left: 9vw;
+    margin-left: 16vw;
 }
 
 .require-menu-items {
-    transform: translateX(131%);
     width: 4.4vh;
     height: 4.4vh;
     background:  linear-gradient(to right,#89F9EF,#226CE0);
     border-radius: 50%;
+    position: absolute;
+    margin-left: 16vw;
 }
 
 .require-menu-items>div{
