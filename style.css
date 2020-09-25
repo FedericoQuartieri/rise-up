@@ -2,8 +2,12 @@
 body{
   font-family: 'Lato', sans-serif;
   overflow-x: hidden;
-
 }
+
+.counter{
+  display: none
+}
+
 #home .navbar{
   text-transform: uppercase;
   font-weight: 700;
