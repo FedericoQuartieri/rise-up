@@ -182,11 +182,11 @@ const drawing_tools={
             var i = 0
             pop = ()=>{
                 if (i === 0){
-                    document.getElementById("item1").style.transform = "translateX(-60px)"
-                    document.getElementById("item2").style.transform = "translate(-40px, 40px)"
-                    document.getElementById("item3").style.transform = "translateY(60px)"
-                    document.getElementById("item4").style.transform = "translate(40px, 40px)"
-                    document.getElementById("item5").style.transform = "translateX(60px)"
+                    document.getElementById("item1").style.transform = "translateX(-8vh)"
+                    document.getElementById("item2").style.transform = "translate(-5.5vh,5vh)"
+                    document.getElementById("item3").style.transform = "translateY(8vh)"
+                    document.getElementById("item4").style.transform = "translate(5.5vh, 5vh)"
+                    document.getElementById("item5").style.transform = "translateX(8vh)"
                     i = 1
                 }
                 else{
