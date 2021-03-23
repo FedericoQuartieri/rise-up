@@ -17,6 +17,8 @@ const dec={
   }
 */
 
+const close_button = null
+
 const drawing_tools={
 
     "display_decisions": 
@@ -1253,6 +1255,51 @@ const drawing_tools={
             backdrop: 'static',
             keyboard: false
         })
+    },
+    "tutorial" : {
+        start_1 : () => {
+            alert("Tutorial")
+            close_button.addEventListener("click", drawing_tools.tutorial.stop())
+        },
+        stop_1 : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.counters())
+        },
+        counters : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.decisions())
+        },
+        decisions : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.red_zone())
+        },
+        red_zone : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.booleans())
+        },
+        booleans : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.block_trades())
+        },
+        block_trades : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.transfer_beds())
+        },
+        transfer_beds : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.medical_stats())
+        },
+        medical_stats : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.build_hospitals())
+        },
+        build_hospitals : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.start_2())
+        },
+        start_2 : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.stop_2())
+        },
+        stop_2 : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.loans())
+        },
+        loans : () => {
+            close_button.addEventListener("click", drawing_tools.tutorial.decisions())
+        },
+        start_3 : () => {
+            
+        }
     }
 }
 
