@@ -29,7 +29,7 @@ wrap.setAttribute("id","content")
 document.body.appendChild(wrap)
 createGrid(wrap,2)
 
-
+// drawing_tools.tutorial.start_1()
 
 //-------------------------
 //Top
@@ -68,7 +68,7 @@ drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 
 
-
+//drawing_tools.tutorial.start_1()
 
 //------------------------
 //Bottom
@@ -87,11 +87,11 @@ drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 //Loops 
 
 
-var timerClock = setInterval(function(){clock(stato);stato.summaries();stato.print()}, 1000/daytime)
+var currentLoop = null
 
 var gameLoop = setInterval(function(){ updates()},1000/fps)
 
-var currentLoop = timerClock
+
 
 
 /*
