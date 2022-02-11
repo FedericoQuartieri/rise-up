@@ -855,7 +855,7 @@ const drawing_tools={
                 document.getElementById("_1x-button").removeEventListener("click", _1x_function)
             }
             else if (state.difficulty === "easy"){
-                if (state.world.curYear === state.world.initial_year && state.world.curDay === state.world.initial_day && state.world.month_numb === state.world.initial_month + 7){
+                if (state.world.curYear === state.world.win_year && state.world.curDay === state.world.win_day && state.world.month_numb === state.world.win_month){
                     win()
                 }
             }
@@ -1182,7 +1182,7 @@ const drawing_tools={
         draw:(container_out)=>{
             const wrap=document.createElement("div")
             wrap.setAttribute("class","text-bg")
-            wrap.innerHTML="RISE UP"
+            wrap.innerHTML="COVID19"
             container_out.appendChild(wrap)
         }
 
@@ -1258,8 +1258,8 @@ const drawing_tools={
     },
     "tutorial" : {
         start_1 : () => {
-            alert("Tutorial")
-            close_button.addEventListener("click", drawing_tools.tutorial.stop())
+            alert("Press 1x for starting the game")
+            close_button.addEventListener("click", drawing_tools.tutorial.stop_1())
         },
         stop_1 : () => {
             close_button.addEventListener("click", drawing_tools.tutorial.counters())

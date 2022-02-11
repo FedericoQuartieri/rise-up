@@ -66,6 +66,9 @@ var World = function(state){
   this.month_numb = 1
   this.curDay = 0
   this.curYear = 0
+  this.win_day = 0
+  this.win_month = 0
+  this.win_year = 0
   this.initial_year = 0
   this.initial_month = 0
   this.initial_day = 0
@@ -906,13 +909,18 @@ var State = function(state, World){
     }
     var date = new Date();
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var day  = ""
-    var month = ""
-    var year = ""
+    var day  = 0
+    var month = 0
+    var year = 0
     if (this.difficulty === "easy"){
-      day = date.getDate()
-      month = months[date.getMonth() + 6]
       year = date.getFullYear()
+      day = date.getDate()
+      var m = date.getMonth() + 6
+      if (m > 12){
+        m = m - 12
+        year ++
+      }
+      month = months[m]
     }
     else if (this.difficulty === "normal"){
       day = date.getDate()
@@ -920,11 +928,21 @@ var State = function(state, World){
       year = date.getFullYear() + 1
     }
     else if (this.difficulty === "extreme"){
-      day = date.getDate()
-      month = months[date.getMonth() + 6]
       year = date.getFullYear() + 1
+      day = date.getDate()
+      var m = date.getMonth() + 6
+      month = months[date.getMonth() + 6]
+      if (m > 12){
+        m = m - 12
+        year ++
+      }
+      month = months[m]
     }
     this.win_date = day + " " + month + " " + year
+    console.log(typeof(day))
+    world.win_day = day 
+    world.win_month = m
+    world.win_year = year
   }
 
   this.summaries=()=>{
@@ -943,4 +961,8 @@ dicto_state = states[state1]
 world = new World(dicto_state)
 let stato = world.state
 stato.win_date()
+console.log(stato.win_day)
+console.log(stato.win_month)
+console.log(stato.win_year)
+console.log(stato.win_date)
 

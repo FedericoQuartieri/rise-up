@@ -68,7 +68,7 @@ drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 
 
-
+//drawing_tools.tutorial.start_1()
 
 //------------------------
 //Bottom
