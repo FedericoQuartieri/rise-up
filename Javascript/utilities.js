@@ -1,6 +1,25 @@
 
 
+var i = 0
+pop = ()=>{
+    if (i === 0){
+        document.getElementById("item1").style.transform = "translateX(-8vh)"
+        document.getElementById("item2").style.transform = "translate(-5.5vh,5vh)"
+        document.getElementById("item3").style.transform = "translateY(8vh)"
+        document.getElementById("item4").style.transform = "translate(5.5vh, 5vh)"
+        document.getElementById("item5").style.transform = "translateX(8vh)"
+        i = 1
+    }
+    else{
+        document.getElementById("item1").style.transform = "translateX(0)"
+        document.getElementById("item2").style.transform = "translate(0)"
+        document.getElementById("item3").style.transform = "translateY(0)"
+        document.getElementById("item4").style.transform = "translate(0)"
+        document.getElementById("item5").style.transform = "translateX(0)"
+        i = 0
 
+    }
+}
 
 
 const createGrid=(wrap,cols) =>{
@@ -11,6 +30,7 @@ const createGrid=(wrap,cols) =>{
             const col=document.createElement("div")
             col.setAttribute("class","col-md-3")
             col.setAttribute("id","col "+x+" "+y)
+            col.style.opacity = 0.2;
             tp.appendChild(col)
         }
         wrap.appendChild(tp)

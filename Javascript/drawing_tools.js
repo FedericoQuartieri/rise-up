@@ -90,6 +90,7 @@ const drawing_tools={
             const input=document.createElement("input")
             const s=document.createElement("span")
             input.setAttribute("type","checkbox")
+            input.setAttribute("class","bool-checkbox")
             label.appendChild(input)
             label.appendChild(s)
             s.setAttribute("class","check")
@@ -112,6 +113,7 @@ const drawing_tools={
         draw : (state,container_out)=>{
             const wrapper=document.createElement("div")
             wrapper.setAttribute("class","wrap_booleans")
+            wrapper.setAttribute("id","wrap_booleans")
             const h=document.createElement("div")
             h.setAttribute("class","title")
             h.innerHTML="extra moves"
@@ -147,6 +149,7 @@ const drawing_tools={
             "value":0,
             "min":0,
             "max":100,
+            "id":"red-input"
             //"onmousemove":"",
             //"onChange":"rangeSlider(this.value)"
         
@@ -179,29 +182,31 @@ const drawing_tools={
     },
 
     "display_specializations" : {
+
+        pop : ()=>{
+            if (i === 0){
+                document.getElementById("item1").style.transform = "translateX(-8vh)"
+                document.getElementById("item2").style.transform = "translate(-5.5vh,5vh)"
+                document.getElementById("item3").style.transform = "translateY(8vh)"
+                document.getElementById("item4").style.transform = "translate(5.5vh, 5vh)"
+                document.getElementById("item5").style.transform = "translateX(8vh)"
+                i = 1
+            }
+            else{
+                document.getElementById("item1").style.transform = "translateX(0)"
+                document.getElementById("item2").style.transform = "translate(0)"
+                document.getElementById("item3").style.transform = "translateY(0)"
+                document.getElementById("item4").style.transform = "translate(0)"
+                document.getElementById("item5").style.transform = "translateX(0)"
+                i = 0
+
+            }
+        },
+    
         draw : (dictionary,container_out, state) =>{
 
             var i = 0
-            pop = ()=>{
-                if (i === 0){
-                    document.getElementById("item1").style.transform = "translateX(-8vh)"
-                    document.getElementById("item2").style.transform = "translate(-5.5vh,5vh)"
-                    document.getElementById("item3").style.transform = "translateY(8vh)"
-                    document.getElementById("item4").style.transform = "translate(5.5vh, 5vh)"
-                    document.getElementById("item5").style.transform = "translateX(8vh)"
-                    i = 1
-                }
-                else{
-                    document.getElementById("item1").style.transform = "translateX(0)"
-                    document.getElementById("item2").style.transform = "translate(0)"
-                    document.getElementById("item3").style.transform = "translateY(0)"
-                    document.getElementById("item4").style.transform = "translate(0)"
-                    document.getElementById("item5").style.transform = "translateX(0)"
-                    i = 0
-
-                }
-            }
-
+        
             const container=document.createElement("div")
             container.setAttribute("class","spec-menu")
 
@@ -217,7 +222,7 @@ const drawing_tools={
             flex_container.appendChild(button)
             button.setAttribute("class", "require-beds")
             button.setAttribute("id", "require-beds")
-            button.addEventListener("click", pop)
+            //button.addEventListener("click", drawing_tools.display_specializations.pop)
             a = document.createElement("p")
             button.appendChild(a)
             a.setAttribute("class", "spec-button")
@@ -401,6 +406,7 @@ const drawing_tools={
             const add_hospitals = document.createElement("button")
             
             add_hospitals.setAttribute("class", "hospital_button")
+            add_hospitals.setAttribute("id", "hospital_button")
             
             add_hospitals.innerHTML = "<span>build hospitals</span>"
             add_hospitals.addEventListener("click", function(){if (state.health_funds - 1000000000 >= 0) {state.make_new_hospital()}})
@@ -909,10 +915,10 @@ const drawing_tools={
         if (number.length > 9){
             number = number.substring(0, number.length - 9)
             if (number == 1){
-                number = number + " Miliardo"
+                number = number + " Billion"
             }
             else {
-                number = number + " Miliardi"
+                number = number + " Billion"
             }
         }
 
@@ -1051,7 +1057,8 @@ const drawing_tools={
                 "type":"button",
                 "class":"close" ,
                 "data-dismiss":"modal" ,
-                "aria-label":"Close"
+                "aria-label":"Close",
+                "id":"close-trades-btn"
             })
             const s=document.createElement("span")
             s.setAttribute("aria-hidden","true")
@@ -1187,11 +1194,14 @@ const drawing_tools={
         }
 
     },
-    initial_modal : (container_out, state) => {
+
+    "tutorial" : {
+
+        modal1: (container_out) => {
         console.log(container_out)
         const modal_fade = document.createElement("div")
         modal_fade.setAttribute("class","modal fade")
-        modal_fade.setAttribute("id", "InitialModal")
+        modal_fade.setAttribute("id", "tutorialModal")
         modal_fade.setAttribute("tabindex", "-1")
         modal_fade.setAttribute("role", "dialog")
         modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
@@ -1206,15 +1216,10 @@ const drawing_tools={
         const h5 = document.createElement("h5")
         h5.setAttribute("class", "modal-title")
         h5.setAttribute("id", "exampleModalLongTitle")
-        h5.innerHTML = "CHOOSE DIFFICULTY"
-        const button = document.createElement("button")
-        button.setAttribute("type", "button")
-        button.setAttribute("class","close")
-        button.setAttribute("data-dismiss", "modal")
-        button.setAttribute("aria-label", "Close")
+        h5.innerHTML = "TUTORIAL"
         const modal_body = document.createElement("div")
-        modal_body.setAttribute("class", "modal-body")
-        modal_body.setAttribute("id", "modal-body")
+        modal_body.setAttribute("class", "tutorial-modal-body")
+        modal_body.setAttribute("id", "tutorial-body")
         modal_body.innerHTML = ""
         const modal_footer = document.createElement("div")
         modal_footer.setAttribute("class", "modal-footer-initial-end")
@@ -1223,81 +1228,444 @@ const drawing_tools={
         button2.setAttribute("type","button")
         button2.setAttribute("class","btn btn-secondary")
         button2.setAttribute("data-dismiss","modal")
-        button2.setAttribute("id", "modal_end_close")
-        button2.innerHTML = "Easy"
+        button2.setAttribute("id", "modal_tutorial_close")
+        button2.innerHTML = "Close"
         const button3 = document.createElement("button")
         button3.setAttribute("type","button")
         button3.setAttribute("class","btn btn-secondary")
         button3.setAttribute("data-dismiss","modal")
-        button3.setAttribute("id", "modal_end_close")
-        button3.innerHTML = "Medium"
-        const button4 = document.createElement("button")
-        button4.setAttribute("type","button")
-        button4.setAttribute("class","btn btn-secondary")
-        button4.setAttribute("data-dismiss","modal")
-        button4.setAttribute("id", "modal_end_close")
-        button4.innerHTML = "Hard"
+        button3.setAttribute("id", "modal_end_tutorial")
+        button3.addEventListener("click", drawing_tools.tutorial.end_tutorial)
+        button3.innerHTML = "End tutorial"
         container_out.appendChild(modal_fade)
         modal_fade.appendChild(modal_dialog)
         modal_dialog.appendChild(modal_content)
         modal_content.appendChild(modal_header)
         modal_header.appendChild(h5)
-        modal_header.appendChild(button)
         modal_content.appendChild(modal_body)
         modal_content.appendChild(modal_footer)
         modal_footer.appendChild(button2)
         modal_footer.appendChild(button3)
-        modal_footer.appendChild(button4)
-        button2.addEventListener("click", function(){state.difficulty = "easy"})
-        button3.addEventListener("click", function(){state.difficulty = "medium"})
-        button4.addEventListener("click", function(){state.difficulty = "extreme"})
-        $('#InitialModal').modal({
-            backdrop: 'static',
-            keyboard: false
-        })
-    },
-    "tutorial" : {
+
+        },
+
+        modal2: (container_out) => {
+            console.log(container_out)
+            const modal_fade = document.createElement("div")
+            modal_fade.setAttribute("class","modal fade")
+            modal_fade.setAttribute("id", "tutorialModal2")
+            modal_fade.setAttribute("tabindex", "-1")
+            modal_fade.setAttribute("role", "dialog")
+            modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+            modal_fade.setAttribute("aria-hidden", "true")
+            const modal_dialog = document.createElement("div")
+            modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+            modal_dialog.setAttribute("role", "document")
+            const modal_content = document.createElement("div")
+            modal_content.setAttribute("class", "modal-content")
+            const modal_header = document.createElement("div")
+            modal_header.setAttribute("class", "modal-header")
+            const h5 = document.createElement("h5")
+            h5.setAttribute("class", "modal-title")
+            h5.setAttribute("id", "exampleModalLongTitle2")
+            h5.innerHTML = "TUTORIAL"
+            const modal_body = document.createElement("div")
+            modal_body.setAttribute("class", "tutorial-modal-body")
+            modal_body.setAttribute("id", "tutorial-body2")
+            modal_body.innerHTML = ""
+            const modal_footer = document.createElement("div")
+            modal_footer.setAttribute("class", "modal-footer-initial-end")
+            modal_footer.setAttribute("id", "modal-footer-initial-end2")
+            const button2 = document.createElement("button")
+            button2.setAttribute("type","button")
+            button2.setAttribute("class","btn btn-secondary")
+            button2.setAttribute("data-dismiss","modal")
+            button2.setAttribute("id", "modal_tutorial_close2")
+            button2.innerHTML = "Close"
+            const button3 = document.createElement("button")
+            button3.setAttribute("type","button")
+            button3.setAttribute("class","btn btn-secondary")
+            button3.setAttribute("data-dismiss","modal")
+            button3.setAttribute("id", "modal_end_tutorial2")
+            button3.addEventListener("click", drawing_tools.tutorial.end_tutorial)
+            button3.innerHTML = "End tutorial"
+            container_out.appendChild(modal_fade)
+            modal_fade.appendChild(modal_dialog)
+            modal_dialog.appendChild(modal_content)
+            modal_content.appendChild(modal_header)
+            modal_header.appendChild(h5)
+            modal_content.appendChild(modal_body)
+            modal_content.appendChild(modal_footer)
+            modal_footer.appendChild(button2)
+            modal_footer.appendChild(button3)
+            },
+
+            modal3: (container_out) => {
+                console.log(container_out)
+                const modal_fade = document.createElement("div")
+                modal_fade.setAttribute("class","modal fade")
+                modal_fade.setAttribute("id", "tutorialModal3")
+                modal_fade.setAttribute("tabindex", "-1")
+                modal_fade.setAttribute("role", "dialog")
+                modal_fade.setAttribute ("aria-labelledby", "exampleModalCenterTitle")
+                modal_fade.setAttribute("aria-hidden", "true")
+                const modal_dialog = document.createElement("div")
+                modal_dialog.setAttribute("class", "modal-dialog modal-dialog-centered")
+                modal_dialog.setAttribute("role", "document")
+                const modal_content = document.createElement("div")
+                modal_content.setAttribute("class", "modal-content")
+                const modal_header = document.createElement("div")
+                modal_header.setAttribute("class", "modal-header")
+                const h5 = document.createElement("h5")
+                h5.setAttribute("class", "modal-title")
+                h5.setAttribute("id", "exampleModalLongTitle3")
+                h5.innerHTML = "TUTORIAL"
+                const modal_body = document.createElement("div")
+                modal_body.setAttribute("class", "tutorial-modal-body")
+                modal_body.setAttribute("id", "tutorial-body3")
+                modal_body.innerHTML = ""
+                const modal_footer = document.createElement("div")
+                modal_footer.setAttribute("class", "modal-footer-initial-end")
+                modal_footer.setAttribute("id", "modal-footer-initial-end3")
+                const button2 = document.createElement("button")
+                button2.setAttribute("type","button")
+                button2.setAttribute("class","btn btn-secondary")
+                button2.setAttribute("data-dismiss","modal")
+                button2.setAttribute("id", "modal_tutorial_close3")
+                button2.innerHTML = "Close"
+                container_out.appendChild(modal_fade)
+                modal_fade.appendChild(modal_dialog)
+                modal_dialog.appendChild(modal_content)
+                modal_content.appendChild(modal_header)
+                modal_header.appendChild(h5)
+                modal_content.appendChild(modal_body)
+                modal_content.appendChild(modal_footer)
+                modal_footer.appendChild(button2)
+                },
+
+        start_tutorial: () => {
+            $(':button').prop('disabled', true);
+            $(':input').prop('disabled', true);
+            document.getElementById("col 0 0").style.opacity = 1;
+            $('button[id^="modal_tutorial_close"]').prop('disabled', false); 
+            $('button[id^="modal_end_tutorial"]').prop('disabled', false); 
+            $('button[id^="modal_tutorial_close2"]').prop('disabled', false); 
+            $('button[id^="modal_end_tutorial2"]').prop('disabled', false);
+            $('button[id^="modal_tutorial_close3"]').prop('disabled', false); 
+            document.getElementById("tutorial-body2").innerHTML = " This is the tutorial, I will show you all the main dynamics of the game";
+            $('#tutorialModal2').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("modal_end_tutorial2").innerHTML = "Skip tutorial"
+            document.getElementById("modal_tutorial_close2").innerHTML = "Start tutorial"
+            document.getElementById("modal_tutorial_close2").addEventListener("click",  drawing_tools.tutorial.start_1)
+        },
+
         start_1 : () => {
-            alert("Press 1x for starting the game")
-            close_button.addEventListener("click", drawing_tools.tutorial.stop_1())
+            document.getElementById("modal_tutorial_close2").removeEventListener("click",  drawing_tools.tutorial.start_1)
+            document.getElementById("modal_end_tutorial2").innerHTML = "End tutorial"
+            document.getElementById("modal_tutorial_close2").innerHTML = "Close"
+            document.getElementById("tutorial-body").innerHTML = " There are 4 buttons on your top left to affect the game speed<br><br>press 1X, you will see the date on your top right increasing";
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("_1x-button").addEventListener("click", drawing_tools.tutorial.stop)
+            $('button[id^="_1x-button"]').prop('disabled', false);
+            $('button[id^="_2x-button"]').prop('disabled', false);
+            $('button[id^="_05x-button"]').prop('disabled', false);
+            $('button[id^="stop-button"]').prop('disabled', false);
         },
-        stop_1 : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.counters())
+
+        stop : () => {
+            
+            document.getElementById("_1x-button").removeEventListener("click", drawing_tools.tutorial.stop)
+            document.getElementById("col 2 0").style.opacity = 1;
+            document.getElementById("tutorial-body").innerHTML = "press STOP to pause the game ";
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            
+            document.getElementById("stop-button").addEventListener("click",drawing_tools.tutorial.counters)
         },
+
         counters : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.decisions())
+            document.getElementById("stop-button").removeEventListener("click",drawing_tools.tutorial.counters)
+            document.getElementById("col 1 1").style.opacity = 1;
+            document.getElementById("wrap_booleans").style.opacity = 0.2;
+            document.getElementById("trades-btn").style.opacity = 0.2;
+            for (let i = 0; i <3;i++){
+                document.getElementsByClassName("card")[0].setAttribute("class", "card-hover");
+            }
+            document.getElementsByClassName("container_deaths")[0].setAttribute("class", "container_deaths_hover");
+
+            document.getElementById("tutorial-body").innerHTML = "In the middle of the page there is your condition about your state. <br> every decision you take will affect deaths, feeling, economy and infects, choose properly ";
+            document.getElementById("modal_tutorial_close").addEventListener("click", drawing_tools.tutorial.decisions)
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            
         },
+
         decisions : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.red_zone())
+            document.getElementById("modal_tutorial_close").removeEventListener("click", drawing_tools.tutorial.decisions)
+            document.getElementById("col 0 1").style.opacity = 1;
+            document.getElementById("red-input").disabled = false;
+            document.getElementById("tutorial-body2").innerHTML = "At your left you can decide the percentage, 20 by 20, of 7 parameters, you can also set the exact percentage of the red zone <br><br> try setting the schools opened at 60% (3) ";
+            $('#tutorialModal2').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            for (let i = 0; i < 7;i++){
+                document.getElementsByClassName("decision-toUpdate")[0].setAttribute("class", "decision-toUpdate-hover");
+            }
+            document.getElementsByClassName("level-selector")[3].addEventListener("click", drawing_tools.tutorial.booleans);
+
         },
-        red_zone : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.booleans())
-        },
+
         booleans : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.block_trades())
+            document.getElementsByClassName("level-selector")[3].removeEventListener("click", drawing_tools.tutorial.booleans);
+            document.getElementById("wrap_booleans").style.opacity = 1;
+            document.getElementsByClassName("bool-checkbox")[0].disabled = false
+            document.getElementsByClassName("bool-checkbox")[1].disabled = false
+            document.getElementsByClassName("bool-checkbox")[2].disabled = false
+
+            document.getElementById("tutorial-body").innerHTML = "You can also choose to close stock, make masks mandatory and use the army <br><br> Try closing stock</br> "
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementsByClassName("bool-checkbox")[0].addEventListener("click", drawing_tools.tutorial.block_trades)
         },
         block_trades : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.transfer_beds())
+            document.getElementsByClassName("bool-checkbox")[0].removeEventListener("click", drawing_tools.tutorial.block_trades)
+            document.getElementById("trades-btn").style.opacity = 1;
+            document.getElementById("trades-btn").setAttribute("id", "trades-btn-hover")
+            $('button[id^="close-trades-btn"]').prop('disabled', false);
+            $('button[id^="trades-btn-hover"]').prop('disabled', false);
+            document.getElementById("tutorial-body").innerHTML = "Another choice to consider would be to block trades, you can choose between 6 different level of closing, always more radicals  <br> <br> Try to click on the block trades button and choose one of them </br>"
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("trade1").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade2").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade3").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade4").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade5").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade6").addEventListener("click", drawing_tools.tutorial.transfer_beds)
+
+            document.getElementById("trade1").setAttribute("data-dismiss","modal")
+            document.getElementById("trade2").setAttribute("data-dismiss","modal")
+            document.getElementById("trade3").setAttribute("data-dismiss","modal")
+            document.getElementById("trade4").setAttribute("data-dismiss","modal")
+            document.getElementById("trade5").setAttribute("data-dismiss","modal")
+            document.getElementById("trade6").setAttribute("data-dismiss","modal")
+
+
         },
+
         transfer_beds : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.medical_stats())
+            document.getElementById("trade1").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade2").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade3").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade4").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade5").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade6").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+
+            document.getElementById("require-beds").addEventListener("click", drawing_tools.display_specializations.pop)
+
+
+            document.getElementById("col 2 1").style.opacity = 1;
+            document.getElementsByClassName("hospitals-menu")[0].style.opacity = 0.2;
+            document.getElementsByClassName("wrap_beds")[0].style.opacity = 0.2;
+            document.getElementsByClassName("funds-menu")[0].style.opacity = 0.2;
+            document.getElementsByClassName("loans_menu")[0].style.opacity = 0.2;
+            document.getElementById("tutorial-body").innerHTML = "At your right, there is the health section if a sick person can't have a bed, he will die, to avoid this you can transfer beds from other specialties to covid beds <br>Be careful, this action is irreversible and will cause the increasing of non virus death <br> remember, deaths affect the feeling of your state <br><br> Press the button + and add 54k, you will increase the 'bed usable'"
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("item1").addEventListener("click", drawing_tools.tutorial.medical_stats)
+
+
         },
+
         medical_stats : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.build_hospitals())
+            document.getElementById("item1").removeEventListener("click", drawing_tools.tutorial.medical_stats)
+
+            document.getElementById("trade1").removeAttribute("data-dismiss")
+            document.getElementById("trade2").removeAttribute("data-dismiss")
+            document.getElementById("trade3").removeAttribute("data-dismiss")
+            document.getElementById("trade4").removeAttribute("data-dismiss")
+            document.getElementById("trade5").removeAttribute("data-dismiss")
+            document.getElementById("trade6").removeAttribute("data-dismiss")
+
+            document.getElementsByClassName("wrap_beds")[0].style.opacity = 1;
+            document.getElementsByClassName("show-spec-button")[0].disabled = false;
+            document.getElementById("modal_end_close").disabled = false;
+            
+            document.getElementById("tutorial-body").innerHTML = "Under that you can see your medical statistics: 'not used' are the free covid beds, 'people in medical need' indicates you the number of people that are sick but cannot have a bed, and because of that they will die, lastly there are the specialties beds, where you can see the remaining beds of other specialties <br> <br> press the button right to specialties beds to see"
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("modal_end_close").addEventListener("click", drawing_tools.tutorial.build_hospitals)
+            
+            
         },
+
         build_hospitals : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.start_2())
+            document.getElementById("modal_end_close").removeEventListener("click", drawing_tools.tutorial.build_hospitals)
+            document.getElementById("hospital_button").setAttribute("id", "hospital_button_hover")
+            $('button[id^="hospital_button_hover"]').prop('disabled', false);
+            document.getElementsByClassName("hospitals-menu")[0].style.opacity = 1;
+            document.getElementsByClassName("funds-menu")[0].style.opacity = 1;
+            document.getElementById("tutorial-body").innerHTML = "You can also build hospitals, but be careful, this action is irreversible <br><br> building an hospital will affect your health funds, which is also affected by your economy, when your health funds goes below zero, the indicator will show your health debt <br> <br> try to build an hospital, every hospital will cost you 100 billions"
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("hospital_button_hover").addEventListener("click", drawing_tools.tutorial.loans)
+
+            
         },
-        start_2 : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.stop_2())
-        },
-        stop_2 : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.loans())
-        },
+
         loans : () => {
-            close_button.addEventListener("click", drawing_tools.tutorial.decisions())
+            document.getElementById("hospital_button_hover").removeEventListener("click", drawing_tools.tutorial.loans)
+            document.getElementsByClassName("loans_menu")[0].style.opacity = 1;
+            document.getElementById("make-loan-low").setAttribute("id", "make-loan-low-hover")
+            document.getElementById("make-loan-high").setAttribute("id", "make-loan-high-hover")
+
+            document.getElementById("make-loan-low-hover").disabled = false
+            document.getElementById("make-loan-high-hover").disabled = false
+
+            document.getElementById("tutorial-body").innerHTML = "If you haven't enough funds to build hospitals, you can take out loans, they will make your economy decrease <br> be sure to pay loans before they expires, othwerwise your economy will decrease considerably <br> <br> You can choose between high and low risk, the first one gives you more funds but make your economy decrease more, the second one the contrary, press one of them</br>"
+            $('#tutorialModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+
+            document.getElementById("make-loan-low-hover").addEventListener("click", drawing_tools.tutorial.start_2)
+            document.getElementById("make-loan-high-hover").addEventListener("click", drawing_tools.tutorial.start_2)
         },
-        start_3 : () => {
+
+        start_2 : () => {
+            document.getElementById("make-loan-low-hover").removeEventListener("click", drawing_tools.tutorial.start_2)
+            document.getElementById("make-loan-high-hover").removeEventListener("click", drawing_tools.tutorial.start_2)
+
+            document.getElementById("tutorial-body3").innerHTML = "press 1X to end tutorial and start the game"
+            $('#tutorialModal3').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            document.getElementById("_1x-button").addEventListener("click", drawing_tools.tutorial.end_tutorial2)
+        },
+
+        end_tutorial : () => {
+            document.getElementById("tutorial-body3").innerHTML = "press 1X to end tutorial and start the game"
+            $('#tutorialModal3').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
+            $('button[id^="_1x-button"]').prop('disabled', false);
+            $('button[id^="_2x-button"]').prop('disabled', false);
+            $('button[id^="_05x-button"]').prop('disabled', false);
+            $('button[id^="stop-button"]').prop('disabled', false);
+            document.getElementById("modal_tutorial_close2").removeEventListener("click",  drawing_tools.tutorial.start_1)
+            document.getElementById("_1x-button").addEventListener("click", drawing_tools.tutorial.end_tutorial2)
+
+            document.getElementById("_1x-button").removeEventListener("click", drawing_tools.tutorial.stop)
+            document.getElementById("stop-button").removeEventListener("click",drawing_tools.tutorial.counters)
+            document.getElementById("modal_tutorial_close").removeEventListener("click", drawing_tools.tutorial.decisions)
+            document.getElementsByClassName("level-selector")[3].removeEventListener("click", drawing_tools.tutorial.booleans);
+            document.getElementsByClassName("bool-checkbox")[0].removeEventListener("click", drawing_tools.tutorial.block_trades)
+
+            document.getElementById("trade1").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade2").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade3").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade4").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade5").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+            document.getElementById("trade6").removeEventListener("click", drawing_tools.tutorial.transfer_beds)
+
+            document.getElementById("item1").removeEventListener("click", drawing_tools.tutorial.medical_stats)
+
+            document.getElementById("trade1").removeAttribute("data-dismiss")
+            document.getElementById("trade2").removeAttribute("data-dismiss")
+            document.getElementById("trade3").removeAttribute("data-dismiss")
+            document.getElementById("trade4").removeAttribute("data-dismiss")
+            document.getElementById("trade5").removeAttribute("data-dismiss")
+            document.getElementById("trade6").removeAttribute("data-dismiss")
+        
+            document.getElementById("modal_end_close").removeEventListener("click", drawing_tools.tutorial.build_hospitals)
+            const hospital_btn = document.getElementById("hospital_button")
+            if (hospital_btn !== null) {
+                hospital_btn.setAttribute("id", "hospital_button_hover")
+            }
+            document.getElementById("hospital_button_hover").removeEventListener("click", drawing_tools.tutorial.loans)
+        
+
+            const low_loan = document.getElementById("make-loan-low")
+            const high_loan = document.getElementById("make-loan-high")
+
+            if (low_loan !== null){
+                low_loan.setAttribute("id", "make-loan-low-hover")
+            }
+            if (high_loan !== null){
+                high_loan.setAttribute("id", "make-loan-high-hover")
+            }
+            document.getElementById("make-loan-low-hover").removeEventListener("click", drawing_tools.tutorial.start_2)
+            document.getElementById("make-loan-high-hover").removeEventListener("click", drawing_tools.tutorial.start_2)
+        },
+
+
+        end_tutorial2 : () => {
+            document.getElementById("_1x-button").removeEventListener("click", drawing_tools.tutorial.end_tutorial2)
+            document.getElementById("col 2 0").style.opacity = 1;
+            document.getElementById("col 1 1").style.opacity = 1;
+            document.getElementById("col 0 1").style.opacity = 1;
+            document.getElementById("col 2 1").style.opacity = 1;
+            document.getElementsByClassName("hospitals-menu")[0].style.opacity = 1;
+            document.getElementsByClassName("wrap_beds")[0].style.opacity = 1;
+            document.getElementsByClassName("funds-menu")[0].style.opacity = 1;
+            document.getElementsByClassName("loans_menu")[0].style.opacity = 1;
+            document.getElementById("wrap_booleans").style.opacity = 1;
+
+            const trades = document.getElementById("trades-btn")
+            if (trades !== null) {
+                trades.style.opacity = 1;
+            } else {
+                document.getElementById("trades-btn-hover").style.opacity = 1;
+
+            }
+            
+            $(':button').prop('disabled', false);
+            $(':input').prop('disabled', false);
+
+            for (let i = 0; i <3;i++){
+                const card = document.getElementsByClassName("card")[0];
+                if (card !== undefined){
+                    card.setAttribute("class", "card-hover");
+                }
+            }
+            const deaths = document.getElementsByClassName("container_deaths")[0]
+            if (deaths !== undefined){
+                deaths.setAttribute("class", "container_deaths_hover");
+            }
+
+            for (let i = 0; i < 7;i++){
+                const dec = document.getElementsByClassName("decision-toUpdate")[0]
+                if (dec !== undefined){
+                    dec.setAttribute("class", "decision-toUpdate-hover");
+                }
+            }
+            if (trades !== null) {
+                trades.setAttribute("id", "trades-btn-hover")
+            } 
+            document.getElementById("require-beds").addEventListener("click", drawing_tools.display_specializations.pop)
             
         }
     }

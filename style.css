@@ -15,11 +15,10 @@ body{
   letter-spacing: 1.5px;
   height: 4rem;
   background-color: rgba(0, 0, 0, 0.2);
-
 }
 
 .navbar-nav li{
-  padding-right: 4px;
+  padding-right: 5px;
 }
 .navbar-dark .navbar-nav .nav-item a{
   color: white;
@@ -280,5 +279,4 @@ hr.socket{
     margin: 0 auto;
     margin-bottom: 2rem;
   }
-
 }

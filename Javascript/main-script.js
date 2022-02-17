@@ -29,7 +29,6 @@ wrap.setAttribute("id","content")
 document.body.appendChild(wrap)
 createGrid(wrap,2)
 
-// drawing_tools.tutorial.start_1()
 
 //-------------------------
 //Top
@@ -44,7 +43,6 @@ drawing_tools.display_stop(document.getElementById("col 0 0"))
 
 //2
 drawing_tools.display_date.draw(document.getElementById("col 2 0"), stato.world)
-
 
 //------------------------
 //Mid
@@ -68,7 +66,11 @@ drawing_tools.display_funds.draw(document.getElementById("col 2 1"),stato)
 drawing_tools.display_loans.draw(document.getElementById("col 2 1"),stato)
 
 
-//drawing_tools.tutorial.start_1()
+drawing_tools.tutorial.modal1(document.getElementById("col 0 0"));
+drawing_tools.tutorial.modal2(document.getElementById("col 0 0"));
+drawing_tools.tutorial.modal3(document.getElementById("col 0 0"));
+
+drawing_tools.tutorial.start_tutorial();
 
 //------------------------
 //Bottom
