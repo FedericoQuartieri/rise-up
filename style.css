@@ -4,6 +4,15 @@ body{
   overflow-x: hidden;
 }
 
+
+#clients{
+  display: none;
+}
+
+#navbar-reviews{
+  display: none;
+}
+
 .counter{
   display: none
 }

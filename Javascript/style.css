@@ -871,16 +871,18 @@ svg circle:nth-child(2){
     border-radius: 10%;
 }
 
-.buttons_wrap button:hover{
+/* .buttons_wrap button:hover{
     color: #fff;
-}
+} */
 
 #make-loan-low-hover:hover{
+    color: #fff;
     background: rgb(0, 115, 255);
     box-shadow: 0 0 10px rgb(0, 115, 255),0 0 40px rgb(0, 115, 255), 0 0 80px rgb(0, 115, 255);
 }
 
 #make-loan-high-hover:hover{
+    color: #fff;
     background:#59f8e8;
     box-shadow: 0 0 10px #59f8e8,0 0 40px#59f8e8, 0 0 80px #59f8e8;
 }
