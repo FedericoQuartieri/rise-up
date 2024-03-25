@@ -1189,7 +1189,7 @@ const drawing_tools={
         draw:(container_out)=>{
             const wrap=document.createElement("div")
             wrap.setAttribute("class","text-bg")
-            wrap.innerHTML="COVID19"
+            wrap.innerHTML="RISE UP"
             container_out.appendChild(wrap)
         }
 
